@@ -1,0 +1,123 @@
+/*Do not remove this line! saved from http://bootstraptor.com */
+
+body {
+  padding-top: 20px;
+}
+
+section{
+	padding-top:30px;
+}
+
+
+
+footer {
+  padding-top: 40px;
+  padding-bottom: 00px;
+  margin-top: 40px;
+  border-top: 1px solid rgba(50,50,50, .8);
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+}
+.jumbotron .btn {
+  padding: 14px 24px;
+  font-size: 21px;
+}
+
+.navbar-collapse {
+max-height: 340px;
+overflow-x: visible;
+padding-right: 0px;
+padding-left: 0px;
+border-top: 0px;
+box-shadow: none;
+-webkit-overflow-scrolling: touch;
+}
+
+/* Customize the nav-justified links to be fill the entire space of the .navbar */
+
+.nav-justified {
+  border-radius: 5px;
+}
+.nav-justified > li > a {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
+  font-weight: bold;
+  color: #f9f9f9;
+  text-align: center;
+  
+ 
+}
+.nav-justified > .active > a,
+.nav-justified > .active > a:hover,
+.nav-justified > .active > a:focus {
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ea3007), to(#b82606));
+	background-image: -webkit-linear-gradient(top, #ea3007, 0%, #b82606, 100%);
+	background-image: -moz-linear-gradient(top, #ea3007 0%, #b82606 100%);
+	background-image: linear-gradient(to bottom, #ea3007 0%, #b82606 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffea3007', endColorstr='#ffb82606', GradientType=0);
+	border-color: #af2405;
+	box-shadow: inset 0 3px 7px rgba(0,0,0,.15);
+}
+.nav-justified > li:first-child > a {
+  border-radius: 5px 5px 0 0;
+}
+.nav-justified > li:last-child > a {
+  border-bottom: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+.panel .list-group-flush {
+margin: 15px 0px;
+}
+
+@media (min-width: 768px) {
+  .nav-justified {
+    
+  }
+  .nav-justified > li > a {
+    border-right: 1px solid rgba(0,0,0, .8);
+    border-left: 1px solid rgba(50,50,50, .8);
+  }
+  .nav-justified > li:first-child > a {
+    border-left: 0;
+    border-radius: 5px 0 0 5px;
+  }
+  .nav-justified > li:last-child > a {
+    border-right: 0;
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .masthead,
+  .marketing,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+
+/* custom carousel */
+
+#myCarousel .nav a small
+{
+    display: block;
+}
+#myCarousel .nav
+{
+ 
+	
+}
+.nav-justified > li > a
+{
+    border-radius: 0px;
+}
