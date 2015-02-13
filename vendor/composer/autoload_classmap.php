@@ -6,4 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CategoryRepo' => $baseDir . '/Repo/CategoryRepo.php',
+    'JsonMiddleware' => $baseDir . '/Repo/JsonMiddleware.php',
 );
