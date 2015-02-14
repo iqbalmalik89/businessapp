@@ -3,7 +3,7 @@ class LoginRepo{
 
 	public function login($request)
 	{
-		$requestData = $request->params();
+		$requestData = $request;
 
 		$response = 400;
 		if(!empty($requestData))
