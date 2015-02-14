@@ -8,4 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'CategoryRepo' => $baseDir . '/Repo/CategoryRepo.php',
     'JsonMiddleware' => $baseDir . '/Repo/JsonMiddleware.php',
+    'LoginRepo' => $baseDir . '/Repo/LoginRepo.php',
+    'SubCatRepo' => $baseDir . '/Repo/SubCatRepo.php',
 );

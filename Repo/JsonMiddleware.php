@@ -17,7 +17,7 @@ class JsonMiddleware extends \Slim\Middleware
          
         if (in_array(
             $method,
-            array('post', 'put', 'patch')
+            array('post', 'put', 'patch', 'delete', 'get')
         )) {
              
             if (empty($mediaType) || $mediaType !== 'application/json') {
