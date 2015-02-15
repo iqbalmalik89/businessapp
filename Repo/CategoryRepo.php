@@ -8,7 +8,7 @@ class CategoryRepo
 	public function addCategory($request)
 	{
 		// Get Json Input and decode it
-		$requestData = $request->getBody();
+		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
 
@@ -37,7 +37,7 @@ class CategoryRepo
 	public function updateCategory($request)
 	{
 		// Get Json Input and decode it
-		$requestData = $request->getBody();
+		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
 
