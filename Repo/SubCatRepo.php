@@ -7,7 +7,7 @@ class SubCatRepo{
 
 	public function addSubCategory($request){
 
-				$requestData = $request->getBody();
+		$requestData = $request;
 
 		$action = 'post';
 		$response = 400;
@@ -34,7 +34,7 @@ class SubCatRepo{
 
 	public function updateSubCategory($request)
 	{
-				$requestData = $request->getBody();
+				$requestData = $request;
 
 		$action = 'put';
 		// Initial response is bad request
@@ -64,7 +64,7 @@ class SubCatRepo{
 
 	public function deleteSubCategory($request)
 	{
-		$requestData = $request->getBody();
+		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
 
@@ -93,50 +93,41 @@ class SubCatRepo{
 	// Get All Sub-Categories. If category id given, returns sub-categories of that Category
 	public function getSubCategory($request)
 	{	
-		$reqData = $request->params();
-		$requestData = $request->getBody();
+		
+		$requestData = $request;
+		// Initial response is bad request
+		$response = 400;
 
-		if(!empty($reqData))
-		{
-			// Initial response is bad request
-			$response = 400;
+		// If there is some data in json form
+		if(!empty($requestData))
+		{				
+			$exists = $GLOBALS['con']->from('sub_category')->where('cat_id',$requestData['cat_id']);
+			$allCat = array();
 
-			// If there is some data in json form
-			 if(empty($requestData))
-				{				
-					$exists = $GLOBALS['con']->from('sub_category')->where('cat_id',$reqData['cat_id']);
-					$allCat = array();
+			foreach($exists as $items)
+	    	{
+				$allCat[] = $items;
 
-					foreach($exists as $items)
-	    			{
-						$allCat[] = $items;
-
-					}
-
-					$response = 200;
 			}
+
+			$response = 200;
 		}
+		
 		else
 		{
-			// Initial response is bad request
-			$response = 400;
+			$exists = $GLOBALS['con']->from('sub_category');
+			$allCat = array();
 
-			// If there is some data in json form
-			 if(empty($requestData))
-				{				
-					$exists = $GLOBALS['con']->from('sub_category');
-					$allCat = array();
+			foreach($exists as $items)
+	    	{
+				$allCat[] = $items;
 
-					foreach($exists as $items)
-	    			{
-						$allCat[] = $items;
-
-					}
-
-					$response = 200;
-
-				}
 			}
+
+			$response = 200;
+				
+		}
+		
 		return array('response' => $response,'data' => $allCat);
 	}
 

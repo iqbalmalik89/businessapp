@@ -43,14 +43,17 @@ $app->add(new JsonMiddleware('/api'));
 */
 	$jsonParams = array();
 	$formParams = $app->request->params();
-	//var_dump($formParams);
+    $data = $app->request->getBody();
 
-	if(!$app->request->getBody())
+
+	if(!empty($data))
 	{
-	    $jsonParams = json_decode($app->request->getBody(), TRUE);
+	    $jsonParams = json_decode($data, TRUE);
+
 	}
 
 	$app->requestdata = array_merge($jsonParams, $formParams);
+    //var_dump($app->requestdata);
 
 /*
 * Grouped routes
@@ -116,6 +119,14 @@ $app->group('/api', function () use ($app) {
         $code = $new->login($app->requestdata);
         response($code, $code['data']);
     }); 
+
+    // Check Vendor Name
+    $app->get('/vendor_name' , function () use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->checkVendor($app->requestdata);
+        response($code, $code['data']);
+    });
     
 });
 
