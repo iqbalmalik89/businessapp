@@ -68,7 +68,12 @@ class VendorRepo{
 	{
 		$response =400;
 		$requestData = $request;
-var_dump($requestData);
+		if(!empty($request))
+		{
+
+		}
+		
+		die();
 		$query = $GLOBALS['con']->from('vendor_images')->where('vendor_id',$requestData['vendor_id']);
 		if(!empty($query))
 		{

@@ -1,5 +1,8 @@
-
-var apiUrl = 'http://localhost/businessapp/index.php/api/';
+var server = window.location.hostname;
+if(server == 'localhost')
+  var apiUrl = location.protocol + "//"+server+"/businessapp/index.php/api/";
+else
+  var apiUrl = location.protocol + "//"+server+"/index.php/api/";
 
 function showMsg(id, msg, type)
 {
@@ -42,7 +45,7 @@ function login()
             if(data.status == 'success')
             {
                 showMsg('#msg', 'Successfully Logged In. Redirecting ...', 'green')
-                window.location = 'index.php';
+                window.location = 'categories.php';
             }
           },
           error:function(jqxhr){
@@ -75,8 +78,8 @@ function logout()
 function deleteSubCat(id)
 {
     $.ajax({
-      type: 'DELETE',
-      url: apiUrl + 'sub_cat',
+      type: 'POST',
+      url: apiUrl + 'deletesub_cat',
       dataType : "JSON",
       data: {sub_cat_id:id},
       beforeSend:function(){
@@ -93,8 +96,8 @@ function deleteSubCat(id)
 function deleteCat(id)
 {
     $.ajax({
-      type: 'DELETE',
-      url: apiUrl + 'category',
+      type: 'POST',
+      url: apiUrl + 'deletecategory',
       dataType : "JSON",
       data: {id:id},
       beforeSend:function(){
@@ -236,24 +239,26 @@ function addUpdateSubCategory()
 
     if(sub_cat_id == '')
     {
-        method = 'POST';
+        route = 'addsub_cat';
     }
     else
     {
-        method = 'PUT';        
+        route = 'updatesub_cat';
     }
 
     if(check)
     {
+        $('#spinner').show();
         $.ajax({
-          type: method,
-          url: apiUrl + 'sub_cat',
+          type: "POST",
+          url: apiUrl + route,
           dataType : "JSON",
           data: {id:sub_cat_id, cat_id:cat_id, sub_cat_name:cat_name},
           beforeSend:function(){
 
           },
           success:function(data){
+          $('#spinner').hide();
             if(data.status == 'success')
             {
                 getSubCategories();                
@@ -261,6 +266,7 @@ function addUpdateSubCategory()
             }
           },
           error:function(jqxhr){
+            $('#spinner').hide();
             showMsg('#msg', 'Category already exists with this name.', 'red');
           }
         });
@@ -283,24 +289,26 @@ function addUpdateCategory()
 
     if(cat_id == '')
     {
-        method = 'POST';
+      route = 'addcategory';
     }
     else
     {
-        method = 'PUT';        
+      route = 'updatecategory';
     }
 
     if(check)
     {
+        $('#spinner').show();      
         $.ajax({
-          type: method,
-          url: apiUrl + 'category',
+          type: "POST",
+          url: apiUrl + route,
           dataType : "JSON",
           data: {id:cat_id, cat_name:cat_name},
           beforeSend:function(){
 
           },
           success:function(data){
+          $('#spinner').hide();      
             if(data.status == 'success')
             {
                 getCategories();                
@@ -308,6 +316,7 @@ function addUpdateCategory()
             }
           },
           error:function(jqxhr){
+            $('#spinner').hide();      
             showMsg('#msg', 'Category already exists with this name.', 'red');
           }
         });

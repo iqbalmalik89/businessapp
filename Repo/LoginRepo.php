@@ -4,6 +4,8 @@ class LoginRepo{
 	public function login($request)
 	{
 		$requestData = $request;
+					// $values = array('username' => 'kam@yahoo.com', 'password' => md5('admin123!'), 'name' => 'Kam');
+					// $query = $GLOBALS['con']->insertInto('admin', $values)->execute();		
 
 		$response = 400;
 		if(!empty($requestData))

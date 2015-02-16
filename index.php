@@ -63,7 +63,7 @@ $app->add(new JsonMiddleware('/api'));
 $app->group('/api', function () use ($app) {
 
     // Add Category
-    $app->post('/category' , function () use ($app){
+    $app->post('/addcategory' , function () use ($app){
     	
 
         $new = new CategoryRepo();
@@ -72,7 +72,7 @@ $app->group('/api', function () use ($app) {
     });
 
     // Update Category
-    $app->put('/category' , function () use ($app){
+    $app->post('/updatecategory' , function () use ($app){
 
         $new = new CategoryRepo();
         $code = $new->updateCategory($app->requestdata);
@@ -80,14 +80,14 @@ $app->group('/api', function () use ($app) {
     });    
 
     // Update Category
-    $app->delete('/category' , function () use ($app){
+    $app->post('/deletecategory' , function () use ($app){
         $new = new CategoryRepo();
         $code = $new->deleteCategory($app->requestdata);
         response($code, array());
     });    
 
     // Add Sub-Category
-    $app->post('/sub_cat', function () use ($app){
+    $app->post('/addsub_cat', function () use ($app){
 
     	$new  = new SubCatRepo();
     	//var_dump($app->request->getBody());
@@ -97,7 +97,7 @@ $app->group('/api', function () use ($app) {
     });
 
     // Update Sub-Category
-    $app->put('/sub_cat' , function () use ($app){
+    $app->post('/updatesub_cat' , function () use ($app){
 
         $new = new SubCatRepo();
         $code = $new->updateSubCategory($app->requestdata);
@@ -105,7 +105,7 @@ $app->group('/api', function () use ($app) {
     }); 
 
     // Delete Sub-Category
-    $app->delete('/sub_cat' , function () use ($app){
+    $app->post('/deletesub_cat' , function () use ($app){
 
         $new = new SubCatRepo();
         $code = $new->deleteSubCategory($app->requestdata);
@@ -117,7 +117,7 @@ $app->group('/api', function () use ($app) {
 
         $new = new SubCatRepo();
         $code = $new->getSubCategory($app->requestdata);
-        response($code, array('data' => $code['data']));
+        response($code['code'], array('data' => $code['data']));
     }); 
 
     // Login
@@ -148,13 +148,6 @@ $app->group('/api', function () use ($app) {
     });
 
 
-    $app->post('/uploadvendorimages' , function () use ($app){
-        
-     });
-
-
-
-
     // Add Business
     $app->post('/business_add', function() use ($app){
 
@@ -165,9 +158,8 @@ $app->group('/api', function () use ($app) {
     
       // Add vendor Images
     $app->post('/add_vendor_images', function() use ($app){
-
         $new = new VendorRepo();
-        $code = $new->addVendorImages($app->requestdata);
+        $code = $new->addVendorImages($_FILES['file_data']);
         response($code,array());
     });
 

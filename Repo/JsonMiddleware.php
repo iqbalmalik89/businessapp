@@ -50,9 +50,9 @@ class JsonMiddleware extends \Slim\Middleware
         }
         else
         {
-            $database = 'businessapp';
-            $user = 'root';
-            $password = '';
+            $database = 'harmonyb_businessdirectory';
+            $user = 'harmonyb_bdApp';
+            $password = 'bdApp2015';
         }
 
         $pdo = new PDO("mysql:dbname=". $database, $user, $password);

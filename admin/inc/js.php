@@ -1,3 +1,10 @@
+<?php
+	if(!isset($_SESSION['user']))
+	{
+		echo "<script>window.location = 'login.php'</script>";
+		die();		
+	}
+?>
 <!-- Bootstrap -->
 <link href="bs3/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/style-responsive.css" rel="stylesheet">
