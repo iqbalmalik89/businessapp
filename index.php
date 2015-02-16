@@ -55,7 +55,6 @@ $app->add(new JsonMiddleware('/api'));
 	}
 
 	$app->requestdata = array_merge($jsonParams, $formParams);
-    //var_dump($app->requestdata);
 
 /*
 * Grouped routes
@@ -147,10 +146,43 @@ $app->group('/api', function () use ($app) {
         $code = $new->checkVendor($app->requestdata);
         response($code, $code['data']);
     });
+
+    // Add Business
+    $app->post('/business_add', function() use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->businessAdd($app->requestdata);
+        response($code,array());
+    });
     
+      // Add vendor Images
+    $app->post('/add_vendor_images', function() use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->addVendorImages($app->requestdata);
+        response($code,array());
+    });
+
+     // Add Vendor Working Days
+    $app->post('/add_vendor_working_days', function() use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->addVendorDays($app->requestdata);
+        response($code,array());
+    });
+
+    // Add deal
+    $app->post('/add_deal', function() use ($app){
+
+        $new = new DealRepo();
+        $code = $new->addDeal($app->requestdata);
+        response($code,array());
+    });
+
 });
 
 
 
 
 $app->run();
+
