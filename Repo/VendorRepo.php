@@ -26,13 +26,13 @@ class VendorRepo{
 		// initial response is bad
 		$response = 400;
 		$requestData = $request;
-		var_dump($requestData);
-		$check = $this->checkVendor($requestData['business_naeme']);
+		//var_dump($requestData);
+		$check = $this->checkVendor($requestData['business_name']);
 		if($check)
 		{
 			$values = array('first_name' 		=> $requestData['first_name'],
 							'last_name' 		=> $requestData['last_name'],
-							'business_name' 	=> $requestData['businessData'],
+							'business_name' 	=> $requestData['business_name'],
 							'address' 			=> $requestData['address'],
 							'city'				=> $requestData['city'],
 							'state' 			=> $requestData['state'],

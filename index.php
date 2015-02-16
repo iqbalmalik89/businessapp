@@ -50,12 +50,13 @@ $app->add(new JsonMiddleware('/api'));
 	if(!empty($data))
 	{
 	    $decodeJsonParams = json_decode($data, TRUE);
+        var_dump($decodeJsonParams);
         if(is_array($decodeJsonParams))
             $jsonParams = $decodeJsonParams;
 	}
 
 	$app->requestdata = array_merge($jsonParams, $formParams);
-    //var_dump($app->requestdata);
+    var_dump($app->requestdata);
 
 /*
 * Grouped routes
