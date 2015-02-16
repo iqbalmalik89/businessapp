@@ -8,7 +8,6 @@ class SubCatRepo{
 	public function addSubCategory($request){
 
 		$requestData = $request;
-
 		$action = 'post';
 		$response = 400;
 		if(!empty($requestData))
@@ -44,9 +43,9 @@ class SubCatRepo{
 		if(!empty($requestData))
 		{
 			// Check if cat_name is not empty
-			if(!empty($requestData['sub_cat_name']) && !empty($requestData['sub_cat_id']))
+			if(!empty($requestData['sub_cat_name']) && !empty($requestData['id']))
 			{
-				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['sub_cat_id'],$action);
+				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['id'],$action);
 				if($exists)
 				{
 					$response = 409;
@@ -136,11 +135,11 @@ class SubCatRepo{
 	{
 
 		if($action == 'post'){
-			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where('cat_id',$id);
+			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name);
 		}
 		else if($action == 'put')
 		{
-			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where('id',$id);
+			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where('id != ?',$id);
 		}
 		return count($query);
 	}

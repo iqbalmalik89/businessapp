@@ -118,7 +118,7 @@ $app->group('/api', function () use ($app) {
 
         $new = new SubCatRepo();
         $code = $new->getSubCategory($app->requestdata);
-        response($code, $code['data']);
+        response($code, array('data' => $code['data']));
     }); 
 
     // Login
@@ -147,6 +147,13 @@ $app->group('/api', function () use ($app) {
         $code = $new->checkVendor($app->requestdata);
         response($code, $code['data']);
     });
+
+    $app->post('/uploadvendorimages' , function () use ($app){
+        
+     });
+
+
+
     
 });
 
