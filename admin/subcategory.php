@@ -14,7 +14,7 @@
     <![endif]-->
 <script>
 $( document ).ready(function() {
-  getCategories();
+  getSubCategories();
 });
 </script>
 </head>
@@ -29,13 +29,15 @@ $( document ).ready(function() {
   <!--main start-->
 <!-- Modal -->
 <div class="modal fade" id="addcat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<input type="hidden" id="cat_id" value="">
+<input type="hidden" id="cat_id" value="<?php echo $_GET['cat_id'];?>">
+<input type="hidden" id="sub_cat_id" value="">
+
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
           <div class="notification-bar" id="msg" style="display: none;"></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span id="mode">Add </span> Category</h4>
+        <h4 class="modal-title" id="myModalLabel"> Subcategory</h4>
       </div>
       <div class="modal-body">
 
@@ -45,7 +47,7 @@ $( document ).ready(function() {
     <div class="col-md-10 column">
       <form class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Category Name</label>
+           <label for="inputEmail3" class="col-sm-2 control-label">Subcategory Name</label>
           <div class="col-sm-4">
             <input type="text" class="form-control" id="cat_name" />
           </div>
@@ -59,7 +61,7 @@ $( document ).ready(function() {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addUpdateCategory();" class="btn btn-primary">Save</button>
+        <button type="button" onclick="addUpdateSubCategory();" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -81,7 +83,7 @@ $( document ).ready(function() {
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Categories  <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  </h1>
+              <h1>Subcategories  <button type="button" data-toggle="modal" data-target="#addcat" onclick="showSubAddPopup();" class="btn btn-primary">Add Subcategory</button>  </h1>
             </div>
           </div><!--col-md-12 end-->
           <div class="col-sm-6 col-md-12">
@@ -89,8 +91,7 @@ $( document ).ready(function() {
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Category Name</th>
-                    <th>Subcategories</th>
+                    <th>Subcategory Name</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

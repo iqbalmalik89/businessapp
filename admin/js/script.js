@@ -72,6 +72,24 @@ function logout()
     });
 }
 
+function deleteSubCat(id)
+{
+    $.ajax({
+      type: 'DELETE',
+      url: apiUrl + 'sub_cat',
+      dataType : "JSON",
+      data: {sub_cat_id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        getSubCategories();
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
 function deleteCat(id)
 {
     $.ajax({
@@ -96,6 +114,12 @@ function catReset()
     $('#cat_name').val('');
 }
 
+function subCatReset()
+{
+    $('#sub_cat_id').val('');
+    $('#cat_name').val('');
+}
+
 function getSingleCategory(cat_id, cat_name)
 {
     $('#cat_id').val(cat_id);
@@ -103,9 +127,59 @@ function getSingleCategory(cat_id, cat_name)
 
 }
 
+function getSingleSubCategory(cat_id, cat_name)
+{
+    $('#sub_cat_id').val(cat_id);
+    $('#cat_name').val(cat_name);
+}
+
 function showAddPopup()
 {
     catReset();
+}
+
+function showSubAddPopup()
+{
+  subCatReset();
+}
+
+function getSubCategories()
+{
+  var cat_id = $('#cat_id').val();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'sub_cat',
+      dataType : "JSON",
+      data: {cat_id: cat_id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var html = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+                html += '<tr>\
+                            <td>'+value.cat_name+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubCategory('+value.id+', \''+value.cat_name+'\');" data-target="#addcat">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubCat('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="2" align="center">Subcategories not found</td>\
+                     </tr>';            
+        }
+
+        $('#categorybody').html(html);
+
+      },
+      error:function(jqxhr){
+      }
+    });
 }
 
 function getCategories()
@@ -134,7 +208,7 @@ function getCategories()
         else
         {
             html += '<tr>\
-                        <td>Categories not found</td>\
+                        <td colspan="3" align="center">Categories not found</td>\
                      </tr>';            
         }
 
@@ -144,6 +218,53 @@ function getCategories()
       error:function(jqxhr){
       }
     });
+}
+
+function addUpdateSubCategory()
+{
+    var cat_id = $('#cat_id').val();
+    var sub_cat_id = $('#sub_cat_id').val();
+    var cat_name = $('#cat_name').val();
+    var check  = true;
+
+    if(cat_name == '')
+    {
+        $('#cat_name').focus();
+        $('#cat_name').addClass('error-class');
+        check = false;
+    }
+
+    if(sub_cat_id == '')
+    {
+        method = 'POST';
+    }
+    else
+    {
+        method = 'PUT';        
+    }
+
+    if(check)
+    {
+        $.ajax({
+          type: method,
+          url: apiUrl + 'sub_cat',
+          dataType : "JSON",
+          data: {id:sub_cat_id, cat_id:cat_id, sub_cat_name:cat_name},
+          beforeSend:function(){
+
+          },
+          success:function(data){
+            if(data.status == 'success')
+            {
+                getSubCategories();                
+                $('#addcat').modal('hide');
+            }
+          },
+          error:function(jqxhr){
+            showMsg('#msg', 'Category already exists with this name.', 'red');
+          }
+        });
+    }
 }
 
 
@@ -187,8 +308,8 @@ function addUpdateCategory()
             }
           },
           error:function(jqxhr){
+            showMsg('#msg', 'Category already exists with this name.', 'red');
           }
         });
     }
-
 }

@@ -6,9 +6,9 @@
     
     <!--navigation start-->
     <ul class="navigation">
-      <li><a class="active" href="index.html"><i class="fa fa-home"></i><span>Vendors</span></a></li>
+<!--       <li><a class="active" href="index.html"><i class="fa fa-home"></i><span>Vendors</span></a></li>
       <li class="sub"> <a href="#"><i class="fa fa-smile-o"></i><span>UI Elements</span></a>
-      <li class="sub"> <a href="categories.php"><i class="fa fa-smile-o"></i><span>Categories</span></a>
+ -->      <li class="sub"> <a href="categories.php"><i class="fa fa-smile-o"></i><span>Categories</span></a>
 
 <!--         <ul class="navigation-sub">
           <li><a href="buttons.html"><i class="fa fa-power-off"></i><span>Button</span></a></li>
