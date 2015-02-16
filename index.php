@@ -45,11 +45,11 @@ $app->add(new JsonMiddleware('/api'));
 	$formParams = $app->request->params();
     $data = $app->request->getBody();
 
-
+    
 	if(!empty($data))
 	{
 	    $jsonParams = json_decode($data, TRUE);
-
+var_dump($jsonParams);
 	}
 
 	$app->requestdata = array_merge($jsonParams, $formParams);
@@ -126,6 +126,14 @@ $app->group('/api', function () use ($app) {
         $new = new VendorRepo();
         $code = $new->checkVendor($app->requestdata);
         response($code, $code['data']);
+    });
+
+    // Add Business
+    $app->post('/business_add', function() use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->businessAdd($app->requestdata);
+        response($code,array());
     });
     
 });
