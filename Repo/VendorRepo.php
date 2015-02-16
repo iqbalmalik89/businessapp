@@ -8,8 +8,9 @@ class VendorRepo{
 
 		$requestData = $request;
 		//checks if business_name already exists
-		$check = $GLOBALS['con']->from('vendors')->where('business_name',$requestData['business_name']);
+		$check = $GLOBALS['con']->from('vendors')->where('business_name',$requestData);
 		$count = count($check);
+		echo $count;
 		if($count)
 		{
 			$response = false;
@@ -61,4 +62,46 @@ class VendorRepo{
 
 		return $response;
 	}
+
+	// Add Vendor Images
+	public function addVendorImages($request)
+	{
+		$response =400;
+		$requestData = $request;
+var_dump($requestData);
+		$query = $GLOBALS['con']->from('vendor_images')->where('vendor_id',$requestData['vendor_id']);
+		if(!empty($query))
+		{
+			foreach($query as $items)
+	    	{
+				$data = $items;
+
+			}
+			$values = array('vendor_id' => $data['vendor_id'], 'path' => $requestData['path']);
+			$query = $GLOBALS['con']->update('vendor_images', $values, $data['id'])->execute();
+			$response = 200;
+		}
+		return $response;
+	}
+
+	public function addVendorDays($request)
+	{
+		$response =400;
+		$requestData = $request;
+
+		$query = $GLOBALS['con']->from('vendor_working_days')->where('vendor_id',$requestData['vendor_id']);
+		if(!empty($query))
+		{
+			foreach($query as $items)
+	    	{
+				$data = $items;
+
+			}
+			$values = array('vendor_id' => $data['vendor_id'], 'day_code' => $requestData['day_code'],'start_time' => $requestData['start_time'],'end_time' => $requestData['end_time']);
+			$query = $GLOBALS['con']->update('vendor_working_days', $values, $data['id'])->execute();
+			$response = 200;
+		}
+		return $response;
+	}
+
 }
