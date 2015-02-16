@@ -63,7 +63,12 @@ class CategoryRepo
 		return $response;
 	}
 
-	
+	public function deleteCategory($requestData)
+	{
+		$query = $GLOBALS['con']->deleteFrom('category')->where('id', $requestData['id'])->execute();
+		$query = $GLOBALS['con']->deleteFrom('sub_category')->where('cat_id', $requestData['id'])->execute();
+		return 200;
+	}	
 
 	public function checkCat($name, $id = 0)
 	{
@@ -71,6 +76,22 @@ class CategoryRepo
 		if(!empty($id))
 			$query = $query->where('id != ?', $id);
 		return count($query);
+	}
+
+	public function getCategories()
+	{
+		$query = $GLOBALS['con']->from('category');
+		$categories = array();
+		if(!empty($query))
+		{
+			foreach ($query as $key => $cat) {
+				$sub_cat_count = $GLOBALS['con']->from('sub_category')->where('cat_id', $cat['id'])->count();
+				$cat['sub_cat_count'] = $sub_cat_count;
+				$categories[] = $cat;
+			}
+		}
+
+		return array('code' => 200, 'data' => $categories);
 	}
 
 

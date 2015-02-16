@@ -1,5 +1,7 @@
 <?php
 require 'vendor/autoload.php';
+session_cache_limiter(false);
+session_start();
 $app = new \Slim\Slim(array(
     'debug' => true
 ));
@@ -45,11 +47,11 @@ $app->add(new JsonMiddleware('/api'));
 	$formParams = $app->request->params();
     $data = $app->request->getBody();
 
-
 	if(!empty($data))
 	{
-	    $jsonParams = json_decode($data, TRUE);
-
+	    $decodeJsonParams = json_decode($data, TRUE);
+        if(is_array($decodeJsonParams))
+            $jsonParams = $decodeJsonParams;
 	}
 
 	$app->requestdata = array_merge($jsonParams, $formParams);
@@ -75,6 +77,13 @@ $app->group('/api', function () use ($app) {
 
         $new = new CategoryRepo();
         $code = $new->updateCategory($app->requestdata);
+        response($code, array());
+    });    
+
+    // Update Category
+    $app->delete('/category' , function () use ($app){
+        $new = new CategoryRepo();
+        $code = $new->deleteCategory($app->requestdata);
         response($code, array());
     });    
 
@@ -118,6 +127,17 @@ $app->group('/api', function () use ($app) {
         $new = new LoginRepo();
         $code = $new->login($app->requestdata);
         response($code, $code['data']);
+    }); 
+
+    $app->get('/logout' , function () use ($app){
+        session_destroy();
+        response(200, array());
+    }); 
+
+    $app->get('/categories' , function () use ($app){
+        $new = new CategoryRepo();
+        $resp = $new->getCategories($app->requestdata);
+        response($resp['code'], array('data' => $resp['data']));
     }); 
 
     // Check Vendor Name
