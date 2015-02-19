@@ -56,7 +56,10 @@ class VendorRepo{
 			if($vendorId > 0)
 			{
 				if(isset($requestData['images']) && !empty($requestData['images']))
-					$this->addVendorImages($vendorId, $requestData['images']);				
+					$this->addVendorImages($vendorId, $requestData['images']);
+
+				if(isset($requestData['days']) && !empty($requestData['days']))
+					$this->addVendorDays($vendorId, $requestData['days']);							
 			}
 			$response = 200;
 		}
@@ -81,25 +84,33 @@ class VendorRepo{
 		}
 	}
 
-	public function addVendorDays($request)
+	public function addVendorDays($vendorId, $days)
 	{
-		$response =400;
-		$requestData = $request;
-
-		$query = $GLOBALS['con']->from('vendor_working_days')->where('vendor_id',$requestData['vendor_id']);
-		if(!empty($query))
+		if(!empty($days))
 		{
-			foreach($query as $items)
-	    	{
-				$data = $items;
-
+			foreach ($days as $key => $day) {
+				$values = array('vendor_id' => $vendorId, 'day_code' => $day['day_code'],'start_time' => $day['start_time'],'end_time' => $day['end_time']);
+				$query = $GLOBALS['con']->insertInto('vendor_working_days', $values)->execute();
 			}
-			$values = array('vendor_id' => $data['vendor_id'], 'day_code' => $requestData['day_code'],'start_time' => $requestData['start_time'],'end_time' => $requestData['end_time']);
-			$query = $GLOBALS['con']->update('vendor_working_days', $values, $data['id'])->execute();
-			$response = 200;
+		}
+
+	}
+
+	public function vendorStatus($request)
+	{
+		$response = 400;
+		$requestData = $request;
+		if(!empty($requestData['id']))
+		{
+			$value = array('status' => $requestData['status']); 
+			$query = $GLOBALS['con']->update('vendors',$value,$requestData['id'])->execute();
+			
+			$reponse = 200;
+			
 		}
 		return $response;
 	}
+	
 
 	public function vendorStatus($request)
 	{
