@@ -10,7 +10,6 @@ class VendorRepo{
 		//checks if business_name already exists
 		$check = $GLOBALS['con']->from('vendors')->where('business_name',$requestData);
 		$count = count($check);
-		echo $count;
 		if($count)
 		{
 			$response = false;
@@ -49,10 +48,16 @@ class VendorRepo{
 							'youtube' 			=> $requestData['youtube'],
 							'twitter' 			=> $requestData['twitter'],
 							'instagram' 		=> $requestData['instagram'],
-							'status' 			=> $requestData['status'],
+							'status' 			=> 'pending',
 							'date_created' 		=> date("Y-m-d H:i:s"));
 			//print_r($values);
-			$query = $GLOBALS['con']->insertInto('vendors', $values)->execute();		
+			$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();		
+
+			if($vendorId > 0)
+			{
+				if(isset($requestData['images']) && !empty($requestData['images']))
+					$this->addVendorImages($vendorId, $requestData['images']);				
+			}
 			$response = 200;
 		}
 		else
@@ -64,29 +69,16 @@ class VendorRepo{
 	}
 
 	// Add Vendor Images
-	public function addVendorImages($request)
+	public function addVendorImages($vendorId, $images)
 	{
-		$response =400;
-		$requestData = $request;
-		if(!empty($request))
+		if(!empty($images))
 		{
-
-		}
-		
-		die();
-		$query = $GLOBALS['con']->from('vendor_images')->where('vendor_id',$requestData['vendor_id']);
-		if(!empty($query))
-		{
-			foreach($query as $items)
-	    	{
-				$data = $items;
-
+			foreach($images as $image)
+			{
+				$values = array('vendor_id' => $vendorId, 'path' => $image);
+				$query = $GLOBALS['con']->insertInto('vendor_images', $values)->execute();
 			}
-			$values = array('vendor_id' => $data['vendor_id'], 'path' => $requestData['path']);
-			$query = $GLOBALS['con']->update('vendor_images', $values, $data['id'])->execute();
-			$response = 200;
 		}
-		return $response;
 	}
 
 	public function addVendorDays($request)
@@ -108,5 +100,21 @@ class VendorRepo{
 		}
 		return $response;
 	}
+
+	public function vendorStatus($request)
+	{
+		$response = 400;
+		$requestData = $request;
+		if(!empty($requestData['id']))
+		{
+			$value = array('status' => $requestData['status']); 
+			$query = $GLOBALS['con']->update('vendors',$value,$requestData['id'])->execute();
+			
+			$reponse = 200;
+			
+		}
+		return $response;
+	}
+	
 
 }

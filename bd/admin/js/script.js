@@ -4,6 +4,7 @@ if(server == 'localhost')
 else
   var apiUrl = location.protocol + "//"+server+"/bd/index.php/api/";
 
+
 function showMsg(id, msg, type)
 {
     $(id).html(msg).addClass(type).slideDown('fast').delay(2500).slideUp(1000,function(){$(id).removeClass(type)}); 
@@ -160,9 +161,12 @@ function getSubCategories()
       },
       success:function(data){
         var html = '';
+        var options = '';
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
+                options += '<option value="'+value.id+'">'+value.cat_name+' </option>';
+
                 html += '<tr>\
                             <td>'+value.cat_name+'</td>\
                             <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubCategory('+value.id+', \''+value.cat_name+'\');" data-target="#addcat">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubCat('+value.id+');">Delete</a></td>\
@@ -178,13 +182,14 @@ function getSubCategories()
         }
 
         $('#categorybody').html(html);
+       $('#sub_cat_id').append(options);
 
       },
       error:function(jqxhr){
       }
     });
 }
-
+var allImages = [] ;
 function getCategories()
 {
     $.ajax({
@@ -197,9 +202,12 @@ function getCategories()
       },
       success:function(data){
         var html = '';
+        var options = '';
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
+
+                options += '<option value="'+value.id+'">'+value.cat_name+' </option>';
                 html += '<tr>\
                             <td>'+value.cat_name+'</td>\
                             <td><a href="subcategory.php?cat_id='+value.id+'">Manage Subcategories ('+value.sub_cat_count+')</a></td>\
@@ -216,6 +224,7 @@ function getCategories()
         }
 
         $('#categorybody').html(html);
+        $('#cat_id').append(options);
 
       },
       error:function(jqxhr){
@@ -321,4 +330,153 @@ function addUpdateCategory()
           }
         });
     }
+}
+
+
+
+/*
+* Front end functions
+*
+*/
+
+function businessReset()
+{
+  allImages = [];
+  var id = $.trim($('#id').val());
+  $('#first_name, #last_name, #business_name, #street_address, #post_code, #office_number, #cell_number, #city, #state, #email_address, #website, #facebook, #twitter, #youtube, #instagram').val('');
+
+  $('select option:first-child').attr("selected", "selected");
+
+  var daysArr = [1, 2, 3, 4, 5, 6, 7];
+  $.each(daysArr, function( index, value ) {
+     $('#start_time' + value).datetimepicker({
+        datepicker:false,
+        value : "09:00",
+        format:'H:i',
+        step:60
+     });
+
+     $('#end_time' + value).datetimepicker({
+        datepicker:false,
+        value : "06:00",
+        format:'H:i',
+        step:60
+     });               
+
+  });
+
+  $( ".fileinput-remove" ).trigger( "click" );
+
+
+
+}
+
+function checkBusinessName(name)
+{
+  if(name!="")
+  {
+    $('#business_spinner').show();    
+     $.ajax({
+      type: "GET",
+      url: apiUrl + 'vendor_name',
+      dataType : "JSON",
+      data: {name:name},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#business_spinner').hide();    
+        if(data.status == 'error')
+          $('#business_name').parent().addClass('has-error');
+        else
+          $('#business_name').parent().removeClass('has-error');          
+
+      },
+      error:function(jqxhr){
+        $('#business_spinner').hide();    
+      }
+    });    
+  }
+   
+
+}
+
+function addBusiness()
+{
+  var id = $.trim($('#id').val());
+  var first_name = $.trim($('#first_name').val());
+  var last_name = $.trim($('#last_name').val());
+  var business_name = $.trim($('#business_name').val());
+  var street_address = $.trim($('#street_address').val());
+  var post_code = $.trim($('#post_code').val());
+  var cat_id = $.trim($('#cat_id').val());
+  var sub_cat_id = $.trim($('#sub_cat_id').val());
+
+  // Days
+  var days = [];
+  var daysArr = [1, 2, 3, 4, 5, 6, 7];
+  $.each(daysArr, function( index, value ) {
+    var start_time = $.trim($('#start_time' + value).val());
+    var end_time = $.trim($('#end_time' + value).val());    
+    var obj = {"start_time":start_time, "end_time":end_time};
+    days.push(obj);
+  });
+
+  var office_number = $.trim($('#office_number').val());
+  var cell_number = $.trim($('#cell_number').val());
+  var country = $.trim($('#country').val());
+  var city = $.trim($('#city').val());
+  var state = $.trim($('#state').val());
+  var email_address = $.trim($('#email_address').val());
+  var website = $.trim($('#website').val());
+  var facebook = $.trim($('#facebook').val());
+  var youtube = $.trim($('#youtube').val());
+  var twitter = $.trim($('#twitter').val());
+  var instagram = $.trim($('#instagram').val());
+  var check = true;
+
+  if(first_name == "")
+  {
+    $('#first_name').parent().addClass('has-error');
+    if(check)
+      $('#first_name').focus();
+    check = false;
+  }
+
+  if(business_name == "")
+  {
+    if(check)
+      $('#business_name').focus();
+      $('#business_name').parent().addClass('has-error');
+    check = false;
+  }
+
+  if(check)
+  {
+    $('#submit_spinner').show();    
+     $.ajax({
+      type: "POST",
+      url: apiUrl + 'business_add',
+      dataType : "JSON",
+      data: {first_name: first_name, last_name: last_name, business_name: business_name, address: street_address, postcode: post_code, cat_id: cat_id, sub_cat_id:sub_cat_id, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#submit_spinner').hide();    
+
+        if(data.status == 'success')
+        {
+          businessReset();
+        }
+
+      },
+      error:function(jqxhr){
+        $('#submit_spinner').hide();
+
+
+      }
+    });        
+  }
+
 }
