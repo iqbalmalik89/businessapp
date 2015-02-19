@@ -36,7 +36,8 @@ class DealRepo
 
 	public function checkDeal($name, $id = 0)
 	{
-		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		if(!empty($id))
+		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		
+		if(!empty($id))
 		$query = $query->where('id != ?', $id);
 		return count($query);
 	}
