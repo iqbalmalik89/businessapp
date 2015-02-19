@@ -20,3 +20,13 @@ input[readonly] {
   background-color: white !important;
   cursor: text !important;
 }
+
+
+.spinner
+{   
+  position: absolute;
+  left: 548px;
+  width: 20px;
+  top: 106px;
+  display: none;
+}

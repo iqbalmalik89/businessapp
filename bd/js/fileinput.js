@@ -1041,6 +1041,8 @@
                             self.resetFileStack();
                         }
                         self.raise('fileuploaded', [outData, previewId, i]);
+                        allImages.push(data.file_name);
+
                     } else {
                         setIndicator('indicatorError', 'indicatorErrorTitle');
                         self.showUploadError(data.error, outData, previewId, i);

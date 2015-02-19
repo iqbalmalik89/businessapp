@@ -11,5 +11,6 @@ return array(
     'JsonMiddleware' => $baseDir . '/Repo/JsonMiddleware.php',
     'LoginRepo' => $baseDir . '/Repo/LoginRepo.php',
     'SubCatRepo' => $baseDir . '/Repo/SubCatRepo.php',
+    'UtilityRepo' => $baseDir . '/Repo/UtilityRepo.php',
     'VendorRepo' => $baseDir . '/Repo/VendorRepo.php',
 );

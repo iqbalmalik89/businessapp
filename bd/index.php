@@ -158,9 +158,9 @@ $app->group('/api', function () use ($app) {
     
       // Add vendor Images
     $app->post('/add_vendor_images', function() use ($app){
-        $new = new VendorRepo();
-        $code = $new->addVendorImages($_FILES['file_data']);
-        response($code,array());
+        $new = new UtilityRepo();
+        $resp = $new->uploadTmp($_FILES['file_data']);
+        response($resp['code'],array("file_name" => $resp['file_name']));
     });
 
      // Add Vendor Working Days
