@@ -79,7 +79,7 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });    
 
-    // Update Category
+    // Delete Category
     $app->post('/deletecategory' , function () use ($app){
         $new = new CategoryRepo();
         $code = $new->deleteCategory($app->requestdata);
@@ -171,12 +171,74 @@ $app->group('/api', function () use ($app) {
         response($code,array());
     });
 
-    // Add deal
+     // update vendor status
+    $app->post('/vendor_status', function() use ($app){
+
+        $new = new VendorRepo();
+        $code = $new->vendorStatus($app->requestdata);
+        response($code,array());
+    });
+
+    // Add deal 
     $app->post('/add_deal', function() use ($app){
 
         $new = new DealRepo();
         $code = $new->addDeal($app->requestdata);
         response($code,array());
+    });
+
+    // Update Deal
+    $app->post('/updatedeal' , function () use ($app){
+
+        $new = new DealRepo();
+        $code = $new->updateDeal($app->requestdata);
+        response($code, array());
+    });    
+
+    // Delete deal
+    $app->post('/deletedeal' , function () use ($app){
+        $new = new DealRepo();
+        $code = $new->deleteDeal($app->requestdata);
+        response($code, array());
+    });
+
+    // Get Deals
+    $app->get('/deals' , function () use ($app){
+
+        $new = new DealRepo();
+        $code = $new->getDeals($app->requestdata);
+        response($code, $code['data']);
+    });
+
+    // update deal status
+    $app->post('/deal_status', function() use ($app){
+
+        $new = new DealRepo();
+        $code = $new->dealStatus($app->requestdata);
+        response($code,array());
+    });
+
+    // Add Event
+    $app->post('/addevent' , function () use ($app){
+        $new = new EventRepo();
+        $code = $new->addEvent($app->requestdata);
+        response($code, array());
+    });
+
+    // update event status
+    $app->post('/event_status', function() use ($app){
+
+        $new = new EventRepo();
+        $code = $new->eventStatus($app->requestdata);
+        response($code,array());
+    });
+
+    // Add Deal Vendors
+    $app->post('/add_deal_vendor', function() use ($app){
+
+        $new = new DealRepo();
+        $code = $new->addDealVendors($app->requestdata);
+        response($code, array());
     });
 
 });

@@ -387,7 +387,10 @@ function checkBusinessName(name)
       success:function(data){
         $('#business_spinner').hide();    
         if(data.status == 'error')
+        {
+          $('.alert-danger').html('Business name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
           $('#business_name').parent().addClass('has-error');
+        }
         else
           $('#business_name').parent().removeClass('has-error');          
 
@@ -418,7 +421,7 @@ function addBusiness()
   $.each(daysArr, function( index, value ) {
     var start_time = $.trim($('#start_time' + value).val());
     var end_time = $.trim($('#end_time' + value).val());    
-    var obj = {"start_time":start_time, "end_time":end_time};
+    var obj = {"start_time":start_time, "end_time":end_time, "day_code": value};
     days.push(obj);
   });
 
@@ -458,7 +461,7 @@ function addBusiness()
       type: "POST",
       url: apiUrl + 'business_add',
       dataType : "JSON",
-      data: {first_name: first_name, last_name: last_name, business_name: business_name, address: street_address, postcode: post_code, cat_id: cat_id, sub_cat_id:sub_cat_id, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages},
+      data: {first_name: first_name, last_name: last_name, business_name: business_name, address: street_address, postcode: post_code, cat_id: cat_id, sub_cat_id:sub_cat_id, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, days: days},
       beforeSend:function(){
 
       },
@@ -468,15 +471,50 @@ function addBusiness()
         if(data.status == 'success')
         {
           businessReset();
+          $('.alert-success').html('Business added successfully').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+          var body = $("html, body");
+          body.animate({scrollTop:700}, '500', 'swing', function() { 
+             alert("Finished animating");
+          });
         }
 
       },
       error:function(jqxhr){
         $('#submit_spinner').hide();
-
-
+        $('.alert-danger').html('Business name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+        var body = $("html, body");
+        body.animate({scrollTop:700}, '500', 'swing', function() { 
+           alert("Finished animating");
+        });
       }
     });        
   }
+
+}
+
+
+function addEvent()
+{
+  var first_name = $.trim($('#first_name').val());
+  var last_name = $.trim($('#last_name').val());
+  var event_name = $.trim($('#event_name').val());
+  var venue_name = $.trim($('#venue_name').val());
+  var start_address = $.trim($('#start_address').val());
+  var post_code = $.trim($('#post_code').val());
+  var start_date = $.trim($('#start_date').val());
+  var end_time = $.trim($('#end_time').val());
+  var office_number = $.trim($('#office_number').val());
+  var cell_number = $.trim($('#cell_number').val());
+  var email_address = $.trim($('#email_address').val());
+  var country = $.trim($('#country').val());
+  var city = $.trim($('#city').val());
+  var state = $.trim($('#state').val());
+  var price = $.trim($('#price').val());
+  var website = $.trim($('#website').val());
+  var facebook = $.trim($('#facebook').val());
+  var youtube = $.trim($('#youtube').val());
+  var twitter = $.trim($('#twitter').val());
+  var instagram = $.trim($('#instagram').val());
+  var check = true;
 
 }
