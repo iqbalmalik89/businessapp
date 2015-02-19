@@ -1,8 +1,8 @@
 var server = window.location.hostname;
 if(server == 'localhost')
-  var apiUrl = location.protocol + "//"+server+"/businessapp/index.php/api/";
+  var apiUrl = location.protocol + "//"+server+"/businessapp/bd/index.php/api/";
 else
-  var apiUrl = location.protocol + "//"+server+"/index.php/api/";
+  var apiUrl = location.protocol + "//"+server+"/bd/index.php/api/";
 
 function showMsg(id, msg, type)
 {
