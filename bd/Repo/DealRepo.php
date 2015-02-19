@@ -17,7 +17,8 @@ class DealRepo
 				}
 				else
 				{
-					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], 'desc' => $requestData['desc'], 'status' => 'pending');
+					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
+					print_r($values);
 					$query = $GLOBALS['con']->insertInto('deals', $values)->execute();	
 					if($query)
 					{
@@ -36,9 +37,13 @@ class DealRepo
 
 	public function checkDeal($name, $id = 0)
 	{
-		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		if(!empty($id))
-		$query = $query->where('id != ?', $id);
-		return count($query);
+		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		
+		if(!empty($id))
+			$query = $query->where('id', $id)->count();
+		else
+			$query = $query->count();
+
+		return $query;
 	}
 
 	public function updateDeal($request)
@@ -62,7 +67,7 @@ class DealRepo
 				}
 				else
 				{
-					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], 'desc' => $requestData['desc'], 'status' => 'pending');
+					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
 					$query = $GLOBALS['con']->update('deals', $values, $requestData['id'])->execute();
 					$response = 200;
 				}
