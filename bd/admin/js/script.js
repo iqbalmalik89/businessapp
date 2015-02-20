@@ -1,3 +1,4 @@
+
 var server = window.location.hostname;
 if(server == 'localhost')
   var apiUrl = location.protocol + "//"+server+"/businessapp/bd/index.php/api/";

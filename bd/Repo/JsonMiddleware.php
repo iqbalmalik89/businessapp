@@ -56,7 +56,8 @@ class JsonMiddleware extends \Slim\Middleware
         }
 
         $pdo = new PDO("mysql:dbname=". $database, $user, $password);
-        $GLOBALS['con'] = new FluentPDO($pdo);        
+        $GLOBALS['con'] = new FluentPDO($pdo);
+        $GLOBALS['con']->debug = true;
     }
 
 
