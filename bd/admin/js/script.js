@@ -519,3 +519,169 @@ function addEvent()
   var check = true;
 
 }
+
+function showdealAddPopup()
+{
+    dealReset();
+}
+
+function dealReset()
+{
+    $('#deal_id').val('');
+    $('#deal_name').val('');
+    $('#start_date').val('');
+    $('#end_date').val('');
+    $('#desc').val('');
+    $('#status').val('');
+}
+
+function getDeals()
+{
+  var id = $('#deal_id').val();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'deals',
+      dataType : "JSON",
+      //data: {id: id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+                options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
+                var desc = value.desc;
+                if(desc == null)
+                {
+                  desc = '';
+                }
+                else
+                {
+                  desc = value.desc;
+                }
+                html += '<tr>\
+                            <td>'+value.deal_name+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td>'+value.desc+'</td>\
+                            <td>'+value.status+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+', \''+value.deal_name+'\', \''+value.start_date+'\', \''+value.end_date+'\', \''+value.desc+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Deals not found</td>\
+                     </tr>';            
+        }
+
+        $('#dealbody').html(html);
+       //$('#sub_cat_id').append(options);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
+{
+    $('#dealid').val(id);
+    $('#deal_name').val(deal_name);
+    $('#start_date').val(start_date);
+    $('#end_date').val(end_date);
+    $('#desc').val(desc);
+    $('#status').val(status);
+
+}
+
+function deleteDeal(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletedeal',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        getDeals();
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+
+function addUpdateDeal()
+{
+    var id = $('#deal_id').val();
+    var deal_name = $('#deal_name').val();
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
+    var desc = $('#desc').val();
+
+    var check  = true;
+
+    if(deal_name == '')
+    {
+        $('#deal_name').focus();
+        $('#deal_name').addClass('error-class');
+        check = false;
+    }
+    else if(start_date == '')
+    {
+        $('#start_date').focus();
+        $('#start_date').addClass('error-class');
+        check = false;
+    }
+    else if(end_date == '')
+    {
+        $('#end_date').focus();
+        $('#end_date').addClass('error-class');
+        check = false;
+    }
+    
+
+    if(id == '')
+    {
+      route = 'add_deal';
+    }
+    else
+    {
+      route = 'updatedeal';
+    }
+
+    if(check)
+    {
+        $('#spinner').show();      
+        $.ajax({
+          type: "POST",
+          url: apiUrl + route,
+          dataType : "JSON",
+          data: {id:id, deal_name:deal_name, start_date : start_date,end_date:end_date,desc:desc},
+          beforeSend:function(){
+
+          },
+          success:function(data){
+          $('#spinner').hide();      
+            if(data.status == 'success')
+            {
+                getDeals();                
+                $('#adddeal').modal('hide');
+            }
+          },
+          error:function(jqxhr){
+            $('#spinner').hide();      
+            showMsg('#msg', 'Deal already exists with this name.', 'red');
+          }
+        });
+    }
+}

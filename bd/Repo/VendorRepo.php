@@ -112,4 +112,20 @@ class VendorRepo{
 	}
 	
 
+	public function vendorStatus($request)
+	{
+		$response = 400;
+		$requestData = $request;
+		if(!empty($requestData['id']))
+		{
+			$value = array('status' => $requestData['status']); 
+			$query = $GLOBALS['con']->update('vendors',$value,$requestData['id'])->execute();
+			
+			$reponse = 200;
+			
+		}
+		return $response;
+	}
+	
+
 }

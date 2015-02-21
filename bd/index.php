@@ -207,7 +207,7 @@ $app->group('/api', function () use ($app) {
 
         $new = new DealRepo();
         $code = $new->getDeals($app->requestdata);
-        response($code, $code['data']);
+        response($code['response'], array('data' => $code['data']));
     });
 
     // update deal status
