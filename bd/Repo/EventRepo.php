@@ -73,6 +73,48 @@ class EventRepo
 
 	}
 
+	// Get All Events. If id given, returns a single event else return all events.
+	public function getEvents($request)
+	{	
+		
+		$requestData = $request;
+		// Initial response is bad request
+		$response = 400;
+		$data = array();
+
+		// If there is some data in json form
+		if(!empty($requestData))
+		{				
+			$exists = $GLOBALS['con']->from('events')->where('id',$requestData['id']);
+			$allCat = array();
+
+			foreach($exists as $items)
+	    	{
+				$data[] = $items;
+
+			}
+
+			$response = 200;
+		}
+		
+		else
+		{
+			$exists = $GLOBALS['con']->from('events');
+			$allCat = array();
+
+			foreach($exists as $items)
+	    	{
+				$data[] = $items;
+
+			}
+
+			$response = 200;
+				
+		}
+		
+		return array('response' => $response,'data' => $data);
+	}
+	
 	
 
 

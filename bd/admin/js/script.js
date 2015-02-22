@@ -592,7 +592,7 @@ function getDeals()
 
 function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
 {
-    $('#dealid').val(id);
+    $('#deal_id').val(id);
     $('#deal_name').val(deal_name);
     $('#start_date').val(start_date);
     $('#end_date').val(end_date);
@@ -629,6 +629,7 @@ function addUpdateDeal()
     var desc = $('#desc').val();
 
     var check  = true;
+    console.log(id);
 
     if(deal_name == '')
     {
@@ -649,7 +650,6 @@ function addUpdateDeal()
         check = false;
     }
     
-
     if(id == '')
     {
       route = 'add_deal';

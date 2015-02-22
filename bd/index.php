@@ -241,6 +241,14 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });
 
+     // Get Events
+    $app->get('/events' , function () use ($app){
+
+        $new = new EventRepo();
+        $code = $new->getEvents($app->requestdata);
+        response($code['response'], array('data' => $code['data']));
+    });
+
 });
 
 

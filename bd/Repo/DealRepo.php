@@ -4,13 +4,14 @@ class DealRepo
 	public function addDeal($request)
 	{
 		$requestData = $request;
+		$action = 'post';
 		
 		$response = 400;
 		if(!empty($requestData))
 		{
 			if(!empty($requestData['deal_name']) && !empty($requestData['start_date']) && !empty($requestData['end_date']))
 			{
-				$exists = $this->checkDeal($requestData['deal_name']);
+				$exists = $this->checkDeal($requestData['deal_name'],$action);
 				if($exists)
 				{
 					$response = 409;
@@ -18,31 +19,27 @@ class DealRepo
 				else
 				{
 					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
-					print_r($values);
 					$query = $GLOBALS['con']->insertInto('deals', $values)->execute();	
-					if($query)
-					{
-						$response = 200;
-					}
-					else
-					{
-						$response = 400;
-					}
+					$response = 200;
 				}
 			}
 		}
-
 		return $response;
 	}
 
-	public function checkDeal($name, $id = 0)
+	public function checkDeal($data,$action)
 	{
-		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		
-		if(!empty($id))
-
-			$query = $query->where('id', $id)->count();
-		else
+		if($action == 'post')
+		{
+			$query = $GLOBALS['con']->from('deals')->where('deal_name', $data);	
 			$query = $query->count();
+		}	
+		else if($action == 'put')
+		{
+
+			$query = $GLOBALS['con']->from('deals')->where('id', $data);
+			$query = $query->count();
+		}
 
 		return $query;
 
@@ -52,6 +49,7 @@ class DealRepo
 	{
 		// Get Json Input and decode it
 		$requestData = $request;
+		$action = 'put';
 		// Initial response is bad request
 		$response = 400;
 
@@ -62,8 +60,8 @@ class DealRepo
 			if(isset($requestData['deal_name']) && !empty($requestData['deal_name']) && isset($requestData['id']) 
 				&& isset($requestData['start_date']) && isset($requestData['end_date']))
 			{
-				$exists = $this->checkDeal($requestData['deal_name'], $requestData['id']);
-				if($exists)
+				$exists = $this->checkDeal($requestData['id'],$action);
+				if(!$exists)
 				{
 					$response = 409;
 				}

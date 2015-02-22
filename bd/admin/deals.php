@@ -102,7 +102,6 @@ $( document ).ready(function() {
 </div>
 
 
-
       </div>
       <div class="modal-footer">
         <img src="images/spinner.gif" id="spinner" style="position:absolute; right:150px; display:none;">
