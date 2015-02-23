@@ -794,6 +794,78 @@ function getAllVendors(type)
 
 }
 
+
+
+function showdealAddPopup()
+{
+    dealReset();
+}
+
+function dealReset()
+{
+    $('#deal_id').val('');
+    $('#deal_name').val('');
+    $('#start_date').val('');
+    $('#end_date').val('');
+    $('#desc').val('');
+    $('#status').val('');
+}
+
+function getDeals()
+{
+  var id = $('#deal_id').val();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'deals',
+      dataType : "JSON",
+      //data: {id: id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+                options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
+                var desc = value.desc;
+                if(desc == null)
+                {
+                  desc = '';
+                }
+                else
+                {
+                  desc = value.desc;
+                }
+                html += '<tr>\
+                            <td>'+value.deal_name+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td>'+value.desc+'</td>\
+                            <td>'+value.status+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+', \''+value.deal_name+'\', \''+value.start_date+'\', \''+value.end_date+'\', \''+value.desc+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Deals not found</td>\
+                     </tr>';            
+        }
+
+        $('#dealbody').html(html);
+       //$('#sub_cat_id').append(options);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
 function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
 {
     $('#deal_id').val(id);
@@ -887,8 +959,9 @@ function addUpdateDeal()
            }
          });
     }
-
 }
+
+
 
 function changeVendorStatus(id, status)
 {
