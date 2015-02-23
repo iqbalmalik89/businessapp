@@ -37,8 +37,15 @@ class EventRepo
 								'status'		=> 'pending',
 								'date_created'	=> date("Y-m-d H:i:s"));
 
-				$query = $GLOBALS['con']->insertInto('events',$values)->execute();
-				if($query)
+				$eventId = $GLOBALS['con']->insertInto('events',$values)->execute();
+
+				if($eventId > 0)
+				{
+					if(isset($requestData['images']) && !empty($requestData['images']))
+						$this->addEventImages($eventId, $requestData['images']);
+				}
+
+				if($eventId)
 				{
 					$response = 200;
 				}
@@ -53,10 +60,23 @@ class EventRepo
 
 	public function checkEvent($name, $id = 0)
 	{
-		$query = $GLOBALS['con']->from('events')->where('event_name', $name);		
+		$query = $GLOBALS['con']->from('events')->where('event_name', $name)->count();		
 		if(!empty($id))
-		$query = $query->where('id != ?', $id);
-		return count($query);
+			$query = $query->where('id != ?', $id)->count();
+
+		return $query;
+	}
+
+	public function addEventImages($eventId, $images)
+	{
+		if(!empty($images))
+		{
+			foreach($images as $image)
+			{
+				$values = array('event_id' => $eventId, 'path' => $image);
+				$query = $GLOBALS['con']->insertInto('event_images', $values)->execute();
+			}
+		}
 	}
 
 	public function eventStatus($request)

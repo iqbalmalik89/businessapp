@@ -4,10 +4,6 @@
 <head>
 <title>Atom-Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" type="text/css" href="bs3/css/bootstrap-datetimepicker.css">
-<link rel="stylesheet" type="text/css" href="bs3/css/bootstrap-datetimepicker.min.css">
-
 <?php include('inc/js.php') ;?>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -15,22 +11,34 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-<script src="bs3/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-<script src="bs3/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-    
-<script type="text/javascript">
-$( document ).ready(function() {
-  // Handler for .ready() called.
 
-  $("#start_date").datetimepicker({
-        format: "yyyy-mm-dd"
-    });
-});
-    
-</script> 
 <script>
 $( document ).ready(function() {
   getDeals();
+
+    var checkout = $('#start_date').datepicker({
+            format: 'mm-dd-yyyy'
+        }).on('changeDate', function(ev) {
+          checkout.hide();
+        }).data('datepicker');;
+
+    var checkout2 = $('#end_date').datepicker({
+            format: 'mm-dd-yyyy'
+        }).on('changeDate', function(ev) {
+          checkout2.hide();
+        }).data('datepicker');;
+
+    $("#deals_images").fileinput({
+        uploadUrl: 'index.php', // you must set a valid URL here else you will get an error
+        allowedFileExtensions : ['jpg', 'png','gif'],
+        overwriteInitial: false,
+        maxFileSize: 1000,
+        maxFilesNum: 10,
+        //allowedFileTypes: ['image', 'video', 'flash'],
+        slugCallback: function(filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        }
+  });
 });
 </script>
 </head>
@@ -77,8 +85,8 @@ $( document ).ready(function() {
       <form class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-4 input-append date form_datetime">
-            <input type="text" class="form-control bfh-datepicker" data-format="y-m-d" data-date=<?php echo date("Y-m-d");?> id="start_date" />
+          <div class="col-sm-4">
+            <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="start_date" />
           </div>
         </div>
       </form>
@@ -93,7 +101,7 @@ $( document ).ready(function() {
         <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="end_date" />
+            <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="end_date" />
           </div>
         </div>
       </form>
@@ -115,6 +123,20 @@ $( document ).ready(function() {
     </div>
   </div>
 </div>
+
+
+  <div class="row clearfix">
+    <div class="col-md-10 column">
+      <form enctype="multipart/form-data">
+           <div class="form-group">
+                  <input id="deals_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=deals_images">
+          </div>
+
+      </form>
+    </div>
+  </div>
+
+
 
 
       </div>

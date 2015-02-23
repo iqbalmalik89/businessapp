@@ -8,9 +8,15 @@
     <ul class="navigation">
 <!--       <li><a class="active" href="index.html"><i class="fa fa-home"></i><span>Vendors</span></a></li>
       <li class="sub"> <a href="#"><i class="fa fa-smile-o"></i><span>UI Elements</span></a>
- -->      <li class="sub"> <a href="categories.php"><i class="fa fa-smile-o"></i><span>Categories</span></a>
+ -->
+<?php
+  $currFile = basename($_SERVER['PHP_SELF']); 
+ ?>
 
-           <li class="sub"> <a href="deals.php"><i class="fa fa-smile-o"></i><span>Deals</span></a>
+ <li class="sub"> <a <?php if($currFile == 'categories.php' || $currFile == 'subcategory.php' ) echo 'class="active"'; ?> href="categories.php"><i class="fa fa-sitemap"></i><span>Categories</span></a>
+<li class="sub"> <a <?php if($currFile == 'vendors.php') echo 'class="active"'; ?> href="vendors.php"><i class="fa fa-briefcase"></i><span>Vendors</span></a>
+<li class="sub"> <a <?php if($currFile == 'events.php') echo 'class="active"'; ?> href="events.php"><i class="fa fa-calendar-o"></i><span>Events</span></a>
+<li class="sub"> <a <?php if($currFile == 'deals.php') echo 'class="active"'; ?> href="deals.php"><i class="fa fa-trophy"></i><span>Deals</span></a>
 
 <!--         <ul class="navigation-sub">
           <li><a href="buttons.html"><i class="fa fa-power-off"></i><span>Button</span></a></li>

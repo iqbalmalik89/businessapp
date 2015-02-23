@@ -18,13 +18,30 @@ class DealRepo
 				}
 				else
 				{
-					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
-					$query = $GLOBALS['con']->insertInto('deals', $values)->execute();	
+					$values = array('deal_name' => $requestData['deal_name'],'start_date' => date('Y-m-d', strtotime($requestData['start_date'])), 'end_date' => date('Y-m-d', strtotime($requestData['end_date'])), '`desc`' => $requestData['desc'], '`status`' => 'pending');
+					$dealId = $GLOBALS['con']->insertInto('deals', $values)->execute();	
 					$response = 200;
+
+					if(isset($requestData['images']) && !empty($requestData['images']))
+						$this->addDealImages($dealId, $requestData['images']);
+
 				}
 			}
 		}
 		return $response;
+	}
+
+
+	public function addDealImages($dealId, $images)
+	{
+		if(!empty($images))
+		{
+			foreach($images as $image)
+			{
+				$values = array('deal_id' => $dealId, 'path' => $image);
+				$query = $GLOBALS['con']->insertInto('deal_images', $values)->execute();
+			}
+		}
 	}
 
 	public function checkDeal($data,$action)
@@ -67,7 +84,7 @@ class DealRepo
 				}
 				else
 				{
-					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
+					$values = array('deal_name' => $requestData['deal_name'],'start_date' => date('Y-m-d', strtotime($requestData['start_date'])), 'end_date' => date('Y-m-d', strtotime($requestData['end_date'])), '`desc`' => $requestData['desc'], '`status`' => 'pending');
 					$query = $GLOBALS['con']->update('deals', $values, $requestData['id'])->execute();
 					$response = 200;
 				}

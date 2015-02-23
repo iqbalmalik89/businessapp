@@ -46,10 +46,10 @@
             
              <div class="collapse navbar-collapse navbar-ex1-collapse">
                   <ul class="nav navbar-nav navbar-right">
-						<li><a href="addBusiness.html"">Add Business</a></li>
-						<li><a href="addEvents.html">Add Local Events </a></li>
-						<li><a href="contactUs.html">Promote Your Business</a></li>
-						<li><a href="contactUs.html">Contact Us</a></li>
+                     <li><a href="addBusiness.php">Add Business</a></li>
+                     <li><a href="addEvents.php">Add Local Events </a></li>
+                     <li><a href="contactUs.php">Promote Your Business</a></li>
+                     <li><a href="contactUs.php">Contact Us</a></li>
 			
                   </ul>
                </div>
