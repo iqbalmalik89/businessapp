@@ -148,6 +148,13 @@ ul.navigation-sub > li > a.active {
 	background: #192234;
 	color: #59657c;
 }
+
+ul.navigation > li > a.active {
+background: #ea2c46;
+color: #fff;
+}
+
+
 ul.navigation-sub > li > a > i {
 	display: inline-block;
 	width: 20px;

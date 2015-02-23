@@ -21,6 +21,25 @@ class VendorRepo{
 		return $response;
 	}
 
+	public function getVendors($request)
+	{
+		$resp = array('code' => 200, 'data' => array());
+		$vendors = $GLOBALS['con']->from('vendors');
+		$allVendors = array();
+		if(!empty($vendors))
+		{
+			foreach ($vendors as $key => $vendor) {
+				$vendor['images'] = $this->getVendorImages($vendor['id']);
+				$vendor['days'] = $this->getVendorDays($vendor['id']);
+
+				$resp['data'][] = $vendor;
+			}
+		}
+
+
+		return $resp;
+	}
+
 	public function businessAdd($request)
 	{
 		// initial response is bad
@@ -82,6 +101,37 @@ class VendorRepo{
 				$query = $GLOBALS['con']->insertInto('vendor_images', $values)->execute();
 			}
 		}
+	}
+
+	public function getVendorDays($vendorId)
+	{
+		$VendorDays = array();
+		if(!empty($vendorId))
+		{
+			$days = $GLOBALS['con']->from('vendor_working_days')->where('vendor_id',$vendorId);
+
+			foreach($days as $day)
+			{
+				$VendorDays[] = $day;
+			}
+		}
+
+		return $VendorDays;
+	}
+	public function getVendorImages($vendorId)
+	{
+		$VendorImages = array();
+		if(!empty($vendorId))
+		{
+			$images = $GLOBALS['con']->from('vendor_images')->where('vendor_id',$vendorId);
+
+			foreach($images as $image)
+			{
+				$image['url'] = UtilityRepo::getRootPath(false).'data/vendor_images/'.$image['path'];
+				$VendorImages[] = $image;
+			}
+		}
+		return $VendorImages;
 	}
 
 	public function addVendorDays($vendorId, $days)

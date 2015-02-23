@@ -18,7 +18,6 @@ class DealRepo
 				else
 				{
 					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
-					print_r($values);
 					$query = $GLOBALS['con']->insertInto('deals', $values)->execute();	
 					if($query)
 					{

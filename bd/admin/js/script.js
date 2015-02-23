@@ -367,9 +367,6 @@ function businessReset()
   });
 
   $( ".fileinput-remove" ).trigger( "click" );
-
-
-
 }
 
 function checkBusinessName(name)
@@ -404,6 +401,44 @@ function checkBusinessName(name)
    
 
 }
+
+
+function checkEventName(name)
+{
+  if(name!="")
+  {
+    $('#business_spinner').show();    
+     $.ajax({
+      type: "GET",
+      url: apiUrl + 'event_name',
+      dataType : "JSON",
+      data: {name:name},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#business_spinner').hide();    
+        if(data.status == 'error')
+        {
+          $('.alert-danger').html('Event name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+          $('#event_name').parent().addClass('has-error');
+        }
+        else
+          $('#event_name').parent().removeClass('has-error');          
+
+      },
+      error:function(jqxhr){
+        $('#business_spinner').hide();    
+          $('.alert-danger').html('Event name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+          $('#event_name').parent().addClass('has-error');
+
+      }
+    });    
+  }
+   
+
+}
+
 
 function addBusiness()
 {
@@ -475,7 +510,6 @@ function addBusiness()
           $('.alert-success').html('Business added successfully').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
           var body = $("html, body");
           body.animate({scrollTop:700}, '500', 'swing', function() { 
-             alert("Finished animating");
           });
         }
 
@@ -485,12 +519,100 @@ function addBusiness()
         $('.alert-danger').html('Business name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
         var body = $("html, body");
         body.animate({scrollTop:700}, '500', 'swing', function() { 
-           alert("Finished animating");
         });
       }
     });        
   }
 
+}
+
+function getCountries()
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'countries',
+      dataType : "JSON",
+      data: {},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+              options += '<option value="'+value.name+'"> '+value.name+' </option>';
+            });
+
+            $('#country').append(options);
+        }
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
+
+function getStates(country)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'states',
+      dataType : "JSON",
+      data: {country: country},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+              options += '<option value="'+value.name+'"> '+value.name+' </option>';
+            });
+
+            $('#state').append(options);
+        }
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
+
+function getCities(state)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'cities',
+      dataType : "JSON",
+      data: {state: state},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+              options += '<option value="'+value.name+'"> '+value.name+' </option>';
+            });
+
+            $('#city').append(options);
+        }
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
+
+function eventReset()
+{
+  allImages = [];
+  var id = $.trim($('#id').val());
+  $('#first_name, #last_name, #event_name, #street_address, #post_code, #office_number, #cell_number, #city, #state, #email_address, #website, #facebook, #twitter, #youtube, #instagram, #price, #start_date, #end_date, venue_name').val('');
+
+  $('select option:first-child').attr("selected", "selected");
+
+  $( ".fileinput-remove" ).trigger( "click" );
 }
 
 
@@ -503,10 +625,11 @@ function addEvent()
   var start_address = $.trim($('#start_address').val());
   var post_code = $.trim($('#post_code').val());
   var start_date = $.trim($('#start_date').val());
-  var end_time = $.trim($('#end_time').val());
+  var end_date = $.trim($('#end_date').val());
   var office_number = $.trim($('#office_number').val());
   var cell_number = $.trim($('#cell_number').val());
   var email_address = $.trim($('#email_address').val());
+  var street_address = $.trim($('#street_address').val());
   var country = $.trim($('#country').val());
   var city = $.trim($('#city').val());
   var state = $.trim($('#state').val());
@@ -517,5 +640,121 @@ function addEvent()
   var twitter = $.trim($('#twitter').val());
   var instagram = $.trim($('#instagram').val());
   var check = true;
+
+
+  if(first_name == "")
+  {
+    $('#first_name').parent().addClass('has-error');
+    if(check)
+      $('#first_name').focus();
+    check = false;
+  }
+
+  if(event_name == "")
+  {
+    if(check)
+      $('#event_name').focus();
+      $('#event_name').parent().addClass('has-error');
+    check = false;
+  }
+
+  if(start_date == "____/__/__ __:__")
+  {
+    if(check)
+      $('#start_date').focus();
+      $('#start_date').parent().addClass('has-error');
+    check = false;
+  }
+
+
+  if(end_date == "____/__/__ __:__")
+  {
+    if(check)
+      $('#end_date').focus();
+      $('#end_date').parent().addClass('has-error');
+    check = false;
+  }
+
+ if(check)
+  {
+    $('#submit_spinner').show();    
+     $.ajax({
+      type: "POST",
+      url: apiUrl + 'addevent',
+      dataType : "JSON",
+      data: {first_name: first_name, last_name: last_name, event_name: event_name, venue: venue_name, address: street_address, postcode: post_code, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, start_date: start_date, end_date: end_date, price: price},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#submit_spinner').hide();    
+
+        if(data.status == 'success')
+        {
+          businessReset();
+          $('.alert-success').html('Event added successfully').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+          var body = $("html, body");
+          body.animate({scrollTop:700}, '500', 'swing', function() { 
+
+          });
+        }
+
+      },
+      error:function(jqxhr){
+        $('#submit_spinner').hide();
+        $('.alert-danger').html('Event name already exists').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
+        var body = $("html, body");
+        body.animate({scrollTop:700}, '500', 'swing', function() { 
+        });
+      }
+    });        
+  }
+
+}
+
+
+
+function getAllVendors(type)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'categories',
+      dataType : "JSON",
+      data: {},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var pendinghtml = '';
+        var activehtml = '';
+        var deactivehtml = '';
+
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+
+                options += '<option value="'+value.id+'">'+value.cat_name+' </option>';
+                html += '<tr>\
+                            <td>'+value.cat_name+'</td>\
+                            <td><a href="subcategory.php?cat_id='+value.id+'">Manage Subcategories ('+value.sub_cat_count+')</a></td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" data-catname="'+value.cat_name+'" onclick="getSingleCategory('+value.id+', \''+value.cat_name+'\');" data-target="#addcat">Edit</a> | <a href="javascript:void(0);" onclick="deleteCat('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="3" align="center">Categories not found</td>\
+                     </tr>';            
+        }
+
+        $('#categorybody').html(html);
+        $('#cat_id').append(options);
+
+      },
+      error:function(jqxhr){
+      }
+    });
 
 }

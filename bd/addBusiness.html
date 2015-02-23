@@ -416,27 +416,21 @@
                      </div>
                     
                      <div class="form-group">
-                     <label for="city" > Country: </label>
-                     <select id="country" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="country">Canada</option>
-                     <option value="country">USA</option>
+                     <label for="city"> Country: </label>
+                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> Province/Sate:</label>
-                     <select id="state" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="state">Ontario</option>
-                     <option value="suggestions">Alberta</option>
+                     <select id="state" onchange="getCities(this.value);" name="subject" class="form-control" required="required">
+                     <option value="state" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> City</label>
                      <select id="city" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="state">Toronto</option>
-                     <option value="suggestions">Mississauga</option>
+                     <option value="city" selected="">Choose One:</option>
                      </select>
                      </div>
 					 
@@ -497,7 +491,7 @@
 							<form enctype="multipart/form-data">
 								<br>
 								<div class="form-group">
-									<input id="file-4" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="index.php/api/add_vendor_images">
+									<input id="file-4" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="index.php/api/upload_images?path=vendor_images">
 								</div>
 							</form>
 						
@@ -952,7 +946,7 @@
 	// 	fileType: "any"
 	// });
     $(document).ready(function() {
-
+      getCountries();
       // $("#file-4").fileinput({
       //    uploadExtraData: [
       //          {kvId: '10'}

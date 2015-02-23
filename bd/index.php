@@ -24,7 +24,6 @@ function response($code, $dataAry)
     {
         $dataAry['status'] = 'success'; 
     }
-
     $response = $GLOBALS['app']->response();
     $response['Content-Type'] = 'application/json';
     $response->status($code);
@@ -147,6 +146,19 @@ $app->group('/api', function () use ($app) {
         response($code, $code['data']);
     });
 
+    // Check event Name
+    $app->get('/event_name' , function () use ($app){
+
+        $new = new EventRepo();
+        $code = $new->checkEvent($app->requestdata);
+
+        if($code)
+            response(400, array());
+        else
+            response(200, array());
+
+    });
+
 
     // Add Business
     $app->post('/business_add', function() use ($app){
@@ -157,7 +169,7 @@ $app->group('/api', function () use ($app) {
     });
     
       // Add vendor Images
-    $app->post('/add_vendor_images', function() use ($app){
+    $app->post('/upload_images', function() use ($app){
         $new = new UtilityRepo();
         $resp = $new->uploadTmp($_FILES['file_data']);
         response($resp['code'],array("file_name" => $resp['file_name']));
@@ -241,6 +253,32 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });
 
+    // Location Routes 
+    $app->get('/countries', function() use ($app){
+
+        $new = new LocationRepo();
+        $code = $new->getCountries($app->requestdata);
+        response($code['code'], array('data' => $code['data']));
+    });
+
+    $app->get('/states', function() use ($app){
+
+        $new = new LocationRepo();
+        $code = $new->getStates($app->requestdata);
+        response($code['code'], array('data' => $code['data']));
+    });    
+
+    $app->get('/cities', function() use ($app){
+        $new = new LocationRepo();
+        $code = $new->getCities($app->requestdata);
+        response($code['code'], array('data' => $code['data']));
+    });        
+
+    $app->get('/vendors', function() use ($app){
+        $new = new VendorRepo();
+        $code = $new->getVendors($app->requestdata);
+        response($code['code'], array('data' => $code['data']));
+    });        
 });
 
 

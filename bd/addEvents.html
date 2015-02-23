@@ -28,6 +28,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif]-->
       <link rel="stylesheet" type="text/css" href="assets/date/jquery.datetimepicker.css"/>
+      <link rel="stylesheet" type="text/css" href="css/style.css"/>
 	  
 	  
 	  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -35,6 +36,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="js/fileinput.js" type="text/javascript"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="admin/js/script.js" type="text/javascript"></script>
 	  
    </head>
    <body>
@@ -52,7 +54,7 @@
                </div>
                <div class="collapse navbar-collapse navbar-ex1-collapse">
                   <ul class="nav navbar-nav navbar-right">
-                     <li><a href="addBusiness.html"">Add Business</a></li>
+                     <li><a href="addBusiness.html">Add Business</a></li>
                      <li><a href="addEvents.html">Add Local Events </a></li>
                      <li><a href="contactUs.html">Promote Your Business</a></li>
                      <li><a href="contactUs.html">Contact Us</a></li>
@@ -201,7 +203,7 @@
                         <a href="#"><span class="i-tab"> <span class="icon-location" ></span>	<small class="hidden-xs">Add Your Local Business
                         </small></a>
                      </li>
-                     <li data-target="#myCarousel" data-slide-to="1" ">
+                     <li data-target="#myCarousel" data-slide-to="1">
                         <a href="#"><span class="i-tab"> <span class="icon-calendar"></span> <small class="hidden-xs">Add Local Events</small></a>
                      </li>
                      <li data-target="#myCarousel" data-slide-to="2" >
@@ -233,28 +235,33 @@
                   <div class="well well-sm">
                      <!-- Form Start Here-->		
                      <form>
+                           <div class="alert alert-success" role="alert" style="display:none;"></div>
+                           <div class="alert alert-danger" role="alert" style="display:none;"></div>
+
                         <div class="row">
                            <div class="col-md-6">
                               <div class="form-group">
                                  <label for="name">Contact Name:</label>
                                  <div class="row">
                                     <div class="col-xs-6 col-md-6">
-                                       <input type="text" class="form-control" id="name" placeholder="First name" required="required" />
+                                       <input type="text" class="form-control" id="first_name" placeholder="First name" required="required" />
                                     </div>
                                     <div class="col-xs-6 col-md-6">
-                                       <input type="text" class="form-control" id="name" placeholder="Lasts name" required="required" />
+                                       <input type="text" class="form-control" id="last_name" placeholder="Lasts name" required="required" />
                                     </div>
                                  </div>
                               </div>
                               <div class="form-group">
                                  <label for="name">
                                  Event Name:</label>
-                                 <input type="text" class="form-control" id="name" placeholder="Event Name" required="required" />
+                                 <input type="text" onblur="checkEventName(this.value);" class="form-control" id="event_name" placeholder="Event Name" required="required" />
+                                 <img class="spinner" id="business_spinner" src="images/spinner.gif">
+
                               </div>
                               <div class="form-group">
                                  <label for="name">
                                  Venue:</label>
-                                 <input type="text" class="form-control" id="name" placeholder="Venue Name" required="required" />
+                                 <input type="text" class="form-control" id="venue_name" placeholder="Venue Name" required="required" />
                               </div>
                               <!-- address-line1 input-->
                               <div class="form-group">
@@ -262,7 +269,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="email" class="form-control" id="email" placeholder="Street Name " required="required" />
+                                    <input type="text" class="form-control" id="street_address" placeholder="Street Name " required="required" />
                                  </div>
                               </div>
                               <!-- address-line1 input-->
@@ -271,7 +278,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="text" class="form-control" id="Postcode" placeholder="Post Code" required="required" />
+                                    <input type="text" class="form-control" id="post_code" placeholder="Post Code" required="required" />
                                  </div>
                               </div>
                               <div class="form-group">
@@ -279,13 +286,13 @@
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">Start Date & Time:</label>
                                        <div class="input-group date">
-                                          <input  id="datetimepicker_maskA" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                          <input  id="start_date" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                        </div>
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">End Date & Time:</label>
                                        <div class="input-group date">
-                                          <input  id="datetimepicker_maskB" type="text" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                          <input  id="end_date" type="text" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                        </div>
                                     </div>
                                  </div>
@@ -296,7 +303,7 @@
 							<form enctype="multipart/form-data">
 								<br>
 								<div class="form-group">
-									<input id="file-5" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="#">
+									<input id="file-4" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="index.php/api/upload_images?path=event_images">
 								</div>
 							</form>
                       
@@ -307,7 +314,7 @@
                      <label for="name">Price:</label>
                      <div class="input-group">
                      <span class="input-group-addon">$</span>
-                     <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                     <input type="text" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
                      </div>
                      </div>
                      <div class="col-xs-6 col-md-6">
@@ -322,7 +329,7 @@
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                      </span>
-                     <input type="phone" class="form-control" id="phone" placeholder="Enter Main #" required="required" />
+                     <input type="phone" class="form-control" id="office_number" placeholder="Enter Main #" required="required" />
                      </div>
                      </div>
                      <div class="form-group">
@@ -331,7 +338,7 @@
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                      </span>
-                     <input type="phone" class="form-control" id="phone" placeholder="Enter Your Cell #" required="required" />
+                     <input type="phone" class="form-control" id="cell_number" placeholder="Enter Your Cell #" required="required" />
                      </div>
                      </div>
                      <div class="form-group">
@@ -340,45 +347,40 @@
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
                      </span>
-                     <input type="email" class="form-control" id="email" placeholder="Enter email" required="required" />
+                     <input type="text" class="form-control" id="email_address" placeholder="Enter email" required="required" />
                      </div>
                      </div>
                      <div class="form-group">
-                     <label for="city" > Country: </label>
-                     <select id="subject" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="country">Canada</option>
-                     <option value="country">USA</option>
+                     <label for="city"> Country: </label>
+                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> Province/Sate:</label>
-                     <select id="subject" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="state">Ontario</option>
-                     <option value="suggestions">Alberta</option>
+                     <select id="state" onchange="getCities(this.value);" name="subject" class="form-control" required="required">
+                     <option value="state" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> City</label>
-                     <select id="subject" name="subject" class="form-control" required="required">
-                     <option value="na" selected="">Choose One:</option>
-                     <option value="state">Toronto</option>
-                     <option value="suggestions">Mississauga</option>
+                     <select id="city" name="subject" class="form-control" required="required">
+                     <option value="city" selected="">Choose One:</option>
                      </select>
                      </div>
+               
                      <div class="form-group">
                      <div class="row">
                      <div class="col-xs-6 col-md-6">
                      <label for="name">FaceBook:</label>
                      <div class="input-group date">
-                     <input   placeholder="Enter FaceBook Link"  type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-facebook-square fa-lg"></i></span>
+                     <input   placeholder="Enter FaceBook Link" id="facebook"  type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-facebook-square fa-lg"></i></span>
                      </div>
                      </div>
                      <div class="col-xs-6 col-md-6">
                      <label for="name">Twitter</label>
                      <div class="input-group date">
-                     <input  placeholder="Enter Twitter Link"  type="text" class="form-control"  ><span class="input-group-addon"><i class="fa fa-twitter fa-lg"></i></span>
+                     <input  placeholder="Enter Twitter Link" id="twitter"  type="text" class="form-control"  ><span class="input-group-addon"><i class="fa fa-twitter fa-lg"></i></span>
                      </div>	
                      </div>
                      </div>
@@ -386,23 +388,23 @@
                      <div class="col-xs-6 col-md-6">
                      <label for="name">YouTupe:</label>
                      <div class="input-group date">
-                     <input   type="text"  placeholder="Enter YouTupe Link" class="form-control"><span class="input-group-addon"><i class="fa fa-youtube fa-lg"></i></span>
+                     <input   type="text"  placeholder="Enter YouTupe Link" id="youtube" class="form-control"><span class="input-group-addon"><i class="fa fa-youtube fa-lg"></i></span>
                      </div>
                      </div>
                      <div class="col-xs-6 col-md-6">
                      <label for="name">Instagram</label>
                      <div class="input-group date">
-                     <input  placeholder="Enter Instagram Link" type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-instagram fa-lg"></i></span>
+                     <input  placeholder="Enter Instagram Link" id="instagram" type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-instagram fa-lg"></i></span>
                      </div>	
                      </div>
                      </div>
                      </div>
                      </div>
                      <div class="col-md-12">
-                     <button type="submit" class="btn btn-primary pull-left" id="btnContactUs">
+                     <button type="button" onclick="addEvent();" class="btn btn-primary pull-left" id="btnContactUs">
                      Add An Events</button>
                      <button type="submit" class="btn btn-default">Cancel</button>
-					                      <button class="btn btn-default" type="reset">Reset</button>
+					                      <button class="btn btn-default" onclick="eventReset();" type="reset">Reset</button>
 
                      </div>
                      </div>
@@ -453,9 +455,9 @@
       <script src="assets/js/jquery.inview.js"></script>
       <script>
          $(document).ready( function() {
-            $('#myCarousel').carousel({
-            	interval:  3000
-         });
+         //    $('#myCarousel').carousel({
+         //    	interval:  3000
+         // });
          
          var clickEvent = false;
          $('#myCarousel').on('click', '.nav a', function() {
@@ -658,46 +660,14 @@
          	step:5,
          	inline:true
          });
-         $('#datetimepicker_maskA').datetimepicker({
+         $('#start_date').datetimepicker({
          	mask:'9999/19/39 29:59'
          });
-         $('#datetimepicker_maskB').datetimepicker({
-         	mask:'9999/19/39 29:59'
+         $('#end_date').datetimepicker({
+         	mask:'9999/19/39 29:59',
+            minDate : 0            
          });
          
-         
-         $('#datetimepicker1').datetimepicker({
-         	datepicker:false,
-         	format:'H:i',
-         	step:5
-         });
-         $('#datetimepicker2').datetimepicker({
-         	yearOffset:222,
-         	lang:'ch',
-         	timepicker:false,
-         	format:'d/m/Y',
-         	formatDate:'Y/m/d',
-         	minDate:'-1970/01/02', // yesterday is minimum date
-         	maxDate:'+1970/01/02' // and tommorow is maximum date calendar
-         });
-         
-         $('#datetimepicker2').datetimepicker({
-         	yearOffset:222,
-         	lang:'ch',
-         	timepicker:false,
-         	format:'d/m/Y',
-         	formatDate:'Y/m/d',
-         	minDate:'-1970/01/02', // yesterday is minimum date
-         	maxDate:'+1970/01/02' // and tommorow is maximum date calendar
-         });
-         
-         $('#datetimepicker3').datetimepicker({
-         	inline:true
-         });
-         $('#datetimepicker4').datetimepicker();
-         $('#open').click(function(){
-         	$('#datetimepicker4').datetimepicker('show');
-         });
          $('#close').click(function(){
          	$('#datetimepicker4').datetimepicker('hide');
          });
@@ -782,41 +752,41 @@
 	  
 	  
 	  <script>
-    $("#file-5").fileinput({
-        'allowedFileExtensions' : ['jpg', 'png','gif'],
-    });
-    $("#file-1").fileinput({
-        initialPreview: ["<img src='Desert.jpg' class='file-preview-image'>", "<img src='Jellyfish.jpg' class='file-preview-image'>"],
-        initialPreviewConfig: [
-            {caption: 'Desert.jpg', width: '120px', url: '#'},
-            {caption: 'Jellyfish.jpg', width: '120px', url: '#'},
-        ],
-        uploadUrl: '#',
-        allowedFileExtensions : ['jpg', 'png','gif'],
-        overwriteInitial: false,
-        maxFileSize: 1000,
-        maxFilesNum: 10,
-        //allowedFileTypes: ['image', 'video', 'flash'],
-        slugCallback: function(filename) {
-            return filename.replace('(', '_').replace(']', '_');
-        }
-	});
+    // $("#file-5").fileinput({
+    //     'allowedFileExtensions' : ['jpg', 'png','gif'],
+    // });
+ //    $("#file-1").fileinput({
+ //        initialPreview: ["<img src='Desert.jpg' class='file-preview-image'>", "<img src='Jellyfish.jpg' class='file-preview-image'>"],
+ //        initialPreviewConfig: [
+ //            {caption: 'Desert.jpg', width: '120px', url: '#'},
+ //            {caption: 'Jellyfish.jpg', width: '120px', url: '#'},
+ //        ],
+ //        uploadUrl: '#',
+ //        allowedFileExtensions : ['jpg', 'png','gif'],
+ //        overwriteInitial: false,
+ //        maxFileSize: 1000,
+ //        maxFilesNum: 10,
+ //        //allowedFileTypes: ['image', 'video', 'flash'],
+ //        slugCallback: function(filename) {
+ //            return filename.replace('(', '_').replace(']', '_');
+ //        }
+	// });
     /*
     $(".file").on('fileselect', function(event, n, l) {
         alert('File Selected. Name: ' + l + ', Num: ' + n);
     });
     */
-	$("#file-3").fileinput({
-		showUpload: false,
-		showCaption: false,
-		browseClass: "btn btn-primary btn-lg",
-		fileType: "any"
-	});
-	$("#file-4").fileinput({
-		uploadExtraData: [
-            {kvId: '10'}
-        ],
-	});
+	// $("#file-3").fileinput({
+	// 	showUpload: false,
+	// 	showCaption: false,
+	// 	browseClass: "btn btn-primary btn-lg",
+	// 	fileType: "any"
+	// });
+	// $("#file-4").fileinput({
+	// 	uploadExtraData: [
+ //            {kvId: '10'}
+ //        ],
+	// });
     $(".btn-warning").on('click', function() {
         if ($('#file-4').attr('disabled')) {
             $('#file-4').fileinput('enable');
@@ -836,11 +806,12 @@
     });
     */
     $(document).ready(function() {
-        $("#test-upload").fileinput({
-            'showPreview' : false,
-            'allowedFileExtensions' : ['jpg', 'png','gif'],
-            'elErrorContainer': '#errorBlock'
-        });
+      getCountries();
+        // $("#test-upload").fileinput({
+        //     'showPreview' : false,
+        //     'allowedFileExtensions' : ['jpg', 'png','gif'],
+        //     'elErrorContainer': '#errorBlock'
+        // });
         /*
         $("#test-upload").on('fileloaded', function(event, file, previewId, index) {
             alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);

@@ -6,22 +6,30 @@ class UtilityRepo{
 	*/
 	public $dir;
 
- 	public static function getRootPath() {
+ 	public static function getRootPath($root = true) {
  		if($_SERVER['HTTP_HOST'] == 'localhost')
  		{
-	 		$dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'businessapp'.DIRECTORY_SEPARATOR.'bd'.DIRECTORY_SEPARATOR;
+ 			if($root)
+		 		$dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'businessapp'.DIRECTORY_SEPARATOR.'bd'.DIRECTORY_SEPARATOR;
+		 	else
+		 		$dir = 'http://'.$_SERVER['HTTP_HOST'].'/businessapp/bd/';		 		
  		}
  		else
  		{
-	 		$dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'bd'.DIRECTORY_SEPARATOR;
+ 			if($root)
+		 		$dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'bd'.DIRECTORY_SEPARATOR;
+		 	else
+		 		$dir = 'http://'.$_SERVER['HTTP_HOST'].'businessapp/bd/';
  		}
+
  		return $dir;
     }
 
 	public function uploadTmp($file)
 	{	
+		$path = $_REQUEST['path'];
 		$resp = array('code' => 400,  'file_name' => '');
-		$path = self::getRootPath().'data'.DIRECTORY_SEPARATOR.'vendor_images';
+		$path = self::getRootPath(true).'data'.DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR;
 		$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 		$fileName = time().'.'.strtolower($ext);
 		if(is_array($file))
