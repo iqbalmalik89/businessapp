@@ -148,7 +148,7 @@ class VendorRepo{
 
 	public function vendorStatus($request)
 	{
-		$response = 400;
+		$reponse = 400;
 		$requestData = $request;
 		if(!empty($requestData['id']))
 		{
@@ -158,8 +158,10 @@ class VendorRepo{
 			$reponse = 200;
 			
 		}
-		return $response;
+		return $reponse;
 	}
+	
+
 	
 
 }

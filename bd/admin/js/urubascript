@@ -1,9 +1,9 @@
 
 var server = window.location.hostname;
 if(server == 'localhost')
-  var apiUrl = location.protocol + "//"+server+"/businessapp/bd/slim.php/api/";
+  var apiUrl = location.protocol + "//"+server+"/businessapp/bd/index.php/api/";
 else
-  var apiUrl = location.protocol + "//"+server+"/bd/slim.php/api/";
+  var apiUrl = location.protocol + "//"+server+"/bd/index.php/api/";
 
 
 function showMsg(id, msg, type)
@@ -310,7 +310,7 @@ function addUpdateCategory()
     {
         $('#spinner').show();      
         $.ajax({
-          type: 'POST',
+          type: "POST",
           url: apiUrl + route,
           dataType : "JSON",
           data: {id:cat_id, cat_name:cat_name},
@@ -641,6 +641,8 @@ function addEvent()
   var instagram = $.trim($('#instagram').val());
   var check = true;
 
+<<<<<<< HEAD
+
   if(first_name == "")
   {
     $('#first_name').parent().addClass('has-error');
@@ -717,81 +719,109 @@ function getAllVendors(type)
 {
     $.ajax({
       type: 'GET',
-      url: apiUrl + 'vendors',
+      url: apiUrl + 'categories',
       dataType : "JSON",
       data: {},
+=======
+}
+
+function showdealAddPopup()
+{
+    dealReset();
+}
+
+function dealReset()
+{
+    $('#deal_id').val('');
+    $('#deal_name').val('');
+    $('#start_date').val('');
+    $('#end_date').val('');
+    $('#desc').val('');
+    $('#status').val('');
+}
+
+function getDeals()
+{
+  var id = $('#deal_id').val();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'deals',
+      dataType : "JSON",
+      //data: {id: id},
+>>>>>>> bed681e5408278c011dfd79473df1b8b9d19ea6c
       beforeSend:function(){
 
       },
       success:function(data){
-
+<<<<<<< HEAD
         var pendinghtml = '';
         var activehtml = '';
         var deactivehtml = '';
-        $.each(data.data, function( index, vendor ) {
-          var link = '';
-          if(vendor.status == 'activated')
-          {
-            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+vendor.id+', \'deactivated\');">Deactive</a>';          
-          }
-          else if(vendor.status == 'deactivated')
-          {
-            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+vendor.id+', \'activated\');">Active</a>';          
-          }
-          else if(vendor.status == 'pending')
-          {
-            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+vendor.id+', \'activated\');">Approve</a>';
-          }
 
-          link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
 
-          var html = '<tr>\
-                      <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
-                      <td>'+vendor.business_name+'</td>\
-                      <td>'+vendor.date_created+'</td>\
-                      <td>' +link+ '</td>\
-                   </tr>';
+                options += '<option value="'+value.id+'">'+value.cat_name+' </option>';
+                html += '<tr>\
+                            <td>'+value.cat_name+'</td>\
+                            <td><a href="subcategory.php?cat_id='+value.id+'">Manage Subcategories ('+value.sub_cat_count+')</a></td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" data-catname="'+value.cat_name+'" onclick="getSingleCategory('+value.id+', \''+value.cat_name+'\');" data-target="#addcat">Edit</a> | <a href="javascript:void(0);" onclick="deleteCat('+value.id+');">Delete</a></td>\
+=======
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+                options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
+                var desc = value.desc;
+                if(desc == null)
+                {
+                  desc = '';
+                }
+                else
+                {
+                  desc = value.desc;
+                }
+                html += '<tr>\
+                            <td>'+value.deal_name+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td>'+value.desc+'</td>\
+                            <td>'+value.status+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+', \''+value.deal_name+'\', \''+value.start_date+'\', \''+value.end_date+'\', \''+value.desc+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+>>>>>>> bed681e5408278c011dfd79473df1b8b9d19ea6c
+                         </tr>';
 
-          if(vendor.status == 'activated')
-          {
-            activehtml += html;
-          }
-          else if(vendor.status == 'deactivated')
-          {
-            deactivehtml += html;
-          }
-          else if(vendor.status == 'pending')
-          {
-            pendinghtml += html;
-          }
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+<<<<<<< HEAD
+                        <td colspan="3" align="center">Categories not found</td>\
+                     </tr>';            
+        }
 
-        });
+        $('#categorybody').html(html);
+        $('#cat_id').append(options);
+=======
+                        <td colspan="6" align="center">Deals not found</td>\
+                     </tr>';            
+        }
 
-        $('#pendingbody').html(pendinghtml);        
-        $('#activebody').html(activehtml);        
-        $('#deactivebody').html(deactivehtml);
-
-
-        nohtml = '<tr>\
-                        <td colspan="4" align="center">No vendors found.</td>\
-                     </tr>';
-
-      if(pendinghtml == '')
-        $('#pendingbody').html(nohtml);        
-      if(activehtml == '')
-      {
-        $('#activebody').html(nohtml);        
-      }
-      if(deactivehtml == '')
-        $('#deactivebody').html(nohtml);        
-
-
+        $('#dealbody').html(html);
+       //$('#sub_cat_id').append(options);
+>>>>>>> bed681e5408278c011dfd79473df1b8b9d19ea6c
 
       },
       error:function(jqxhr){
       }
     });
+<<<<<<< HEAD
 
+=======
 }
 
 function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
@@ -888,28 +918,5 @@ function addUpdateDeal()
           }
         });
     }
-
-}
-
-function changeVendorStatus(id, status)
-{
-  $.ajax({
-    type: "POST",
-    url: apiUrl + 'vendor_status',
-    dataType : "JSON",
-    data: {id:id, status : status},
-    beforeSend:function(){
-
-    },
-    success:function(data){
-    $('#spinner').hide();      
-      if(data.status == 'success')
-      {
-          getAllVendors('');
-          showMsg('#statusmsg', 'Vendor status updated successfully.', 'green');
-      }
-    },
-    error:function(jqxhr){
-    }
-  });  
+>>>>>>> bed681e5408278c011dfd79473df1b8b9d19ea6c
 }

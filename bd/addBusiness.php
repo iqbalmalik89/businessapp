@@ -28,16 +28,24 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif]-->
       <link rel="stylesheet" type="text/css" href="assets/date/jquery.datetimepicker.css"/>
-      <link rel="stylesheet" type="text/css" href="css/style.css"/>
+      <link id="colors" href="css/style.css" rel="stylesheet">
 	  
-	  
-	  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+      <!-- <script src="assets/js/fileinput.min.js" type="text/javascript"></script> -->
+      <link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+   
+   
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="js/fileinput.js" type="text/javascript"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="admin/js/script.js" type="text/javascript"></script>
-	  
+
+    </head>
+	
+	
+   
    </head>
    <body>
       <div class="wrap">
@@ -54,46 +62,14 @@
                </div>
                <div class="collapse navbar-collapse navbar-ex1-collapse">
                   <ul class="nav navbar-nav navbar-right">
-                     <li><a href="addBusiness.html">Add Business</a></li>
-                     <li><a href="addEvents.html">Add Local Events </a></li>
-                     <li><a href="contactUs.html">Promote Your Business</a></li>
-                     <li><a href="contactUs.html">Contact Us</a></li>
+                     <li><a href="addBusiness.php">Add Business</a></li>
+                     <li><a href="addEvents.php">Add Local Events </a></li>
+                     <li><a href="contactUs.php">Promote Your Business</a></li>
+                     <li><a href="contactUs.php">Contact Us</a></li>
                   </ul>
                </div>
             </div>
          </nav>
-         <!--<nav class="navbar navbar-default" role="navigation">
-            <div class="container">
-            
-            <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            
-            </div>
-            
-            
-            <div class="collapse navbar-collapse navbar-ex2-collapse">
-            <ul class="nav navbar-nav ">
-            <li class="active"><a href="#">SOLUTIONS</a></li>
-            <li><a href="#">PRODUCTS</a></li>
-            <li><a href="#">CUSTOMERS</a></li>
-            <li><a href="#">PRICING</a></li>
-            <li><a href="#">ABOUT US</a></li>
-            
-            </ul>
-            
-            <span class="nav navbar-nav navbar-right">
-            <a class="btn btn-danger btn-sm navbar-btn" href="https://creativemarket.com/artlabs/25052-Landing-page-video-background-BS3.1.">BUY NOW</a>
-            
-            
-            </span>
-            </div>
-            </div>
-            </nav>-->
          <!--Video Section-->
          <section class="content-section video-section">
             <!-- TOP BAR -->
@@ -224,7 +200,7 @@
                   <div class="row">
                      <div class="col-sm-12 col-lg-12">
                         <h1 class="h1">
-                           Add Your Local Events <small>It's Free</small>
+                           Add Your Business <small>It's Free</small>
                         </h1>
                      </div>
                   </div>
@@ -253,15 +229,9 @@
                               </div>
                               <div class="form-group">
                                  <label for="name">
-                                 Event Name:</label>
-                                 <input type="text" onblur="checkEventName(this.value);" class="form-control" id="event_name" placeholder="Event Name" required="required" />
+                                 Business Name:</label>
+                                 <input type="text" class="form-control" onblur="checkBusinessName(this.value)" id="business_name" placeholder="Business Name" required="required" />
                                  <img class="spinner" id="business_spinner" src="images/spinner.gif">
-
-                              </div>
-                              <div class="form-group">
-                                 <label for="name">
-                                 Venue:</label>
-                                 <input type="text" class="form-control" id="venue_name" placeholder="Venue Name" required="required" />
                               </div>
                               <!-- address-line1 input-->
                               <div class="form-group">
@@ -269,7 +239,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="text" class="form-control" id="street_address" placeholder="Street Name " required="required" />
+                                    <input type="email" class="form-control" id="street_address" placeholder="Street Name " required="required" />
                                  </div>
                               </div>
                               <!-- address-line1 input-->
@@ -284,43 +254,146 @@
                               <div class="form-group">
                                  <div class="row">
                                     <div class="col-xs-6 col-md-6">
-                                       <label for="name">Start Date & Time:</label>
-                                       <div class="input-group date">
-                                          <input  id="start_date" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                       </div>
+                                       <label for="name">Category:</label>
+                                       <select id="cat_id" onchange="getSubCategories();" name="subject" class="form-control" required="required">
+                                          <option value="" selected="">Choose One:</option>
+                                       </select>
                                     </div>
                                     <div class="col-xs-6 col-md-6">
-                                       <label for="name">End Date & Time:</label>
-                                       <div class="input-group date">
-                                          <input  id="end_date" type="text" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                       </div>
+                                       <label for="name">Sub-Category</label>
+                                       <select id="sub_cat_id" name="subject" class="form-control" required="required">
+                                          <option value="" selected="">Choose One:</option>
+                                       </select>
                                     </div>
                                  </div>
                               </div>
-                              <div class="form-group">
-							  
-							  			  <label for="city"> Upload up to 3 Images</label>
-							<form enctype="multipart/form-data">
-								<br>
-								<div class="form-group">
-									<input id="file-4" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="index.php/api/upload_images?path=event_images">
-								</div>
-							</form>
-                      
+                              
+							
+		
+		
+								 <div class="form-group">
+                     <div class="panel-body">
+                     <div class="dataTable_wrapper">
+                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                     <thead>
+                     <tr>
+                     <th>Days</th>
+                     <th>Open Hrs</th>
+                     <th>Close Hrs</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr class="odd gradeX">
+                     <td>Mon:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time1" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                      </div>
-                     <div class="form-group">
-                     <div class="row">
-                     <div class="col-xs-6 col-md-6">
-                     <label for="name">Price:</label>
-                     <div class="input-group">
-                     <span class="input-group-addon">$</span>
-                     <input type="text" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time1" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="even gradeC">
+                     <td>Tue:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time2" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time2" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="odd gradeA">
+                     <td>Wed:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time3" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time3" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="even gradeA">
+                     <td>Thu:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time4" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time4" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="even gradeA">
+                     <td>Fri:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time5" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time5" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="even gradeA">
+                     <td>Sat:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time6" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time6" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr class="even gradeA">
+                     <td>Sun:</td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="start_time7" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     <td>
+                     <div class="input-group date">
+                     <input type="text" id="end_time7" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                     </div>
+                     </td>
+                     </tr>
+                     </tbody>
+                     </table>
+                     </div>
+                     <!-- /.table-responsive -->
                      </div>
                      </div>
-                     <div class="col-xs-6 col-md-6">
-                     </div>
-                     </div>
-                     </div>
+					 
+					 
+					 
+					 
+					 
+					 
+	
+    </body>
+	
+	
+	
+					 
+					 
+					 
                      </div>
                      <div class="col-md-6">
                      <div class="form-group">
@@ -341,15 +414,7 @@
                      <input type="phone" class="form-control" id="cell_number" placeholder="Enter Your Cell #" required="required" />
                      </div>
                      </div>
-                     <div class="form-group">
-                     <label for="email">
-                     Email Address:</label>
-                     <div class="input-group">
-                     <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
-                     </span>
-                     <input type="text" class="form-control" id="email_address" placeholder="Enter email" required="required" />
-                     </div>
-                     </div>
+                    
                      <div class="form-group">
                      <label for="city"> Country: </label>
                      <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);">
@@ -368,7 +433,27 @@
                      <option value="city" selected="">Choose One:</option>
                      </select>
                      </div>
-               
+					 
+					  <div class="form-group">
+                     <label for="email">
+                     Email Address:</label>
+                     <div class="input-group">
+                     <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
+                     </span>
+                     <input type="email" class="form-control" id="email_address" placeholder="Enter email" required="required" />
+                     </div>
+                     </div>
+					  <div class="form-group">
+                     <label for="email">
+                     Web Site:</label>
+                     <div class="input-group">
+                     <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
+                     </span>
+                     <input type="email" class="form-control" id="website" placeholder="Enter website" required="required" />
+                     </div>
+                     </div>
+					 
+					 
                      <div class="form-group">
                      <div class="row">
                      <div class="col-xs-6 col-md-6">
@@ -381,7 +466,7 @@
                      <label for="name">Twitter</label>
                      <div class="input-group date">
                      <input  placeholder="Enter Twitter Link" id="twitter"  type="text" class="form-control"  ><span class="input-group-addon"><i class="fa fa-twitter fa-lg"></i></span>
-                     </div>	
+                     </div>
                      </div>
                      </div>
                      <div class="row">
@@ -395,17 +480,28 @@
                      <label for="name">Instagram</label>
                      <div class="input-group date">
                      <input  placeholder="Enter Instagram Link" id="instagram" type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-instagram fa-lg"></i></span>
-                     </div>	
                      </div>
                      </div>
+					 
+					 
+					 
+                     </div>
+					 </br>
+					         <label for="city"> Upload up to 3 Images</label>
+							<form enctype="multipart/form-data">
+								<br>
+								<div class="form-group">
+									<input id="file-4" class="file" type="file" multiple=true data-preview-file-type="any" data-upload-url="slim.php/api/upload_images?path=vendor_images">
+								</div>
+							</form>
+						
                      </div>
                      </div>
                      <div class="col-md-12">
-                     <button type="button" onclick="addEvent();" class="btn btn-primary pull-left" id="btnContactUs">
-                     Add An Events</button>
-                     <button type="submit" class="btn btn-default">Cancel</button>
-					                      <button class="btn btn-default" onclick="eventReset();" type="reset">Reset</button>
-
+                     <button type="button" onclick="addBusiness();" class="btn btn-primary pull-left" id="btnContactUs">
+                     Add Your Business</button>
+                     <button type="button" style="margin-left:10px;" class="btn btn-default">Cancel</button>
+                     <img src="images/spinner.gif" id="submit_spinner" style="display:none;">
                      </div>
                      </div>
                      </form>
@@ -454,7 +550,29 @@
       <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
       <script src="assets/js/jquery.inview.js"></script>
       <script>
+         // $("#file-3").fileinput({
+         // 	showCaption: false,
+         // 	browseClass: "btn btn-primary btn-lg",
+         // 	fileType: "any"
+         // });
+      </script>
+      <script type="text/javascript">
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-36251023-1']);
+         _gaq.push(['_setDomainName', 'jqueryscript.net']);
+         _gaq.push(['_trackPageview']);
+         
+         (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         
+      </script>
+      <script>
          $(document).ready( function() {
+            getCategories();
+
          //    $('#myCarousel').carousel({
          //    	interval:  3000
          // });
@@ -660,14 +778,59 @@
          	step:5,
          	inline:true
          });
-         $('#start_date').datetimepicker({
+         $('#datetimepicker_maskA').datetimepicker({
          	mask:'9999/19/39 29:59'
          });
-         $('#end_date').datetimepicker({
-         	mask:'9999/19/39 29:59',
-            minDate : 0            
+         $('#datetimepicker_maskB').datetimepicker({
+         	mask:'9999/19/39 29:59'
          });
          
+
+        var daysArr = [1, 2, 3, 4, 5, 6, 7];
+        $.each(daysArr, function( index, value ) {
+               $('#start_time' + value).datetimepicker({
+                  datepicker:false,
+                  value : "09:00",
+                  format:'H:i',
+                  step:60
+               });
+
+               $('#end_time' + value).datetimepicker({
+                  datepicker:false,
+                  value : "06:00",
+                  format:'H:i',
+                  step:60
+               });               
+        });  
+         
+         
+         $('#datetimepicker2').datetimepicker({
+         	yearOffset:222,
+         	lang:'ch',
+         	timepicker:false,
+         	format:'d/m/Y',
+         	formatDate:'Y/m/d',
+         	minDate:'-1970/01/02', // yesterday is minimum date
+         	maxDate:'+1970/01/02' // and tommorow is maximum date calendar
+         });
+         
+         $('#datetimepicker2').datetimepicker({
+         	yearOffset:222,
+         	lang:'ch',
+         	timepicker:false,
+         	format:'d/m/Y',
+         	formatDate:'Y/m/d',
+         	minDate:'-1970/01/02', // yesterday is minimum date
+         	maxDate:'+1970/01/02' // and tommorow is maximum date calendar
+         });
+         
+         $('#datetimepicker3').datetimepicker({
+         	inline:true
+         });
+         $('#datetimepicker4').datetimepicker();
+         $('#open').click(function(){
+         	$('#datetimepicker4').datetimepicker('show');
+         });
          $('#close').click(function(){
          	$('#datetimepicker4').datetimepicker('hide');
          });
@@ -752,7 +915,7 @@
 	  
 	  
 	  <script>
-    // $("#file-5").fileinput({
+    // $("#file-0").fileinput({
     //     'allowedFileExtensions' : ['jpg', 'png','gif'],
     // });
  //    $("#file-1").fileinput({
@@ -782,11 +945,15 @@
 	// 	browseClass: "btn btn-primary btn-lg",
 	// 	fileType: "any"
 	// });
-	// $("#file-4").fileinput({
-	// 	uploadExtraData: [
- //            {kvId: '10'}
- //        ],
-	// });
+    $(document).ready(function() {
+      getCountries();
+      // $("#file-4").fileinput({
+      //    uploadExtraData: [
+      //          {kvId: '10'}
+      //      ],
+      // });
+    });
+
     $(".btn-warning").on('click', function() {
         if ($('#file-4').attr('disabled')) {
             $('#file-4').fileinput('enable');
@@ -806,17 +973,29 @@
     });
     */
     $(document).ready(function() {
-      getCountries();
+        // Get Categories
+
         // $("#test-upload").fileinput({
         //     'showPreview' : false,
         //     'allowedFileExtensions' : ['jpg', 'png','gif'],
         //     'elErrorContainer': '#errorBlock'
         // });
-        /*
-        $("#test-upload").on('fileloaded', function(event, file, previewId, index) {
-            alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
-        });
-        */
+
+
+$('#file-4').on('fileuploaded', function(event, data, previewId, index) {
+    var form = data.form, files = data.files, extra = data.extra, 
+        response = data.response, reader = data.reader;
+    console.log('File uploaded triggered');
+});
+
+
+//         $("#file-4").on('fileloaded', function(event, file, previewId, index) {
+//          console.log('a');
+// //            alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
+//         });
+
+
+
     });
 	</script>
    </body>

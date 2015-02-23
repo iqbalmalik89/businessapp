@@ -14,7 +14,7 @@
     <![endif]-->
 <script>
 $( document ).ready(function() {
-  getCategories();
+  getAllVendors('');
 });
 </script>
 </head>
@@ -92,7 +92,23 @@ $( document ).ready(function() {
                 <li><a data-toggle="tab" href="#deactive">Deactive</a></li>
               </ul>
               <div class="tab-content">
+          <div class="notification-bar" id="statusmsg" style="display: none;"></div>
                 <div id="active" class="tab-pane active cont">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Business Name</th>
+                        <th>Created on</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="activebody">
+
+                    </tbody>
+                  </table>
+                </div>
+                <div id="pending" class="tab-pane cont">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -107,11 +123,20 @@ $( document ).ready(function() {
                     </tbody>
                   </table>
                 </div>
-                <div id="pending" class="tab-pane cont">
-
-                </div>
                 <div id="deactive" class="tab-pane">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Business Name</th>
+                        <th>Created on</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="deactivebody">
 
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -121,10 +146,5 @@ $( document ).ready(function() {
     </div><!--margin-container end--> 
   </div><!--main end--> 
 </div><!--layout-container end--> 
-<script>
-
-getAllVendors(type);
-</script>
-
 </body>
 </html>

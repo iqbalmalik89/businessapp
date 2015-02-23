@@ -18,6 +18,8 @@
 <li class="sub"> <a <?php if($currFile == 'events.php') echo 'class="active"'; ?> href="#"><i class="fa fa-calendar-o"></i><span>Events</span></a>
 <li class="sub"> <a <?php if($currFile == 'deals.php') echo 'class="active"'; ?> href="#"><i class="fa fa-trophy"></i><span>Deals</span></a>
 
+           <li class="sub"> <a href="deals.php"><i class="fa fa-smile-o"></i><span>Deals</span></a>
+
 <!--         <ul class="navigation-sub">
           <li><a href="buttons.html"><i class="fa fa-power-off"></i><span>Button</span></a></li>
           <li><a href="grids.html"><i class="fa fa-columns"></i><span>Grid</span></a></li>

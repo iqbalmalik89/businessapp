@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="plugins/PCharts/style.css" type="text/css">
 <link href="plugins/kalendar/kalendar.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 <script src="js/jquery-1.10.2.js"></script> 
 <script src="js/jquery-ui-1.9.1.js"></script> 
@@ -32,3 +31,6 @@
 <script src="plugins/kalendar/kalendar.js" type="text/javascript"></script> 
 <script src="plugins/kalendar/edit-kalendar.js" type="text/javascript"></script> -->
 <script src="js/script.js" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" href="plugins/bootstrap-datepicker/css/datepicker.css" />
+<script type="text/javascript" src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script> 

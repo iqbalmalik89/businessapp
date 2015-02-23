@@ -38,11 +38,13 @@ class DealRepo
 	{
 		$query = $GLOBALS['con']->from('deals')->where('deal_name', $name);		
 		if(!empty($id))
+
 			$query = $query->where('id', $id)->count();
 		else
 			$query = $query->count();
 
 		return $query;
+
 	}
 
 	public function updateDeal($request)
