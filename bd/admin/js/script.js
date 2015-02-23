@@ -1025,21 +1025,21 @@ function getDeals()
 
 function getSingleDeal(id)
 {
-
     $.ajax({
-      type: 'POST',
-      url: apiUrl + 'deletedeal',
+      type: 'GET',
+      url: apiUrl + 'deals',
       dataType : "JSON",
       data: {id:id},
       beforeSend:function(){
 
       },
+
       success:function(data){
-        $('#deal_id').val(data.id);
-        $('#deal_name').val(data.deal_name);
-        $('#start_date').val(data.start_date);
-        $('#end_date').val(data.end_date);
-        $('#desc').val(data.desc);
+        $('#deal_id').val(data.data.id);
+        $('#deal_name').val(data.data.deal_name);
+        $('#start_date').val(data.data.start_date);
+        $('#end_date').val(data.data.end_date);
+        $('#desc').val(data.data.desc);
       },
       error:function(jqxhr){
       }

@@ -161,7 +161,36 @@ class VendorRepo{
 		return $reponse;
 	}
 	
+	public function deleteVendor($request)
+	{
+		$requestData = $request;
+		$response = 400;
 
+		$exists = $this->count($requestData['id']);
+		if($exists)
+		{
+			$query = $GLOBALS['con']->deleteFrom('vendors')->where('id', $requestData['id'])->execute();
+			$query1 =  $GLOBALS['con']->deleteFrom('vendor_images')->where('vendor_id', $requestData['id'])->execute();
+			$query2 =  $GLOBALS['con']->deleteFrom('vendor_working_days')->where('vendor_id', $requestData['id'])->execute();
+			$response = 200;
+
+		}
+		else
+		{
+			$response = 400;
+		}
+		return $response;
+
+
+	}
+
+	public function count($request)
+	{
+
+		$query = $GLOBALS['con']->from('vendors')->where('id', $request);
+		$count = $query->count();
+		 return $count;
+	}
 	
 
 }

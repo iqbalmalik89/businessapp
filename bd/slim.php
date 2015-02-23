@@ -279,6 +279,13 @@ $app->group('/api', function () use ($app) {
         $code = $new->getVendors($app->requestdata);
         response($code['code'], array('data' => $code['data']));
     });        
+
+    // Delete Vendor
+    $app->post('/deletevendor' , function () use ($app){
+        $new = new VendorRepo();
+        $code = $new->deleteVendor($app->requestdata);
+        response($code, array());
+    });
 });
 
 
