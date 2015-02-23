@@ -161,7 +161,7 @@
                         <a href="addBusiness.html" ><span class="i-tab"> <span class="icon-location" ></span>	<small class="hidden-xs">Add Your Local Business
                         </small></a>
                      </li>
-                     <li data-target="#myCarousel" data-slide-to="1" ">
+                     <li data-target="#myCarousel" data-slide-to="1">
                         <a href="addEvents.html"><span class="i-tab"> <span class="icon-calendar"></span> <small class="hidden-xs">Add Local Events</small></a>
                      </li>
                      <li data-target="#myCarousel" data-slide-to="2" >
