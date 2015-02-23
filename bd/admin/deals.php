@@ -5,6 +5,9 @@
 <title>Atom-Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" type="text/css" href="bs3/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="bs3/css/bootstrap-datetimepicker.min.css">
+
 <?php include('inc/js.php') ;?>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -12,7 +15,19 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+<script src="bs3/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="bs3/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
     
+<script type="text/javascript">
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+  $("#start_date").datetimepicker({
+        format: "yyyy-mm-dd"
+    });
+});
+    
+</script> 
 <script>
 $( document ).ready(function() {
   getDeals();
@@ -62,8 +77,8 @@ $( document ).ready(function() {
       <form class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="start_date" />
+          <div class="col-sm-4 input-append date form_datetime">
+            <input type="text" class="form-control bfh-datepicker" data-format="y-m-d" data-date=<?php echo date("Y-m-d");?> id="start_date" />
           </div>
         </div>
       </form>
@@ -93,14 +108,13 @@ $( document ).ready(function() {
         <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="desc" />
+          <textarea class="form-control" rows="2" id="desc"></textarea>
           </div>
         </div>
       </form>
     </div>
   </div>
 </div>
-
 
 
       </div>
@@ -114,6 +128,8 @@ $( document ).ready(function() {
 </div>
 
   <div id="main">
+
+
 
 
 
@@ -157,7 +173,8 @@ $( document ).ready(function() {
     </div><!--margin-container end--> 
   </div><!--main end--> 
 </div><!--layout-container end--> 
-
+<script>
+</script>
 
 </body>
 </html>

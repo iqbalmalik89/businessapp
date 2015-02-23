@@ -592,7 +592,7 @@ function getDeals()
 
 function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
 {
-    $('#dealid').val(id);
+    $('#deal_id').val(id);
     $('#deal_name').val(deal_name);
     $('#start_date').val(start_date);
     $('#end_date').val(end_date);
@@ -628,60 +628,59 @@ function addUpdateDeal()
     var end_date = $('#end_date').val();
     var desc = $('#desc').val();
 
-    var check  = true;
+     var check  = true;
 
-    if(deal_name == '')
-    {
-        $('#deal_name').focus();
-        $('#deal_name').addClass('error-class');
-        check = false;
-    }
-    else if(start_date == '')
-    {
-        $('#start_date').focus();
-        $('#start_date').addClass('error-class');
-        check = false;
-    }
-    else if(end_date == '')
-    {
-        $('#end_date').focus();
-        $('#end_date').addClass('error-class');
-        check = false;
-    }
+     if(deal_name == '')
+     {
+         $('#deal_name').focus();
+         $('#deal_name').addClass('error-class');
+         check = false;
+     }
+     else if(start_date == '')
+     {
+         $('#start_date').focus();
+         $('#start_date').addClass('error-class');
+         check = false;
+     }
+     else if(end_date == '')
+     {
+         $('#end_date').focus();
+         $('#end_date').addClass('error-class');
+         check = false;
+     }
     
+     if(id == '')
+     {
+       route = 'add_deal';
+     }
+     else
+     {
+       route = 'updatedeal';
+     }
 
-    if(id == '')
-    {
-      route = 'add_deal';
-    }
-    else
-    {
-      route = 'updatedeal';
-    }
+     if(check)
+     {
+         $('#spinner').show();      
+         $.ajax({
+           type: "POST",
+           url: apiUrl + route,
+           dataType : "JSON",
+           data: {id:id, deal_name:deal_name, start_date : start_date,end_date:end_date,desc:desc},
+           beforeSend:function(){
 
-    if(check)
-    {
-        $('#spinner').show();      
-        $.ajax({
-          type: "POST",
-          url: apiUrl + route,
-          dataType : "JSON",
-          data: {id:id, deal_name:deal_name, start_date : start_date,end_date:end_date,desc:desc},
-          beforeSend:function(){
-
-          },
-          success:function(data){
-          $('#spinner').hide();      
-            if(data.status == 'success')
-            {
-                getDeals();                
-                $('#adddeal').modal('hide');
-            }
-          },
-          error:function(jqxhr){
-            $('#spinner').hide();      
-            showMsg('#msg', 'Deal already exists with this name.', 'red');
-          }
-        });
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+                 getDeals();                
+                 $('#adddeal').modal('hide');
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'Deal already exists with this name.', 'red');
+           }
+         });
     }
 }
