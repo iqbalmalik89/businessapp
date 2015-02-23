@@ -220,7 +220,7 @@
                                  <label for="name">Contact Name:</label>
                                  <div class="row">
                                     <div class="col-xs-6 col-md-6">
-                                       <input type="text" class="form-control" id="first_name" placeholder="First name" required="required" />
+                                       <input type="text" onkeyup="$(this).parent().removeClass('has-error');" class="form-control" id="first_name" placeholder="First name" required="required" />
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                        <input type="text" class="form-control" id="last_name" placeholder="Lasts name" required="required" />
@@ -230,7 +230,7 @@
                               <div class="form-group">
                                  <label for="name">
                                  Business Name:</label>
-                                 <input type="text" class="form-control" onblur="checkBusinessName(this.value)" id="business_name" placeholder="Business Name" required="required" />
+                                 <input type="text"  onkeyup="$(this).parent().removeClass('has-error');" class="form-control" onblur="checkBusinessName(this.value)" id="business_name" placeholder="Business Name" required="required" />
                                  <img class="spinner" id="business_spinner" src="images/spinner.gif">
                               </div>
                               <!-- address-line1 input-->
@@ -239,7 +239,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="email" class="form-control" id="street_address" placeholder="Street Name " required="required" />
+                                    <input type="address" class="form-control"  onkeyup="$(this).parent().removeClass('has-error');" id="street_address" placeholder="Street Name " required="required" />
                                  </div>
                               </div>
                               <!-- address-line1 input-->
@@ -248,20 +248,20 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="text" class="form-control" id="post_code" placeholder="Post Code" required="required" />
+                                    <input type="text"  onkeyup="$(this).parent().removeClass('has-error');" class="form-control" id="post_code" placeholder="Post Code" required="required" />
                                  </div>
                               </div>
                               <div class="form-group">
                                  <div class="row">
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">Category:</label>
-                                       <select id="cat_id" onchange="getSubCategories();" name="subject" class="form-control" required="required">
+                                       <select id="cat_id" onchange="getSubCategories(); $(this).parent().removeClass('has-error');" name="subject" class="form-control" required="required">
                                           <option value="" selected="">Choose One:</option>
                                        </select>
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">Sub-Category</label>
-                                       <select id="sub_cat_id" name="subject" class="form-control" required="required">
+                                       <select id="sub_cat_id" name="subject" onchange="$(this).parent().removeClass('has-error');" class="form-control" required="required">
                                           <option value="" selected="">Choose One:</option>
                                        </select>
                                     </div>
@@ -402,7 +402,7 @@
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                      </span>
-                     <input type="phone" class="form-control" id="office_number" placeholder="Enter Main #" required="required" />
+                     <input type="phone" class="form-control"  onkeyup="$(this).parent().removeClass('has-error');" id="office_number" placeholder="Enter Main #" required="required" />
                      </div>
                      </div>
                      <div class="form-group">
@@ -417,20 +417,20 @@
                     
                      <div class="form-group">
                      <label for="city"> Country: </label>
-                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);">
+                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);$(this).parent().removeClass('has-error');">
                      <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> Province/Sate:</label>
-                     <select id="state" onchange="getCities(this.value);" name="subject" class="form-control" required="required">
-                     <option value="state" selected="">Choose One:</option>
+                     <select id="state" onchange="getCities(this.value);$(this).parent().removeClass('has-error');" name="subject" class="form-control" required="required">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> City</label>
-                     <select id="city" name="subject" class="form-control" required="required">
-                     <option value="city" selected="">Choose One:</option>
+                     <select id="city" name="subject" onchange="$(this).parent().removeClass('has-error');" class="form-control" required="required">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
 					 
@@ -790,15 +790,15 @@
         $.each(daysArr, function( index, value ) {
                $('#start_time' + value).datetimepicker({
                   datepicker:false,
-                  value : "09:00",
-                  format:'H:i',
+                  value : "09:00 AM",
+                  format:'g:i A',
                   step:60
                });
 
                $('#end_time' + value).datetimepicker({
                   datepicker:false,
-                  value : "06:00",
-                  format:'H:i',
+                  value : "09:00 PM",
+                  format:'g:i A',
                   step:60
                });               
         });  

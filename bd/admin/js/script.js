@@ -352,15 +352,15 @@ function businessReset()
   $.each(daysArr, function( index, value ) {
      $('#start_time' + value).datetimepicker({
         datepicker:false,
-        value : "09:00",
-        format:'H:i',
+        value : "09:00 AM",
+        format:'g:i A',
         step:60
      });
 
      $('#end_time' + value).datetimepicker({
         datepicker:false,
-        value : "06:00",
-        format:'H:i',
+        value : "09:00 PM",
+        format:'g:i A',
         step:60
      });               
 
@@ -473,13 +473,14 @@ function addBusiness()
   var twitter = $.trim($('#twitter').val());
   var instagram = $.trim($('#instagram').val());
   var check = true;
-
+  var errormsgs = '';
   if(first_name == "")
   {
     $('#first_name').parent().addClass('has-error');
     if(check)
       $('#first_name').focus();
     check = false;
+    errormsgs += 'Please Enter First Name<br>';
   }
 
   if(business_name == "")
@@ -488,6 +489,80 @@ function addBusiness()
       $('#business_name').focus();
       $('#business_name').parent().addClass('has-error');
     check = false;
+    errormsgs += 'Please Enter Business Name<br>';
+  }
+
+  if(street_address == "")
+  {
+    if(check)
+      $('#street_address').focus();
+      $('#street_address').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Street Address<br>';
+  }
+
+
+  if(post_code == "")
+  {
+    if(check)
+      $('#post_code').focus();
+      $('#post_code').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Post Code<br>';    
+  }
+
+  if(cat_id == "")
+  {
+    if(check)
+      $('#cat_id').focus();
+      $('#cat_id').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select Category<br>';
+  }
+
+  if(sub_cat_id == "")
+  {
+    if(check)
+      $('#sub_cat_id').focus();
+      $('#sub_cat_id').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select Subcategory<br>';
+  }
+
+  if(office_number == "")
+  {
+    if(check)
+      $('#office_number').focus();
+      $('#office_number').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Office Number<br>';
+  }
+
+  if(country == "")
+  {
+    if(check)
+      $('#country').focus();
+      $('#country').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select Country<br>';
+  }
+
+  if(state == "")
+  {
+    if(check)
+      $('#state').focus();
+      $('#state').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select State<br>';    
+  }
+
+  if(city == "")
+  {
+    if(check)
+      $('#city').focus();
+      $('#city').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select City<br>';
   }
 
   if(check)
@@ -522,6 +597,13 @@ function addBusiness()
         });
       }
     });        
+  }
+  else
+  {
+        $('.alert-danger').html(errormsgs).slideDown('fast').delay(5000).slideUp(1000,function(){}); 
+        var body = $("html, body");
+        body.animate({scrollTop:700}, '500', 'swing', function() { 
+        });
   }
 
 }
@@ -640,13 +722,14 @@ function addEvent()
   var twitter = $.trim($('#twitter').val());
   var instagram = $.trim($('#instagram').val());
   var check = true;
-
+  var errormsgs = '';
   if(first_name == "")
   {
     $('#first_name').parent().addClass('has-error');
     if(check)
       $('#first_name').focus();
     check = false;
+    errormsgs += 'Please Enter First Name<br>';
   }
 
   if(event_name == "")
@@ -655,6 +738,34 @@ function addEvent()
       $('#event_name').focus();
       $('#event_name').parent().addClass('has-error');
     check = false;
+    errormsgs += 'Please Enter Event Name<br>';
+  }
+
+  if(venue_name == "")
+  {
+    if(check)
+      $('#venue_name').focus();
+      $('#venue_name').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Venue Name<br>';
+  }
+
+  if(street_address == "")
+  {
+    if(check)
+      $('#street_address').focus();
+      $('#street_address').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Street Address<br>';
+  }
+
+  if(post_code == "")
+  {
+    if(check)
+      $('#post_code').focus();
+      $('#post_code').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Post Code<br>';    
   }
 
   if(start_date == "____/__/__ __:__")
@@ -663,8 +774,8 @@ function addEvent()
       $('#start_date').focus();
       $('#start_date').parent().addClass('has-error');
     check = false;
+    errormsgs += 'Please Select Event Start Date<br>';
   }
-
 
   if(end_date == "____/__/__ __:__")
   {
@@ -672,6 +783,43 @@ function addEvent()
       $('#end_date').focus();
       $('#end_date').parent().addClass('has-error');
     check = false;
+    errormsgs += 'Please Select Event End Date<br>';    
+  }
+
+  if(office_number == "")
+  {
+    if(check)
+      $('#office_number').focus();
+      $('#office_number').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Enter Office Number<br>';
+  }
+
+  if(country == "")
+  {
+    if(check)
+      $('#country').focus();
+      $('#country').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select Country<br>';    
+  }
+
+  if(state == "")
+  {
+    if(check)
+      $('#state').focus();
+      $('#state').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select State<br>';
+  }
+
+  if(city == "")
+  {
+    if(check)
+      $('#city').focus();
+      $('#city').parent().addClass('has-error');
+    check = false;
+    errormsgs += 'Please Select City<br>';
   }
 
  if(check)
@@ -707,6 +855,13 @@ function addEvent()
         });
       }
     });        
+  }
+  else
+  {
+        $('.alert-danger').html(errormsgs).slideDown('fast').delay(5000).slideUp(1000,function(){}); 
+        var body = $("html, body");
+          body.animate({scrollTop:700}, '500', 'swing', function() { 
+        });
   }
 
 }
@@ -796,7 +951,7 @@ function getAllVendors(type)
 
 
 
-function showdealAddPopup()
+function showDealAddPopup()
 {
     dealReset();
 }
@@ -809,6 +964,8 @@ function dealReset()
     $('#end_date').val('');
     $('#desc').val('');
     $('#status').val('');
+    $( ".fileinput-remove" ).trigger( "click" );
+    allImages = [];
 }
 
 function getDeals()
@@ -845,7 +1002,7 @@ function getDeals()
                             <td>'+value.end_date+'</td>\
                             <td>'+value.desc+'</td>\
                             <td>'+value.status+'</td>\
-                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+', \''+value.deal_name+'\', \''+value.start_date+'\', \''+value.end_date+'\', \''+value.desc+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
                          </tr>';
 
             });            
@@ -866,15 +1023,27 @@ function getDeals()
     });
 }
 
-function getSingleDeal(id, deal_name, start_date, end_date, desc, status)
+function getSingleDeal(id)
 {
-    $('#deal_id').val(id);
-    $('#deal_name').val(deal_name);
-    $('#start_date').val(start_date);
-    $('#end_date').val(end_date);
-    $('#desc').val(desc);
-    $('#status').val(status);
 
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletedeal',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#deal_id').val(data.id);
+        $('#deal_name').val(data.deal_name);
+        $('#start_date').val(data.start_date);
+        $('#end_date').val(data.end_date);
+        $('#desc').val(data.desc);
+      },
+      error:function(jqxhr){
+      }
+    });
 }
 
 function deleteDeal(id)
@@ -941,7 +1110,7 @@ function addUpdateDeal()
            type: "POST",
            url: apiUrl + route,
            dataType : "JSON",
-           data: {id:id, deal_name:deal_name, start_date : start_date,end_date:end_date,desc:desc},
+           data: {id:id, deal_name:deal_name, start_date : start_date,end_date:end_date,desc:desc, images:allImages},
            beforeSend:function(){
 
            },
@@ -951,6 +1120,7 @@ function addUpdateDeal()
              {
                  getDeals();                
                  $('#adddeal').modal('hide');
+                $( ".fileinput-remove" ).trigger( "click" );
              }
            },
            error:function(jqxhr){

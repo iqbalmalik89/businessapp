@@ -139,7 +139,7 @@ class VendorRepo{
 		if(!empty($days))
 		{
 			foreach ($days as $key => $day) {
-				$values = array('vendor_id' => $vendorId, 'day_code' => $day['day_code'],'start_time' => $day['start_time'],'end_time' => $day['end_time']);
+				$values = array('vendor_id' => $vendorId, 'day_code' => $day['day_code'],'start_time' => date("H:i:s", strtotime($day['start_time'])) ,'end_time' => date("H:i:s", strtotime($day['end_time'])));
 				$query = $GLOBALS['con']->insertInto('vendor_working_days', $values)->execute();
 			}
 		}

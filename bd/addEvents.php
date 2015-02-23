@@ -244,7 +244,7 @@
                                  <label for="name">Contact Name:</label>
                                  <div class="row">
                                     <div class="col-xs-6 col-md-6">
-                                       <input type="text" class="form-control" id="first_name" placeholder="First name" required="required" />
+                                       <input type="text" onkeyup="$(this).parent().removeClass('has-error');" class="form-control" id="first_name" placeholder="First name" required="required" />
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                        <input type="text" class="form-control" id="last_name" placeholder="Lasts name" required="required" />
@@ -254,14 +254,14 @@
                               <div class="form-group">
                                  <label for="name">
                                  Event Name:</label>
-                                 <input type="text" onblur="checkEventName(this.value);" class="form-control" id="event_name" placeholder="Event Name" required="required" />
+                                 <input type="text" onblur="checkEventName(this.value);" onkeyup="$(this).parent().removeClass('has-error');" class="form-control" id="event_name" placeholder="Event Name" required="required" />
                                  <img class="spinner" id="business_spinner" src="images/spinner.gif">
 
                               </div>
                               <div class="form-group">
                                  <label for="name">
                                  Venue:</label>
-                                 <input type="text" class="form-control" id="venue_name" placeholder="Venue Name" required="required" />
+                                 <input type="text" class="form-control" onkeyup="$(this).parent().removeClass('has-error');" id="venue_name" placeholder="Venue Name" required="required" />
                               </div>
                               <!-- address-line1 input-->
                               <div class="form-group">
@@ -269,7 +269,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="text" class="form-control" id="street_address" placeholder="Street Name " required="required" />
+                                    <input type="text" class="form-control" onkeyup="$(this).parent().removeClass('has-error');" id="street_address" placeholder="Street Name " required="required" />
                                  </div>
                               </div>
                               <!-- address-line1 input-->
@@ -278,7 +278,7 @@
                                  <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span>
                                     </span>
-                                    <input type="text" class="form-control" id="post_code" placeholder="Post Code" required="required" />
+                                    <input type="text" class="form-control" onkeyup="$(this).parent().removeClass('has-error');" id="post_code" placeholder="Post Code" required="required" />
                                  </div>
                               </div>
                               <div class="form-group">
@@ -286,13 +286,13 @@
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">Start Date & Time:</label>
                                        <div class="input-group date">
-                                          <input  id="start_date" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                          <input  id="start_date" type="text" onkeyup="$(this).parent().removeClass('has-error');" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                        </div>
                                     </div>
                                     <div class="col-xs-6 col-md-6">
                                        <label for="name">End Date & Time:</label>
                                        <div class="input-group date">
-                                          <input  id="end_date" type="text" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                          <input  id="end_date" type="text" onkeyup="$(this).parent().removeClass('has-error');" class="form-control" required="required" ><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                        </div>
                                     </div>
                                  </div>
@@ -329,12 +329,12 @@
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                      </span>
-                     <input type="phone" class="form-control" id="office_number" placeholder="Enter Main #" required="required" />
+                     <input type="phone" class="form-control" onkeyup="$(this).parent().removeClass('has-error');" id="office_number" placeholder="Enter Main #" required="required" />
                      </div>
                      </div>
                      <div class="form-group">
                      <label for="phone">
-                     Contact Phone 1 #:</label>
+                     Contact Phone 2 #:</label>
                      <div class="input-group">
                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                      </span>
@@ -352,20 +352,20 @@
                      </div>
                      <div class="form-group">
                      <label for="city"> Country: </label>
-                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);">
+                     <select id="country" name="subject" class="form-control" required="required" onchange="getStates(this.value);$(this).parent().removeClass('has-error');">
                      <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> Province/Sate:</label>
-                     <select id="state" onchange="getCities(this.value);" name="subject" class="form-control" required="required">
-                     <option value="state" selected="">Choose One:</option>
+                     <select id="state" onchange="getCities(this.value);$(this).parent().removeClass('has-error');" name="subject" class="form-control" required="required">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                      <div class="form-group">
                      <label for="city"> City</label>
-                     <select id="city" name="subject" class="form-control" required="required">
-                     <option value="city" selected="">Choose One:</option>
+                     <select id="city" name="subject" class="form-control" onchange="$(this).parent().removeClass('has-error');" required="required">
+                     <option value="" selected="">Choose One:</option>
                      </select>
                      </div>
                
