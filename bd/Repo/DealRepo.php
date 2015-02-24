@@ -113,17 +113,15 @@ class DealRepo
 		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
-		$data = array();
 
 		// If there is some data in json form
 		if(!empty($requestData))
 		{				
 			$exists = $GLOBALS['con']->from('deals')->where('id',$requestData['id']);
-			$allCat = array();
 
 			foreach($exists as $items)
 	    	{
-				$data[] = $items;
+				$data = $items;
 
 			}
 
@@ -132,8 +130,9 @@ class DealRepo
 		
 		else
 		{
+					$data = array();
+
 			$exists = $GLOBALS['con']->from('deals');
-			$allCat = array();
 
 			foreach($exists as $items)
 	    	{
