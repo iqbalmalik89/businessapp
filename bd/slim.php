@@ -301,6 +301,29 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     }); 
 
+    // Add Promo Vendors and Images
+    $app->post('/addpromovendors', function() use ($app){
+
+        $new = new PromoVendorsRepo();
+        $code = $new->addPromoVendors($app->requestdata);
+        response($code, array());
+    });
+
+    // Update Promo Vendors and Images
+    $app->post('/editpromovendors', function() use ($app){
+
+        $new = new PromoVendorsRepo();
+        $code = $new->editPromoVendors($app->requestdata);
+        response($code, array());
+    });
+
+    // Get promo vendors
+    $app->get('/promovendors', function() use ($app){
+        $new = new PromoVendorsRepo();
+        $code = $new->getPromoVendors($app->requestdata);
+        response($code['response'], array('data' => $code['data']));
+    }); 
+
 });
 
 
