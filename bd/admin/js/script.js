@@ -899,6 +899,7 @@ function getAllVendors(type)
           }
 
           link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';
+          link += ' | <a href= "javascript:void(0);" onclick="deleteVendor('+vendor.id+')" target="blank">Delete</a>';
 
           var html = '<tr>\
                       <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
@@ -949,7 +950,23 @@ function getAllVendors(type)
 
 }
 
+function deleteVendor(id)
+{
+  $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletevendor',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
 
+      },
+      success:function(data){
+        getAllVendors();
+      },
+      error:function(jqxhr){
+      }
+    });
+}
 
 function showDealAddPopup()
 {
@@ -1155,3 +1172,131 @@ function changeVendorStatus(id, status)
     }
   });  
 }
+
+function getAllEvents(type)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'events',
+      dataType : "JSON",
+      data: {},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+
+        var pendinghtml = '';
+        var activehtml = '';
+        var deactivehtml = '';
+        $.each(data.data, function( index, events ) {
+          var link = '';
+          console.log(events.first_name);
+          if(events.status == 'ongoing')
+          {
+            link = '<a href="javascript:void(0);" onclick="changeEventStatus('+events.id+', \'expired\');">Expired</a>';          
+          }
+          else if(events.status == 'expired')
+          {
+            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+events.id+', \'ongoing\');">Ongoing</a>';          
+          }
+          else if(events.status == 'pending')
+          {
+            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+events.id+', \'ongoing\');">Ongoing</a>';
+          }
+
+          //link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';
+          link += ' | <a href= "javascript:void(0);" onclick="deleteEvent('+events.id+')" target="blank">Delete</a>';
+
+          var html = '<tr>\
+                      <td>'+events.first_name +  ' ' + events.last_name+'</td>\
+                      <td>'+events.event_name+'</td>\
+                      <td>'+events.venue+'</td>\
+                      <td>' +link+ '</td>\
+                   </tr>';
+
+          if(events.status == 'ongoing')
+          {
+            activehtml += html;
+          }
+          else if(events.status == 'expired')
+          {
+            deactivehtml += html;
+          }
+          else if(events.status == 'pending')
+          {
+            pendinghtml += html;
+          }
+
+        });
+
+        $('#pendingbody').html(pendinghtml);        
+        $('#activebody').html(activehtml);        
+        $('#deactivebody').html(deactivehtml);
+
+
+        nohtml = '<tr>\
+                        <td colspan="4" align="center">No Events found.</td>\
+                     </tr>';
+
+      if(pendinghtml == '')
+        $('#pendingbody').html(nohtml);        
+      if(activehtml == '')
+      {
+        $('#activebody').html(nohtml);        
+      }
+      if(deactivehtml == '')
+        $('#deactivebody').html(nohtml);        
+
+
+
+      },
+      error:function(jqxhr){
+      }
+    });
+
+}
+
+
+function getSingleEvent(id)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'events',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+
+      success:function(data){
+        $('#event_id').val(data.data.id);
+        $('#first_name').val(data.data.first_name);
+        $('#last_name').val(data.data.last_name);
+        $('#event_name').val(data.data.event_name);
+        $('#venue').val(data.data.venue);
+        
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+
+
+function deleteEvent(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deleteevent',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        getAllEvents();
+      },
+      error:function(jqxhr){
+      }
+    });
+  }

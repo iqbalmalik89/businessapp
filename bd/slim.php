@@ -286,6 +286,21 @@ $app->group('/api', function () use ($app) {
         $code = $new->deleteVendor($app->requestdata);
         response($code, array());
     });
+
+    // Get events
+    $app->get('/events', function() use ($app){
+        $new = new EventRepo();
+        $code = $new->getEvents($app->requestdata);
+        response($code['response'], array('data' => $code['data']));
+    }); 
+
+    // Delete Event
+    $app->post('/deleteevent' , function () use ($app){
+        $new = new EventRepo();
+        $code = $new->deleteEvent($app->requestdata);
+        response($code, array());
+    }); 
+
 });
 
 

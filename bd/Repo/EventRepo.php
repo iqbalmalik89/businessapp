@@ -100,17 +100,15 @@ class EventRepo
 		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
-		$data = array();
 
 		// If there is some data in json form
 		if(!empty($requestData))
 		{				
 			$exists = $GLOBALS['con']->from('events')->where('id',$requestData['id']);
-			$allCat = array();
 
 			foreach($exists as $items)
 	    	{
-				$data[] = $items;
+				$data = $items;
 
 			}
 
@@ -120,8 +118,7 @@ class EventRepo
 		else
 		{
 			$exists = $GLOBALS['con']->from('events');
-			$allCat = array();
-
+			$data = array();
 			foreach($exists as $items)
 	    	{
 				$data[] = $items;
@@ -135,7 +132,34 @@ class EventRepo
 		return array('response' => $response,'data' => $data);
 	}
 	
-	
+	public function deleteEvent($request)
+	{
+		$requestData = $request;
+		$response = 400;
 
+		$exists = $this->count($requestData['id']);
+		if($exists)
+		{
+			$query = $GLOBALS['con']->deleteFrom('events')->where('id', $requestData['id'])->execute();
+			$query1 =  $GLOBALS['con']->deleteFrom('event_images')->where('event_id', $requestData['id'])->execute();
+			$response = 200;
+
+		}
+		else
+		{
+			$response = 400;
+		}
+		return $response;
+
+
+	}
+
+	public function count($request)
+	{
+
+		$query = $GLOBALS['con']->from('events')->where('id', $request);
+		$count = $query->count();
+		 return $count;
+	}
 
 }
