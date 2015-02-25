@@ -921,7 +921,7 @@ function getAllVendors(type)
         $.each(data.data, function( index, vendor ) {
           var link = '';
           
-          options += '<option value="'+vendor.id+  ' ' +vendor.business_name+'"> '+vendor.business_name+' </option>';
+          options += '<option value="'+vendor.id+'" > '+vendor.business_name+' </option>';
 
           if(vendor.status == 'activated')
           {
@@ -1512,3 +1512,37 @@ function deleteEvent(id)
       }
     });
   }
+
+function changeEventStatus(id, status)
+{
+  $.ajax({
+    type: "POST",
+    url: apiUrl + 'event_status',
+    dataType : "JSON",
+    data: {id:id, status : status},
+    beforeSend:function(){
+
+    },
+    success:function(data){
+    $('#spinner').hide();      
+      if(data.status == 'success')
+      {
+          getAllEvents('');
+          showMsg('#statusmsg', 'Event status updated successfully.', 'green');
+      }
+    },
+    error:function(jqxhr){
+    }
+  });  
+}
+
+function addPromoVendors()
+{
+  var vendor_id  = $('#promohtml').val();
+  var start_date = $('#start_date').val();
+  var end_date   = $('#end_date').val();
+
+  console.log(vendor_id);
+  console.log(start_date);
+  console.log(end_date);
+}
