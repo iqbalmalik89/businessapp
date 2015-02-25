@@ -1536,13 +1536,85 @@ function changeEventStatus(id, status)
   });  
 }
 
-function addPromoVendors()
+function addEditPromoVendors()
 {
-  var vendor_id  = $('#promohtml').val();
-  var start_date = $('#start_date').val();
-  var end_date   = $('#end_date').val();
+    var id         = $('#promo_vendor_id').val();
+    var vendor_id  = $('#promohtml').val();
+    var start_date = $('#start_date').val();
+    var end_date   = $('#end_date').val();
+    var check      = true;
+    console.log(id);console.log(vendor_id);console.log(start_date);console.log(end_date);console.log(allImages);
 
-  console.log(vendor_id);
-  console.log(start_date);
-  console.log(end_date);
+     if(vendor_id == '')
+     {
+         $('#vendor_id').focus();
+         $('#vendor_id').addClass('error-class');
+         check = false;
+     }
+     else if(start_date == '')
+     {
+         $('#start_date').focus();
+         $('#start_date').addClass('error-class');
+         check = false;
+     }
+     else if(end_date == '')
+     {
+         $('#end_date').focus();
+         $('#end_date').addClass('error-class');
+         check = false;
+     }
+    
+     if(id == '')
+     {
+       route = 'addpromovendors';
+     }
+     else
+     {
+       route = 'editpromovendors';
+     }
+
+     if(check)
+     {
+
+         $('#spinner').show();      
+         $.ajax({
+           type: "POST",
+           url: apiUrl + route,
+           dataType : "JSON",
+           data: {id:id, vendor_id:vendor_id, start_date : start_date,end_date:end_date,images:allImages},
+           beforeSend:function(){
+
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+                 //getDeals();                
+                 $('#addpromo').modal('hide');
+                $( ".fileinput-remove" ).trigger( "click" );
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'Promo already exists with this name.', 'red');
+           }
+         });
+    }
+}
+
+function showPromoAddPopup()
+{
+    promoReset();
+}
+
+function promoReset()
+{
+    $('#promo_vendor_id').val('');
+    $('#promohtml').val('');
+    $('#start_date').val('');
+    $('#end_date').val('');
+    $( ".fileinput-remove" ).trigger( "click" );
+    allImages = [];
+    $('#existing_images').html('');    
 }

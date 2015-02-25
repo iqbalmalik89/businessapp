@@ -28,7 +28,7 @@ $( document ).ready(function() {
           checkout2.hide();
         }).data('datepicker');;
 
-    $("#deals_images").fileinput({
+    $("#promo_vendors_images").fileinput({
         uploadUrl: 'index.php', // you must set a valid URL here else you will get an error
         allowedFileExtensions : ['jpg', 'png','gif'],
         overwriteInitial: false,
@@ -52,8 +52,8 @@ $( document ).ready(function() {
 ?>
   <!--main start-->
 <!-- Modal -->
-<div class="modal fade" id="adddeal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<input type="hidden" id="deal_id" value="">
+<div class="modal fade" id="addpromo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<input type="hidden" id="promo_vendor_id" value="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -114,7 +114,7 @@ $( document ).ready(function() {
     <div class="col-md-10 column">
       <form enctype="multipart/form-data">
            <div class="form-group">
-                  <input id="deals_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=promo_images">
+                  <input id="promo_vendors_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=promo_images">
           </div>
 
       </form>
@@ -128,7 +128,7 @@ $( document ).ready(function() {
       <div class="modal-footer">
         <img src="images/spinner.gif" id="spinner" style="position:absolute; right:150px; display:none;">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addPromoVendors();" class="btn btn-primary">Save</button>
+        <button type="button" onclick="addEditPromoVendors();" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -152,7 +152,7 @@ $( document ).ready(function() {
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Promo Vendors  <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Promo Vendors</button>  </h1>
+              <h1>Promo Vendors  <button type="button" data-toggle="modal" data-target="#addpromo" onclick="showPromoAddPopup();" class="btn btn-primary">Add Promo Vendors</button>  </h1>
             </div>
           </div><!--col-md-12 end-->
           <div class="col-sm-6 col-md-12">
