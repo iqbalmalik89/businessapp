@@ -12,7 +12,7 @@
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="plugins/PCharts/style.css" type="text/css">
 <link href="plugins/kalendar/kalendar.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'> -->
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 <script src="js/jquery-1.10.2.js"></script> 
 <script src="js/jquery-ui-1.9.1.js"></script> 

@@ -14,7 +14,7 @@
     <![endif]-->
 <script>
 $( document ).ready(function() {
-  getAllVendors('');
+  getVendorDeals(<?php echo $_GET['vendor_id']; ?>)
 });
 </script>
 </head>
@@ -33,7 +33,6 @@ $( document ).ready(function() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <div class="notification-bar" id="msg" style="display: none;"></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><span id="mode">Add </span> Category</h4>
       </div>
@@ -78,73 +77,29 @@ $( document ).ready(function() {
     <!--scrollable wrapper start-->
       <div class="scrollable wrapper">
 
-
-
       <!--row start-->
         <div class="row">
+
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Vendors  <!-- <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  --> </h1>
+              <h1>Vendor Deals  <!-- <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  --> </h1>
             </div>
           </div><!--col-md-12 end-->
-<div class="tab-container">
-              <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#active">Active</a></li>
-                <li><a data-toggle="tab" href="#pending">Pending</a></li>
-                <li><a data-toggle="tab" href="#deactive">Deactive</a></li>
-              </ul>
-              <div class="tab-content">
-          <div class="notification-bar" id="statusmsg" style="display: none;"></div>
-                <div id="active" class="tab-pane active cont">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="activebody">
-
-                    </tbody>
-                  </table>
-                </div>
-                <div id="pending" class="tab-pane cont">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="pendingbody">
-
-                    </tbody>
-                  </table>
-                </div>
-                <div id="deactive" class="tab-pane">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="deactivebody">
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
 
         </div><!--row end-->
+          <div class="notification-bar" id="dealsmsg" style="display: none;"></div>
+
+
+        <div class="row" id="vendor_deals">
+
+
+
+        </div><!--row end-->
+
+        <button type="button" onclick="saveVendorDeals(<?php echo $_GET['vendor_id']; ?>);" class="btn btn-primary">Save</button>
+
+
       </div><!--scrollable wrapper end--> 
     </div><!--margin-container end--> 
   </div><!--main end--> 

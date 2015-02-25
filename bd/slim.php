@@ -324,6 +324,20 @@ $app->group('/api', function () use ($app) {
         response($code['response'], array('data' => $code['data']));
     }); 
 
+    // Get Deals of a vendor
+    $app->get('/vendordeals', function() use ($app){
+        $new = new DealRepo();
+        $code = $new->getVendorDeals($app->requestdata);
+        response($code['response'], array('data' => $code['data']));
+    });     
+
+    // Get Deals of a vendor
+    $app->post('/vendordeals', function() use ($app){
+        $new = new DealRepo();
+        $code = $new->postVendorDeals($app->requestdata);
+        response($code, array());
+    });     
+
 });
 
 

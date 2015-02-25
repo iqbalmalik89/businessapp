@@ -185,7 +185,6 @@ $( document ).ready(function() {
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Description</th>
-                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

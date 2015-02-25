@@ -2413,3 +2413,11 @@ h3.timeline-title {
 }
 
 
+.spinner
+{   
+  position: absolute;
+  left: 548px;
+  width: 20px;
+  top: 106px;
+  display: none;
+}

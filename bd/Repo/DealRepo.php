@@ -32,6 +32,24 @@ class DealRepo
 		return $response;
 	}
 
+	public function isVendorDeal($dealId, $vendorId)
+	{
+		$count = $GLOBALS['con']->from('vendor_deals')->where('deal_id',$dealId)->where('vendor_id',$vendorId)->count();
+		return $count;
+	}
+
+	public function getVendorDeals($request)
+	{
+		$deals = $this->getDeals('');
+
+		if(isset($deals['data']))
+		{
+			foreach ($deals['data'] as $key => &$deal) {
+				$deal['is_vendor'] = $this->isVendorDeal($deal['id'], $request['vendor_id']);
+			}
+		}
+		return $deals;
+	}
 
 	public function addDealImages($dealId, $images)
 	{
@@ -185,22 +203,42 @@ class DealRepo
 
 	}
 
-	public function addDealVendors($request)
+	// public function addDealVendors($request)
+	// {
+	// 	$response = 200;
+	// 	$requestData = $request;
+	// 	$exists = $GLOBALS['con']->deleteFrom('vendor_deals')->where('deal_id',$requestData['deal_id'])->execute();
+	// 	$vendor = $requestData['vendor_ids'];
+	    
+	// 	 foreach($vendor as $items)
+	// 	 {
+	// 	 	$value = array('deal_id' => $requestData['deal_id'], 'vendor_id' => $items);
+	// 	 	$query = $GLOBALS['con']->insertInto('vendor_deals',$value)->execute();
+		     
+	// 	 }
+		
+	// 	return $response;
+	// }
+
+	public function postVendorDeals($request)
 	{
 		$response = 200;
 		$requestData = $request;
-		$exists = $GLOBALS['con']->deleteFrom('vendor_deals')->where('deal_id',$requestData['deal_id'])->execute();
-		$vendor = $requestData['vendor_ids'];
-	    
-		 foreach($vendor as $items)
-		 {
-		 	$value = array('deal_id' => $requestData['deal_id'], 'vendor_id' => $items);
-		 	$query = $GLOBALS['con']->insertInto('vendor_deals',$value)->execute();
-		     
-		 }
-		
-		return $response;
-	}
+		$exists = $GLOBALS['con']->deleteFrom('vendor_deals')->where('vendor_id',$requestData['vendor_id'])->execute();
 
+		if(isset($requestData['deal_ids']))
+		{
+			$deals = $requestData['deal_ids'];
+		    
+			 foreach($deals as $item)
+			 {
+			 	$value = array('deal_id' => $item, 'vendor_id' => $requestData['vendor_id']);
+			 	$query = $GLOBALS['con']->insertInto('vendor_deals',$value)->execute();		     
+			 }
+			
+		}
+
+		return 200;
+	}
 
 }

@@ -70,6 +70,10 @@
                </div>
             </div>
          </nav>
+
+
+<input type="hidden" id="vendor_id" value="">
+
          <!--Video Section-->
          <section class="content-section video-section">
             <!-- TOP BAR -->

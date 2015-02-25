@@ -114,7 +114,7 @@ $( document ).ready(function() {
     <div class="col-md-10 column">
       <form enctype="multipart/form-data">
            <div class="form-group">
-                  <input id="deals_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=deals_images">
+                  <input id="deals_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=promo_images">
           </div>
 
       </form>

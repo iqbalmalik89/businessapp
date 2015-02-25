@@ -8,9 +8,12 @@ class VendorRepo{
 
 		$requestData = $request;
 		//checks if business_name already exists
-		$check = $GLOBALS['con']->from('vendors')->where('business_name',$requestData);
-		$count = count($check);
-		if($count)
+		if(!empty($request['vendor_id']))
+			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData)->where('id != ?', $requestData['vendor_id'])->count();
+		else
+			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData)->count();
+
+		if($count > 0)
 		{
 			$response = false;
 		}
@@ -18,21 +21,32 @@ class VendorRepo{
 		{
 			$response = true;
 		}
+
 		return $response;
 	}
 
 	public function getVendors($request)
 	{
 		$resp = array('code' => 200, 'data' => array());
-		$vendors = $GLOBALS['con']->from('vendors');
+
+		if(isset($request['vendor_id']))
+		{
+			$vendors = $GLOBALS['con']->from('vendors')->where("id", $request['vendor_id']);
+		}
+		else
+			$vendors = $GLOBALS['con']->from('vendors');			
+
 		$allVendors = array();
 		if(!empty($vendors))
 		{
 			foreach ($vendors as $key => $vendor) {
 				$vendor['images'] = $this->getVendorImages($vendor['id']);
 				$vendor['days'] = $this->getVendorDays($vendor['id']);
-
-				$resp['data'][] = $vendor;
+		
+				if(!isset($request['vendor_id']))
+					$resp['data'][] = $vendor;
+				else
+					$resp['data'] = $vendor;
 			}
 		}
 
@@ -46,7 +60,8 @@ class VendorRepo{
 		$response = 400;
 		$requestData = $request;
 		//var_dump($requestData);
-		$check = $this->checkVendor($requestData['business_name']);
+		$check = $this->checkVendor($requestData);
+
 		if($check)
 		{
 			$values = array('first_name' 		=> $requestData['first_name'],
@@ -70,7 +85,21 @@ class VendorRepo{
 							'status' 			=> 'pending',
 							'date_created' 		=> date("Y-m-d H:i:s"));
 			//print_r($values);
-			$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();		
+
+			if(!empty($requestData['vendor_id']))
+			{
+				unset($values['status']);
+				$query = $GLOBALS['con']->deleteFrom('vendor_images')->where('vendor_id', $requestData['vendor_id'])->execute();	
+				$query = $GLOBALS['con']->deleteFrom('vendor_working_days')->where('vendor_id', $requestData['vendor_id'])->execute();	
+
+				$rs = $GLOBALS['con']->update('vendors', $values, $requestData['vendor_id'])->execute();			
+				$vendorId = $requestData['vendor_id'];
+			}
+			else
+			{	
+				$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();
+			}
+
 
 			if($vendorId > 0)
 			{
@@ -112,6 +141,8 @@ class VendorRepo{
 
 			foreach($days as $day)
 			{
+				$day['start_time'] = date("g:i a", strtotime($day['start_time']));
+				$day['end_time'] = date("g:i a", strtotime($day['end_time']));				
 				$VendorDays[] = $day;
 			}
 		}

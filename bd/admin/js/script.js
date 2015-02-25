@@ -148,15 +148,21 @@ function showSubAddPopup()
   subCatReset();
 }
 
-function getSubCategories()
+function getSubCategories(edit)
 {
   var cat_id = $('#cat_id').val();
+
+  if(edit)
+    sync = false;
+  else
+    sync = true; 
 
     $.ajax({
       type: 'GET',
       url: apiUrl + 'sub_cat',
       dataType : "JSON",
       data: {cat_id: cat_id},
+      async: sync,
       beforeSend:function(){
 
       },
@@ -191,13 +197,19 @@ function getSubCategories()
     });
 }
 var allImages = [] ;
-function getCategories()
+function getCategories(edit)
 {
+  if(edit)
+    sync = false;
+  else
+    sync = true;
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'categories',
       dataType : "JSON",
       data: {},
+      async:sync,
       beforeSend:function(){
 
       },
@@ -223,6 +235,7 @@ function getCategories()
                         <td colspan="3" align="center">Categories not found</td>\
                      </tr>';            
         }
+
 
         $('#categorybody').html(html);
         $('#cat_id').append(options);
@@ -343,6 +356,7 @@ function addUpdateCategory()
 function businessReset()
 {
   allImages = [];
+  $('#existing_images').html('');
   var id = $.trim($('#id').val());
   $('#first_name, #last_name, #business_name, #street_address, #post_code, #office_number, #cell_number, #city, #state, #email_address, #website, #facebook, #twitter, #youtube, #instagram').val('');
 
@@ -371,6 +385,7 @@ function businessReset()
 
 function checkBusinessName(name)
 {
+  var vendor_id = $('#vendor_id').val();
   if(name!="")
   {
     $('#business_spinner').show();    
@@ -378,7 +393,7 @@ function checkBusinessName(name)
       type: "GET",
       url: apiUrl + 'vendor_name',
       dataType : "JSON",
-      data: {name:name},
+      data: {name:name, vendor_id:vendor_id},
       beforeSend:function(){
 
       },
@@ -442,7 +457,7 @@ function checkEventName(name)
 
 function addBusiness()
 {
-  var id = $.trim($('#id').val());
+  var id = $.trim($('#vendor_id').val());
   var first_name = $.trim($('#first_name').val());
   var last_name = $.trim($('#last_name').val());
   var business_name = $.trim($('#business_name').val());
@@ -572,7 +587,7 @@ function addBusiness()
       type: "POST",
       url: apiUrl + 'business_add',
       dataType : "JSON",
-      data: {first_name: first_name, last_name: last_name, business_name: business_name, address: street_address, postcode: post_code, cat_id: cat_id, sub_cat_id:sub_cat_id, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, days: days},
+      data: {vendor_id: id, first_name: first_name, last_name: last_name, business_name: business_name, address: street_address, postcode: post_code, cat_id: cat_id, sub_cat_id:sub_cat_id, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, days: days},
       beforeSend:function(){
 
       },
@@ -581,11 +596,14 @@ function addBusiness()
 
         if(data.status == 'success')
         {
+          if(id !='' && id!= 0)
+            window.location = 'vendors.php';
           businessReset();
           $('.alert-success').html('Business added successfully').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
           var body = $("html, body");
           body.animate({scrollTop:700}, '500', 'swing', function() { 
           });
+
         }
 
       },
@@ -608,13 +626,19 @@ function addBusiness()
 
 }
 
-function getCountries()
+function getCountries(edit)
 {
+  if(edit)
+    sync = false;
+  else
+    sync = true;
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'countries',
       dataType : "JSON",
       data: {},
+      async:sync,
       beforeSend:function(){
 
       },
@@ -634,13 +658,19 @@ function getCountries()
     });  
 }
 
-function getStates(country)
+function getStates(country, edit)
 {
+  if(edit)
+    sync = false;
+  else
+    sync = true;
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'states',
       dataType : "JSON",
       data: {country: country},
+      async: sync,
       beforeSend:function(){
 
       },
@@ -660,13 +690,18 @@ function getStates(country)
     });  
 }
 
-function getCities(state)
+function getCities(state, edit)
 {
+  if(edit)
+    sync = false;
+  else
+    sync = true;  
     $.ajax({
       type: 'GET',
       url: apiUrl + 'cities',
       dataType : "JSON",
       data: {state: state},
+      async : sync,
       beforeSend:function(){
 
       },
@@ -879,16 +914,15 @@ function getAllVendors(type)
 
       },
       success:function(data){
-
         var options = '';
         var pendinghtml = '';
         var activehtml = '';
         var deactivehtml = '';
         $.each(data.data, function( index, vendor ) {
-
+          var link = '';
+          
           options += '<option value="'+vendor.id+  ' ' +vendor.business_name+'"> '+vendor.business_name+' </option>';
 
-          var link = '';
           if(vendor.status == 'activated')
           {
             link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+vendor.id+', \'deactivated\');">Deactive</a>';          
@@ -902,8 +936,9 @@ function getAllVendors(type)
             link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+vendor.id+', \'activated\');">Approve</a>';
           }
 
-          link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';
-          link += ' | <a href= "javascript:void(0);" onclick="deleteVendor('+vendor.id+')" target="blank">Delete</a>';
+          link += ' | <a href="editvendor.php?id='+vendor.id+'">Edit</a>';
+          link += ' | <a href= "javascript:void(0);" onclick="deleteVendor('+vendor.id+')">Delete</a>';
+          link += ' | <a href= "vendordeals.php?vendor_id='+vendor.id+'">Manage Deals</a>';
 
           var html = '<tr>\
                       <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
@@ -926,11 +961,11 @@ function getAllVendors(type)
           }
 
         });
+
         $('#pendingbody').html(pendinghtml);        
         $('#activebody').html(activehtml);        
         $('#deactivebody').html(deactivehtml);
         $('#promohtml').append(options);
-
 
         nohtml = '<tr>\
                         <td colspan="4" align="center">No vendors found.</td>\
@@ -1023,7 +1058,6 @@ function getDeals()
                             <td>'+value.start_date+'</td>\
                             <td>'+value.end_date+'</td>\
                             <td>'+value.desc+'</td>\
-                            <td>'+value.status+'</td>\
                             <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
                          </tr>';
 
@@ -1122,6 +1156,73 @@ function deleteDeal(id)
     });
 }
 
+function getSingleVendor(id)
+{
+    $.ajax({
+      type: 'get',
+      url: apiUrl + 'vendors',
+      dataType : "JSON",
+      data: {vendor_id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#first_name').val(data.data.first_name);
+        $('#last_name').val(data.data.last_name);
+        $('#business_name').val(data.data.business_name);
+        $('#street_address').val(data.data.address);
+        $('#post_code').val(data.data.postcode);
+        $('#cat_id').val(data.data.cat_id);
+
+        getSubCategories(true);
+
+        $('#sub_cat_id').val(data.data.sub_cat_id)
+        $('#office_number').val(data.data.office_number);        
+        $('#cell_number').val(data.data.cell_number);        
+        $('#country').val(data.data.country);      
+        
+        getStates(data.data.country, true)
+        getCities(data.data.state, true)
+
+        $('#city').val(data.data.city);        
+        $('#state').val(data.data.state);        
+        $('#email_address').val(data.data.email);        
+        $('#website').val(data.data.website);        
+        $('#facebook').val(data.data.facebook);        
+        $('#twitter').val(data.data.twitter);        
+        $('#instagram').val(data.data.instagram);        
+        $('#youtube').val(data.data.youtube);        
+
+        $.each(data.data.days, function( index, day ) {
+          console.log(day);
+            $('#start_time'+day.day_code).val(day.start_time);
+            $('#end_time'+day.day_code).val(day.end_time);
+        });
+
+        var images_html = '';
+        $.each(data.data.images, function( index, imgs ) {
+          allImages.push(imgs.path);
+          images_html += '<div class="col-lg-2">\
+              <div class="panel">\
+                <div class="panel-body">\
+                  <img src="'+imgs.url+'" width="50" height="50">\
+                  <a href="javascript:void(0);" onclick="removeImage(this, \''+imgs.path+'\');">Remove</a>\
+                </div>\
+              </div>\
+            </div>';
+       });
+        if(images_html != '')
+        {
+          $('#existing_images').html(images_html);
+        }
+
+
+
+       },
+      error:function(jqxhr){
+      }
+    });
+}
 
 function addUpdateDeal()
 {
@@ -1322,7 +1423,72 @@ function getSingleEvent(id)
     });
 }
 
+function getVendorDeals(vendor_id)
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'vendordeals',
+      dataType : "JSON",
+      data: {vendor_id:vendor_id},
+      beforeSend:function(){
 
+      },
+      success:function(data){
+        var html = '';
+       $.each(data.data, function( index, value ) {
+        var checked = '';
+        if(value.is_vendor)
+          checked = 'checked="checked"';
+
+        html += '<div class="col-lg-3">\
+              <div class="panel">\
+                <div class="panel-body">\
+                <span style="margin-right:10px;"><input '+checked+' class="deal_checks" type="checkbox" value="'+value.id+'"></span>'+value.deal_name+'\
+                <br>'+value.start_date+' - '+value.end_date+'\
+                </div>\
+              </div>\
+            </div>';          
+
+          });
+       
+       $('#vendor_deals').html(html);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+function saveVendorDeals(vendor_id)
+{
+  var deal_ids = [];
+
+    $('input:checkbox.deal_checks').each(function () {
+        if(this.checked)
+        {
+          var deal_id = $(this).val();
+          deal_ids.push(deal_id);
+        }
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'vendordeals',
+      dataType : "JSON",
+      data: {vendor_id:vendor_id, deal_ids:deal_ids},
+      beforeSend:function(){
+        
+      },
+      success:function(data){
+        if(data.status == 'success')
+        { 
+          showMsg('#dealsmsg', 'Vendor deals updated', 'green')
+        }
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
 
 function deleteEvent(id)
 {
