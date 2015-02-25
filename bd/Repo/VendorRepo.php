@@ -97,6 +97,38 @@ class VendorRepo{
 			}
 			else
 			{	
+				// Add vendor
+$to = "jasonbourne501@gmail.com";
+$subject = "New Business Added";
+
+$message = "
+<html>
+<head>
+<title>New Vendor</title>
+</head>
+<body>
+Hello,  New business is added. Please review the details. 
+<table>
+<tr>
+<th>".$requestData['first_name'].' '.$requestData['last_name']."</th>
+<th>".$requestData['business_name']."</th>
+</tr>
+<tr>
+<td colspan='2'><a href='http://yakoinc.com/bd/admin/login.php'>Login into admin</a></td>
+</tr>
+</table>
+</body>
+</html>
+";
+
+// Always set content-type when sending HTML email
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+// More headers
+$headers .= 'From: <jasonbourne501@gmail.com>' . "\r\n";
+
+mail($to,$subject,$message,$headers);				
 				$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();
 			}
 

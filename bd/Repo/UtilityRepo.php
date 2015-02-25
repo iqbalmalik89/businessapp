@@ -19,7 +19,7 @@ class UtilityRepo{
  			if($root)
 		 		$dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'bd'.DIRECTORY_SEPARATOR;
 		 	else
-		 		$dir = 'http://'.$_SERVER['HTTP_HOST'].'businessapp/bd/';
+		 		$dir = 'http://'.$_SERVER['HTTP_HOST'].'/bd/';
  		}
 
  		return $dir;

@@ -119,6 +119,8 @@ class DealRepo
 
 	public function deleteDeal($requestData)
 	{
+		$query = $GLOBALS['con']->deleteFrom('deals_images')->where('deal_id', $requestData['id'])->execute();
+		$query = $GLOBALS['con']->deleteFrom('vendor_deals')->where('deal_id', $requestData['id'])->execute();
 		$query = $GLOBALS['con']->deleteFrom('deals')->where('id', $requestData['id'])->execute();
 		if($query)
 		{
