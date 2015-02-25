@@ -1507,3 +1507,26 @@ function deleteEvent(id)
       }
     });
   }
+
+function changeEventStatus(id, status)
+{
+  $.ajax({
+    type: "POST",
+    url: apiUrl + 'event_status',
+    dataType : "JSON",
+    data: {id:id, status : status},
+    beforeSend:function(){
+
+    },
+    success:function(data){
+    $('#spinner').hide();      
+      if(data.status == 'success')
+      {
+          getAllEvents('');
+          showMsg('#statusmsg', 'Event status updated successfully.', 'green');
+      }
+    },
+    error:function(jqxhr){
+    }
+  });  
+}
