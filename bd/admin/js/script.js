@@ -1346,8 +1346,8 @@ function getAllEvents(type)
             link = '<a href="javascript:void(0);" onclick="changeEventStatus('+events.id+', \'ongoing\');">Ongoing</a>';
           }
 
-          //link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';
-          link += ' | <a href= "javascript:void(0);" onclick="deleteEvent('+events.id+')" target="blank">Delete</a>';
+          link += ' | <a href="editevent.php?id='+events.id+'" target="blank">Edit</a>';
+          link += ' | <a href= "javascript:void(0);" onclick="deleteEvent('+events.id+')">Delete</a>';
 
           var html = '<tr>\
                       <td>'+events.first_name +  ' ' + events.last_name+'</td>\
@@ -1450,7 +1450,12 @@ function getVendorDeals(vendor_id)
             </div>';          
 
           });
-       
+      if(html == '')
+      {
+       $('#vendor_deals').html('<p>There are no deals</p>');
+       $('#dealsave').hide();        
+      }
+       else        
        $('#vendor_deals').html(html);
 
       },

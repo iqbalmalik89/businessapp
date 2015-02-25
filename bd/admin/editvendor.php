@@ -374,8 +374,8 @@ $( document ).ready(function() {
                      </div>
                      <div class="col-md-12">
                      <button type="button" onclick="addBusiness();" class="btn btn-primary pull-left" id="btnContactUs">
-                     Add Your Business</button>
-                     <button type="button" style="margin-left:10px;" class="btn btn-default">Cancel</button>
+                     Update Business</button>
+                     <a style="margin-left:10px;" class="btn btn-default" href="vendors.php">Cancel</a>
                      <img src="images/spinner.gif" id="submit_spinner" style="display:none;">
                      </div>
                      </div>

@@ -1,7 +1,7 @@
   <div id="nav"> 
     <!--logo start-->
     <div class="profile">
-      <div class="logo"><a href="index.html"><img src="images/logo.png" alt=""></a></div>
+      <div class="logo"><a href=""><img src="images/logo.png" alt=""></a></div>
     </div><!--logo end--> 
     
     <!--navigation start-->
@@ -14,7 +14,7 @@
  ?>
 
  <li class="sub"> <a <?php if($currFile == 'categories.php' || $currFile == 'subcategory.php' ) echo 'class="active"'; ?> href="categories.php"><i class="fa fa-sitemap"></i><span>Categories</span></a>
-<li class="sub"> <a <?php if($currFile == 'vendors.php' ||  $currFile == 'vendordeals.php') echo 'class="active"'; ?> href="vendors.php"><i class="fa fa-briefcase"></i><span>Vendors</span></a>
+<li class="sub"> <a <?php if($currFile == 'vendors.php' ||  $currFile == 'vendordeals.php' ||  $currFile == 'editvendor.php') echo 'class="active"'; ?> href="vendors.php"><i class="fa fa-briefcase"></i><span>Vendors</span></a>
 <li class="sub"> <a <?php if($currFile == 'events.php') echo 'class="active"'; ?> href="events.php"><i class="fa fa-calendar-o"></i><span>Events</span></a>
 <li class="sub"> <a <?php if($currFile == 'deals.php') echo 'class="active"'; ?> href="deals.php"><i class="fa fa-trophy"></i><span>Deals</span></a>
 <li class="sub"> <a <?php if($currFile == 'promovendors.php') echo 'class="active"'; ?> href="promovendors.php"><i class="fa fa-bullhorn"></i><span>Promo Vendors</span></a>

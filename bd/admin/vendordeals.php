@@ -97,7 +97,7 @@ $( document ).ready(function() {
 
         </div><!--row end-->
 
-        <button type="button" onclick="saveVendorDeals(<?php echo $_GET['vendor_id']; ?>);" class="btn btn-primary">Save</button>
+        <button type="button"  id="dealsave" onclick="saveVendorDeals(<?php echo $_GET['vendor_id']; ?>);" class="btn btn-primary">Save</button>
 
 
       </div><!--scrollable wrapper end--> 
