@@ -82,7 +82,7 @@ $( document ).ready(function() {
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Vendors  <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  </h1>
+              <h1>Vendors  <!-- <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  --> </h1>
             </div>
           </div><!--col-md-12 end-->
 <div class="tab-container">

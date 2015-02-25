@@ -983,6 +983,7 @@ function dealReset()
     $('#status').val('');
     $( ".fileinput-remove" ).trigger( "click" );
     allImages = [];
+    $('#existing_images').html('');    
 }
 
 function getDeals()
@@ -1040,8 +1041,27 @@ function getDeals()
     });
 }
 
+function removeElm(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+
+function removeImage(obj, path)
+{
+  console.log(allImages);
+  $(obj).parent().parent().parent().remove();
+  removeElm(allImages, path);
+}
+
 function getSingleDeal(id)
 {
+    dealReset();  
     $.ajax({
       type: 'GET',
       url: apiUrl + 'deals',
@@ -1057,6 +1077,23 @@ function getSingleDeal(id)
         $('#start_date').val(data.data.start_date);
         $('#end_date').val(data.data.end_date);
         $('#desc').val(data.data.desc);
+        var images_html = '';
+        $.each(data.data.images, function( index, imgs ) {
+          allImages.push(imgs.path);
+          images_html += '<div class="col-lg-2">\
+              <div class="panel">\
+                <div class="panel-body">\
+                  <img src="'+imgs.url+'" width="50" height="50">\
+                  <a href="javascript:void(0);" onclick="removeImage(this, \''+imgs.path+'\');">Remove</a>\
+                </div>\
+              </div>\
+            </div>';
+       });
+        if(images_html != '')
+        {
+          $('#existing_images').html(images_html);
+        }
+
       },
       error:function(jqxhr){
       }
@@ -1197,11 +1234,11 @@ function getAllEvents(type)
           }
           else if(events.status == 'expired')
           {
-            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+events.id+', \'ongoing\');">Ongoing</a>';          
+            link = '<a href="javascript:void(0);" onclick="changeEventStatus('+events.id+', \'ongoing\');">Ongoing</a>';          
           }
           else if(events.status == 'pending')
           {
-            link = '<a href="javascript:void(0);" onclick="changeVendorStatus('+events.id+', \'ongoing\');">Ongoing</a>';
+            link = '<a href="javascript:void(0);" onclick="changeEventStatus('+events.id+', \'ongoing\');">Ongoing</a>';
           }
 
           //link += ' | <a href="../addBusiness.php?id='+vendor.id+'" target="blank">Edit</a>';

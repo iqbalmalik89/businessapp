@@ -145,7 +145,7 @@ $( document ).ready(function() {
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Events  <button type="button" data-toggle="modal" data-target="#addevent" onclick="showEventAddPopup();" class="btn btn-primary">Add Event</button>  </h1>
+              <h1>Events  <!-- <button type="button" data-toggle="modal" data-target="#addevent" onclick="showEventAddPopup();" class="btn btn-primary">Add Event</button> -->  </h1>
             </div>
           </div><!--col-md-12 end-->
           <div class="tab-container">

@@ -5,7 +5,6 @@ class DealRepo
 	{
 		$requestData = $request;
 		$action = 'post';
-		
 		$response = 400;
 		if(!empty($requestData))
 		{
@@ -18,11 +17,13 @@ class DealRepo
 				}
 				else
 				{
-					$values = array('deal_name' => $requestData['deal_name'],'start_date' => date('Y-m-d', strtotime($requestData['start_date'])), 'end_date' => date('Y-m-d', strtotime($requestData['end_date'])), '`desc`' => $requestData['desc'], '`status`' => 'pending');
+					$values = array('deal_name' => $requestData['deal_name'],'start_date' => $requestData['start_date'], 'end_date' => $requestData['end_date'], '`desc`' => $requestData['desc'], '`status`' => 'pending');
 					$dealId = $GLOBALS['con']->insertInto('deals', $values)->execute();	
 					$response = 200;
 
-					if(isset($requestData['images']) && !empty($requestData['images']))
+					$query = $GLOBALS['con']->deleteFrom('deal_images')->where('deal_id', $dealId)->execute();
+
+					if(isset($requestData['images']))
 						$this->addDealImages($dealId, $requestData['images']);
 
 				}
@@ -87,6 +88,11 @@ class DealRepo
 					$values = array('deal_name' => $requestData['deal_name'],'start_date' => date('Y-m-d', strtotime($requestData['start_date'])), 'end_date' => date('Y-m-d', strtotime($requestData['end_date'])), '`desc`' => $requestData['desc'], '`status`' => 'pending');
 					$query = $GLOBALS['con']->update('deals', $values, $requestData['id'])->execute();
 					$response = 200;
+
+					$query = $GLOBALS['con']->deleteFrom('deal_images')->where('deal_id', $requestData['id'])->execute();
+
+					if(isset($requestData['images']))
+						$this->addDealImages($requestData['id'], $requestData['images']);
 				}
 			}
 		}
@@ -106,6 +112,22 @@ class DealRepo
 		}
 	}	
 
+	public function getDealImages($dealId)
+	{
+		$dealImages = array();
+		if(!empty($dealId))
+		{
+			$images = $GLOBALS['con']->from('deal_images')->where('deal_id',$dealId);
+
+			foreach($images as $image)
+			{
+				$image['url'] = UtilityRepo::getRootPath(false).'data/deals_images/'.$image['path'];
+				$dealImages[] = $image;
+			}
+		}
+		return $dealImages;
+	}
+
 	// Get All Deals. If id given, returns a single deal else return all deals.
 	public function getDeals($request)
 	{	
@@ -121,8 +143,8 @@ class DealRepo
 
 			foreach($exists as $items)
 	    	{
-				$data = $items;
-
+				$data = $items;	
+				$data['images'] = $this->getDealImages($requestData['id']); 
 			}
 
 			$response = 200;

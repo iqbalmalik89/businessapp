@@ -17,13 +17,13 @@ $( document ).ready(function() {
   getDeals();
 
     var checkout = $('#start_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout.hide();
         }).data('datepicker');;
 
     var checkout2 = $('#end_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout2.hide();
         }).data('datepicker');;
@@ -123,6 +123,12 @@ $( document ).ready(function() {
     </div>
   </div>
 </div>
+
+  <div class="row clearfix">
+    <div class="col-md-10 column" id="existing_images">
+
+    </div>
+  </div>
 
 
   <div class="row clearfix">

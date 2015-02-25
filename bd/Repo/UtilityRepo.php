@@ -31,7 +31,7 @@ class UtilityRepo{
 		$resp = array('code' => 400,  'file_name' => '');
 		$path = self::getRootPath(true).'data'.DIRECTORY_SEPARATOR.$path.DIRECTORY_SEPARATOR;
 		$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-		$fileName = time().'.'.strtolower($ext);
+		$fileName = time().rand(1, 100).'.'.strtolower($ext);
 		if(is_array($file))
 		{
 			$type = explode('/', $file['type']);
