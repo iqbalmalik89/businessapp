@@ -880,10 +880,14 @@ function getAllVendors(type)
       },
       success:function(data){
 
+        var options = '';
         var pendinghtml = '';
         var activehtml = '';
         var deactivehtml = '';
         $.each(data.data, function( index, vendor ) {
+
+          options += '<option value="'+vendor.id+  ' ' +vendor.business_name+'"> '+vendor.business_name+' </option>';
+
           var link = '';
           if(vendor.status == 'activated')
           {
@@ -922,10 +926,10 @@ function getAllVendors(type)
           }
 
         });
-
         $('#pendingbody').html(pendinghtml);        
         $('#activebody').html(activehtml);        
         $('#deactivebody').html(deactivehtml);
+        $('#promohtml').append(options);
 
 
         nohtml = '<tr>\
