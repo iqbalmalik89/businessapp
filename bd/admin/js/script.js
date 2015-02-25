@@ -921,7 +921,7 @@ function getAllVendors(type)
         $.each(data.data, function( index, vendor ) {
           var link = '';
           
-          options += '<option value="'+vendor.id+  ' ' +vendor.business_name+'"> '+vendor.business_name+' </option>';
+          options += '<option value="'+vendor.id+'" > '+vendor.business_name+' </option>';
 
           if(vendor.status == 'activated')
           {
@@ -1534,4 +1534,15 @@ function changeEventStatus(id, status)
     error:function(jqxhr){
     }
   });  
+}
+
+function addPromoVendors()
+{
+  var vendor_id  = $('#promohtml').val();
+  var start_date = $('#start_date').val();
+  var end_date   = $('#end_date').val();
+
+  console.log(vendor_id);
+  console.log(start_date);
+  console.log(end_date);
 }

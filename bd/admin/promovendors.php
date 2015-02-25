@@ -128,7 +128,7 @@ $( document ).ready(function() {
       <div class="modal-footer">
         <img src="images/spinner.gif" id="spinner" style="position:absolute; right:150px; display:none;">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addUpdateDeal();" class="btn btn-primary">Save</button>
+        <button type="button" onclick="addPromoVendors();" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
