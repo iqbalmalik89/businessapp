@@ -4,6 +4,7 @@ class PromoVendorsRepo
 	public function addPromoVendors($request)
 	{
 		$requestData = $request;
+		print_r($requestData);
 		$action = 'post';
 		$response = 400;
 
@@ -28,7 +29,7 @@ class PromoVendorsRepo
 		if(isset($requestData['vendor_id']) && !empty($requestData['vendor_id']) && !empty($requestData['start_date']) && !empty($requestData['end_date']))
 		{
 			$values = array('vendor_id' => $requestData['vendor_id'],'start_date' => $requestData['start_date'],'end_date' => $requestData['end_date']);
-			$query = $GLOBALS['con']->update('promo_vendors',$values,$requestData['id']e a)->execute();
+			$query = $GLOBALS['con']->update('promo_vendors',$values,$requestData['id'])->execute();
 
 			
 			$response = 200;
