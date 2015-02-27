@@ -1618,3 +1618,67 @@ function promoReset()
     allImages = [];
     $('#existing_images').html('');    
 }
+
+function getAllPromoVendors()
+{
+  var id = $('#promo_vendor_id').val();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'promovendors',
+      dataType : "JSON",
+      //data: {id: id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+
+            $.each(data.data, function( index, value ) {
+                //options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
+                
+                html += '<tr>\
+                            <td>'+value.vendor_id+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSinglePromoVendor('+value.id+');" data-target="#addpromo">Edit</a> | <a href="javascript:void(0);" onclick="deletePromoVendor('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Promo Vendors not found</td>\
+                     </tr>';            
+        }
+
+        $('#promobody').html(html);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+
+function deletePromoVendor(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletepromovendor',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        getDeals();
+      },
+      error:function(jqxhr){
+      }
+    });
+}

@@ -14,7 +14,8 @@
 
 <script>
 $( document ).ready(function() {
-  getAllVendors();
+    getAllVendors();
+    getAllPromoVendors();
 
     var checkout = $('#start_date').datepicker({
             format: 'mm-dd-yyyy'
@@ -160,15 +161,13 @@ $( document ).ready(function() {
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Deal Name</th>
+                    <th>Business Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Description</th>
-                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="dealbody">
+                <tbody id="promobody">
 
                 </tbody>
               </table>
