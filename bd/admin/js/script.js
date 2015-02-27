@@ -1807,3 +1807,132 @@ function promoReset()
     allImages = [];
     $('#existing_images').html('');    
 }
+
+function adminData()
+{
+  $.ajax({
+           type: "GET",
+           url: apiUrl + 'admindata',
+           dataType : "JSON",
+           beforeSend:function(){
+
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+
+                $('#name').val(data.data.name);
+                $('#email').val(data.data.username);
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+}
+
+function updateAdminData()
+{
+  var name = $('#name').val();
+  var email = $('#email').val();
+
+  var check = true;
+
+   if(name == '')
+     {
+         $('#name').focus();
+         $('#name').addClass('error-class');
+         check = false;
+     }
+     else if(email == '')
+     {
+         $('#email').focus();
+         $('#email').addClass('error-class');
+         check = false;
+     }
+
+     if(check)
+     {
+        $.ajax({
+           type: "POST",
+           url: apiUrl + 'editadmindata',
+           dataType : "JSON",
+           data:{name:name,email:email},
+           beforeSend:function(){
+
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+                adminData();
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+     }
+}
+
+function confirmPassword()
+{
+  var password = $('#password'),val();
+  var confirm_password = $('#confirm_password').val();
+  var check = true;
+
+  if(password == '')
+     {
+         $('#password').focus();
+         $('#password').addClass('error-class');
+         check = false;
+     }
+     else if(confirm_password == '')
+     {
+         $('#confirm_password').focus();
+         $('#confirm_password').addClass('error-class');
+         check = false;
+     }
+
+     if(password == confirm_password)
+     {
+        check = true;
+        $.ajax({
+           type: "POST",
+           url: apiUrl + 'editadminpassword',
+           dataType : "JSON",
+           data:{password:password},
+           beforeSend:function(){
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+              showMsg('#msg', 'Password updated successfully.', 'green');
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+     }
+     else
+     {
+         $('#password').focus();
+         $('#password').addClass('error-class');
+         $('#confirm_password').focus();
+         $('#confirm_password').addClass('error-class');
+
+         check = false;
+     }
+
+
+}
+

@@ -345,6 +345,26 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });         
 
+    $app->get('/admindata', function() use ($app){
+        $new = new LoginRepo();
+        $code = $new->getAdminData();
+        response(200, array('data' => $code));
+    });
+
+    $app->post('/editadmindata', function() use ($app){
+        $new = new LoginRepo();
+        $code = $new->editAdminData($app->requestdata);
+        response($code, array());
+        
+    });
+
+    $app->post('/editadminpassword', function() use ($app){
+        $new = new LoginRepo();
+        $code = $new->editadminpassword($app->requestdata);
+        response($code, array());
+        
+    });
+
 });
 
 
