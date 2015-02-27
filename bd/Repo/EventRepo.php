@@ -39,8 +39,11 @@ class EventRepo
 				
 				if(empty($requestData['event_id']))
 				{
+					$loginRepo = new LoginRepo();
+					$admindata = $loginRepo->getAdminData(1);
 
-					$to = "coursemadt@gmail.com";
+					//"coursemadt@gmail.com"
+					$to = $admindata['username'];
 					$subject = "New Event Added";
 
 					$message = "
@@ -68,7 +71,7 @@ class EventRepo
 					$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 					// More headers
-					$headers .= 'From: <coursemadt@gmail.com>' . "\r\n";
+					$headers .= 'From: <'. $admindata['username'].'>' . "\r\n";
 
 					mail($to,$subject,$message,$headers);			
 
