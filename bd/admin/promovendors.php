@@ -15,15 +15,15 @@
 <script>
 $( document ).ready(function() {
   getAllVendors();
-
+getPromoVendors();
     var checkout = $('#start_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout.hide();
         }).data('datepicker');;
 
     var checkout2 = $('#end_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout2.hide();
         }).data('datepicker');;
@@ -111,6 +111,9 @@ $( document ).ready(function() {
 </div>
 
   <div class="row clearfix">
+  <div id="existing_images"></div>
+  </div>
+  <div class="row clearfix">
     <div class="col-md-10 column">
       <form enctype="multipart/form-data">
            <div class="form-group">
@@ -160,11 +163,9 @@ $( document ).ready(function() {
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Deal Name</th>
+                    <th>Vendor Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Description</th>
-                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

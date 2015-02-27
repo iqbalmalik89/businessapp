@@ -1,6 +1,7 @@
 <?php
 class DealRepo
 {
+	public $vendorRepo;
 	public function addDeal($request)
 	{
 		$requestData = $request;
@@ -148,23 +149,43 @@ class DealRepo
 		return $dealImages;
 	}
 
+
+	public function getDealVendors($dealId)
+	{
+		$vendors = array();
+		$query = $GLOBALS['con']->from('vendor_deals')->where('deal_id',$dealId);
+		if(!empty($query))
+		{
+			foreach ($query as $key => $deal) {
+				$vendorData = $this->vendorRepo->getVendors(array('vendor_id' => $deal['vendor_id']));				
+				if(isset($vendorData['data']))
+				{
+					$vendors[] = array('vendor_id' => $deal['vendor_id'], 'vendor_name' => $vendorData['data']['business_name']);
+				}
+			}
+		}
+
+		return $vendors;
+	}
+
 	// Get All Deals. If id given, returns a single deal else return all deals.
 	public function getDeals($request)
 	{	
-		
+		$this->vendorRepo = new VendorRepo();
 		$requestData = $request;
 		// Initial response is bad request
 		$response = 400;
 
 		// If there is some data in json form
 		if(!empty($requestData))
-		{				
+		{
 			$exists = $GLOBALS['con']->from('deals')->where('id',$requestData['id']);
 
 			foreach($exists as $items)
 	    	{
 				$data = $items;	
 				$data['images'] = $this->getDealImages($requestData['id']); 
+				$data['vendors'] = $this->getDealVendors($requestData['id']);
 			}
 
 			$response = 200;
@@ -178,6 +199,7 @@ class DealRepo
 
 			foreach($exists as $items)
 	    	{
+				$items['vendors'] = $this->getDealVendors($items['id']);
 				$data[] = $items;
 
 			}

@@ -420,6 +420,7 @@ function checkBusinessName(name)
 
 function checkEventName(name)
 {
+  var event_id = $('#event_id').val();
   if(name!="")
   {
     $('#business_spinner').show();    
@@ -427,7 +428,7 @@ function checkEventName(name)
       type: "GET",
       url: apiUrl + 'event_name',
       dataType : "JSON",
-      data: {name:name},
+      data: {event_id:event_id , event_name:name},
       beforeSend:function(){
 
       },
@@ -735,6 +736,7 @@ function eventReset()
 
 function addEvent()
 {
+  var event_id = $.trim($('#event_id').val());
   var first_name = $.trim($('#first_name').val());
   var last_name = $.trim($('#last_name').val());
   var event_name = $.trim($('#event_name').val());
@@ -864,7 +866,7 @@ function addEvent()
       type: "POST",
       url: apiUrl + 'addevent',
       dataType : "JSON",
-      data: {first_name: first_name, last_name: last_name, event_name: event_name, venue: venue_name, address: street_address, postcode: post_code, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, start_date: start_date, end_date: end_date, price: price},
+      data: {event_id:event_id, first_name: first_name, last_name: last_name, event_name: event_name, venue: venue_name, address: street_address, postcode: post_code, office_number:office_number, cell_number: cell_number, country:country, city: city, state: state, country: country, email: email_address, website: website, facebook: facebook, youtube: youtube, twitter: twitter, instagram: instagram, images : allImages, start_date: start_date, end_date: end_date, price: price},
       beforeSend:function(){
 
       },
@@ -873,7 +875,9 @@ function addEvent()
 
         if(data.status == 'success')
         {
-          businessReset();
+          if(event_id != '' && event_id!= 0)
+            window.location = 'events.php';
+          eventReset();
           $('.alert-success').html('Event added successfully').slideDown('fast').delay(2500).slideUp(1000,function(){}); 
           var body = $("html, body");
           body.animate({scrollTop:700}, '500', 'swing', function() { 
@@ -1053,8 +1057,18 @@ function getDeals()
                 {
                   desc = value.desc;
                 }
+            var vendor_names = '';
+            if(value.vendors.length > 0)
+            {
+              $.each(value.vendors, function( vendorindex, vendorvalue ) {
+                vendor_names += vendorvalue.vendor_name+'<br>';
+              });              
+            }
+
+
                 html += '<tr>\
                             <td>'+value.deal_name+'</td>\
+                            <td>'+vendor_names+'</td>\
                             <td>'+value.start_date+'</td>\
                             <td>'+value.end_date+'</td>\
                             <td>'+value.desc+'</td>\
@@ -1078,6 +1092,112 @@ function getDeals()
       }
     });
 }
+
+function deletePromoVendor(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletepromovendor',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+          showMsg('#statusmsg', 'Promo Vendor deleted successfully.', 'green');
+          getPromoVendors();
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
+
+function getSinglePromoVendor(id)
+{
+  promoReset();
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'promovendors',
+      dataType : "JSON",
+      data: {id: id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+
+        $('#promo_vendor_id').val(data.data.id);
+        $('#promohtml').val(data.data.vendor_id);
+        $('#start_date').val(data.data.start_date);
+        $('#end_date').val(data.data.end_date);
+
+        var images_html = '';
+        $.each(data.data.images, function( index, imgs ) {
+          allImages.push(imgs.path);
+          images_html += '<div class="col-lg-2">\
+              <div class="panel">\
+                <div class="panel-body">\
+                  <img src="'+imgs.url+'" width="50" height="50">\
+                  <a href="javascript:void(0);" onclick="removeImage(this, \''+imgs.path+'\');">Remove</a>\
+                </div>\
+              </div>\
+            </div>';
+       });
+
+        if(images_html != '')
+        {
+          $('#existing_images').html(images_html);
+        }
+
+        
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+function getPromoVendors()
+{
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'promovendors',
+      dataType : "JSON",
+      //data: {id: id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+
+
+                html += '<tr>\
+                            <td>'+value.vendor_name+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSinglePromoVendor('+value.id+');" data-target="#addpromo">Edit</a> | <a href="javascript:void(0);" onclick="deletePromoVendor('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Promo Vendors not found</td>\
+                     </tr>';            
+        }
+
+        $('#dealbody').html(html);
+       //$('#sub_cat_id').append(options);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
 
 function removeElm(arr) {
     var what, a = arguments, L = a.length, ax;
@@ -1215,6 +1335,10 @@ function getSingleVendor(id)
         {
           $('#existing_images').html(images_html);
         }
+        else
+        {
+          $('#existing_images').html('<img src="images/vendor.png">');
+        }
 
 
 
@@ -1346,7 +1470,7 @@ function getAllEvents(type)
             link = '<a href="javascript:void(0);" onclick="changeEventStatus('+events.id+', \'ongoing\');">Ongoing</a>';
           }
 
-          link += ' | <a href="editevent.php?id='+events.id+'" target="blank">Edit</a>';
+          link += ' | <a href="editevent.php?id='+events.id+'">Edit</a>';
           link += ' | <a href= "javascript:void(0);" onclick="deleteEvent('+events.id+')">Delete</a>';
 
           var html = '<tr>\
@@ -1415,7 +1539,54 @@ function getSingleEvent(id)
         $('#first_name').val(data.data.first_name);
         $('#last_name').val(data.data.last_name);
         $('#event_name').val(data.data.event_name);
-        $('#venue').val(data.data.venue);
+        $('#venue_name').val(data.data.venue);
+        $('#street_address').val(data.data.address);
+        $('#post_code').val(data.data.postcode);
+        $('#start_date').val(data.data.start_date);
+        $('#end_date').val(data.data.end_date);
+        $('#office_number').val(data.data.office_number);
+        $('#cell_number').val(data.data.cell_number);
+        $('#email_address').val(data.data.email);
+
+        $('#country').val(data.data.country);      
+        
+        getStates(data.data.country, true)
+        getCities(data.data.state, true)
+        $('#city').val(data.data.city);        
+        $('#state').val(data.data.state);        
+
+        $('#facebook').val(data.data.facebook);
+        $('#youtube').val(data.data.youtube);
+        $('#twitter').val(data.data.twitter);
+        $('#instagram').val(data.data.instagram);
+        $('#price').val(data.data.price);
+
+
+
+        var images_html = '';
+        $.each(data.data.images, function( index, imgs ) {
+          allImages.push(imgs.path);
+          images_html += '<div class="col-lg-2">\
+              <div class="panel">\
+                <div class="panel-body">\
+                  <img src="'+imgs.url+'" width="50" height="50">\
+                  <a href="javascript:void(0);" onclick="removeImage(this, \''+imgs.path+'\');">Remove</a>\
+                </div>\
+              </div>\
+            </div>';
+       });
+
+        if(images_html != '')
+        {
+          $('#existing_images').html(images_html);
+        }
+
+
+
+
+
+
+
         
       },
       error:function(jqxhr){
@@ -1590,6 +1761,7 @@ function addEditPromoVendors()
            $('#spinner').hide();      
              if(data.status == 'success')
              {
+               getPromoVendors()         ;     
                  //getDeals();                
                  $('#addpromo').modal('hide');
                 $( ".fileinput-remove" ).trigger( "click" );
@@ -1611,7 +1783,9 @@ function showPromoAddPopup()
 function promoReset()
 {
     $('#promo_vendor_id').val('');
-    $('#promohtml').val('');
+    $("#promohtml").val($("#promohtml option:first").val());    
+
+//    $('#promohtml').val('');
     $('#start_date').val('');
     $('#end_date').val('');
     $( ".fileinput-remove" ).trigger( "click" );

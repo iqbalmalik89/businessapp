@@ -338,6 +338,13 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });     
 
+    // Delete Promo Vendor
+    $app->post('/deletepromovendor', function() use ($app){
+        $new = new PromoVendorsRepo();
+        $code = $new->deletePromoVendor($app->requestdata);
+        response($code, array());
+    });         
+
 });
 
 
