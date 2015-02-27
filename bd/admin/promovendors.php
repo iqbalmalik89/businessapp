@@ -69,6 +69,23 @@ getPromoVendors();
     <div class="col-md-10 column">
       <form class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group">
+           <label for="inputEmail3" class="col-sm-2 control-label"></label>
+          <div class="col-sm-4">
+          <input type="text" id="search" name="search" value="" placeholder="Search Vendor" onkeyup="searchVendor(this.value);">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-10 column">
+      <form class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="form-group">
            <label for="inputEmail3" class="col-sm-2 control-label">Vendor</label>
           <div class="col-sm-4">
             <select id = 'promohtml'>

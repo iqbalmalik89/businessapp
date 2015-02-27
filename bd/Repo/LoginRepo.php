@@ -27,6 +27,11 @@ class LoginRepo{
 		return $response;
 	}
 
-
+	public function getAdminData($id = 1)
+	{
+		$rec = $GLOBALS['con']->from('admin')->where('id',$id);
+		$rec = $rec->fetch();
+		return $rec;
+	}
 
 }

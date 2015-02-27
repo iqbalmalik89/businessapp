@@ -27,14 +27,23 @@ class VendorRepo{
 
 	public function getVendors($request)
 	{
+
 		$resp = array('code' => 200, 'data' => array());
 
-		if(isset($request['vendor_id']))
+		if(isset($request['search']) && !empty($request['search']))
+		{
+			$key = '%'.$request['search'].'%';
+			$vendors = $GLOBALS['con']->from('vendors')->where("business_name LIKE ?", $key);
+;
+		}
+		else if(isset($request['vendor_id']))
 		{
 			$vendors = $GLOBALS['con']->from('vendors')->where("id", $request['vendor_id']);
 		}
 		else
-			$vendors = $GLOBALS['con']->from('vendors');			
+		{
+			$vendors = $GLOBALS['con']->from('vendors');
+		}
 
 		$allVendors = array();
 		if(!empty($vendors))
@@ -98,35 +107,39 @@ class VendorRepo{
 			else
 			{	
 				// Add vendor
-$to = "coursemadt@gmail.com";
-$subject = "New Business Added";
+				$loginRepo = new LoginRepo();
+				$admindata = $loginRepo->getAdminData(1);
 
-$message = "
-<html>
-<head>
-<title>New Vendor</title>
-</head>
-<body>
-Hello,  New business is added. Please review the details. 
-<table cellspacing='20'>
-<tr>
-<th>".$requestData['first_name'].' '.$requestData['last_name']."</th>
-<th>".$requestData['business_name']."</th>
-</tr>
-<tr>
-<td colspan='2'><a href='http://yakoinc.com/bd/admin/login.php'>Login into admin</a></td>
-</tr>
-</table>
-</body>
-</html>
-";
+				//"coursemadt@gmail.com"
+				$to = $admindata['username'];
+				$subject = "New Business Added";
+
+				$message = "
+				<html>
+				<head>
+				<title>New Vendor</title>
+				</head>
+				<body>
+				Hello,  New business is added. Please review the details. 
+				<table cellspacing='20'>
+				<tr>
+				<th>".$requestData['first_name'].' '.$requestData['last_name']."</th>
+				<th>".$requestData['business_name']."</th>
+				</tr>
+				<tr>
+				<td colspan='2'><a href='http://yakoinc.com/bd/admin/login.php'>Login into admin</a></td>
+				</tr>
+				</table>
+				</body>
+				</html>
+				";
 
 // Always set content-type when sending HTML email
 $headers = "MIME-Version: 1.0" . "\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 // More headers
-$headers .= 'From: <coursemadt@gmail.com>' . "\r\n";
+$headers .= 'From: <'.$admindata['username'].'>' . "\r\n";
 
 mail($to,$subject,$message,$headers);				
 				$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();

@@ -909,11 +909,12 @@ function addEvent()
 
 function getAllVendors(type)
 {
+  var search = $('#search').val();
     $.ajax({
       type: 'GET',
       url: apiUrl + 'vendors',
       dataType : "JSON",
-      data: {},
+      data: {search:search},
       beforeSend:function(){
 
       },
@@ -969,7 +970,16 @@ function getAllVendors(type)
         $('#pendingbody').html(pendinghtml);        
         $('#activebody').html(activehtml);        
         $('#deactivebody').html(deactivehtml);
-        $('#promohtml').append(options);
+
+        if(search != '')
+        {
+          if(options != '')
+            $('#promohtml').html(options);
+          else
+            $('#promohtml').html('<option value="0">No Vendor Found</option>');            
+        }
+        else
+          $('#promohtml').html(options);
 
         nohtml = '<tr>\
                         <td colspan="4" align="center">No vendors found.</td>\
@@ -1274,6 +1284,11 @@ function deleteDeal(id)
       error:function(jqxhr){
       }
     });
+}
+
+function searchVendor(keyword)
+{
+  getAllVendors();
 }
 
 function getSingleVendor(id)
