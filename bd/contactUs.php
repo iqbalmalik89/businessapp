@@ -192,17 +192,18 @@
                   </div>
                   <!-- End Carousel Inner -->
                   <ul id="nav-carousel" class="nav nav-pills nav-justified">
-                     <li data-target="#myCarousel" data-slide-to="0" class="active">
-                        <a href="#"><span class="i-tab"> <span class="icon-location" ></span>	<small class="hidden-xs">Add Your Local Business
+                     <li onclick="window.location='addBusiness.php'" data-target="#myCarousel" data-slide-to="0" class="active">
+                        <a href="addBusiness.php"><span class="i-tab"> <span class="icon-location" ></span> <small class="hidden-xs">Add Your Local Business
                         </small></a>
                      </li>
-                     <li data-target="#myCarousel" data-slide-to="1" ">
-                        <a href="#"><span class="i-tab"> <span class="icon-calendar"></span> <small class="hidden-xs">Add Local Events</small></a>
+                     <li onclick="window.location='addEvents.php'" data-target="#myCarousel" data-slide-to="1">
+                        <a href="addEvents.php"><span class="i-tab"> <span class="icon-calendar"></span> <small class="hidden-xs">Add Local Events</small></a>
                      </li>
-                     <li data-target="#myCarousel" data-slide-to="2" >
-				<a href="#"><span class="i-tab"><span class="icon-promote"></span><small class="hidden-xs">Promote Your Business </small></a></li>
-                     <li data-target="#myCarousel" data-slide-to="3" >
-                        <a href="#"><span class="i-tab"><span class="icon-mail"></span> <small class="hidden-xs">Contact Us</small></a>
+                     <li onclick="window.location='contactUs.php'" data-target="#myCarousel" data-slide-to="2" >
+                        <a href="contactUs.php"><span class="i-tab"><span class="icon-promote"></span><small class="hidden-xs">Promote Your Business </small></a>
+                     </li>
+                     <li  onclick="window.location='contactUs.php'" data-target="#myCarousel" data-slide-to="3" >
+                        <a href="contactUs.php"><span class="i-tab"><span class="icon-mail"></span> <small class="hidden-xs">Contact Us</small></a>
                      </li>
                   </ul>
                </div>

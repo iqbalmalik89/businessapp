@@ -8,7 +8,7 @@ class EventRepo
 		$response = 400;
 		if(!empty($requestData))
 		{
-			$exists = $this->checkEvent($requestData['event_name']);
+			$exists = $this->checkEvent($requestData);
 			if($exists)
 			{
 				$response = 409;
@@ -36,8 +36,51 @@ class EventRepo
 								'instagram'		=> $requestData['instagram'],
 								'status'		=> 'pending',
 								'date_created'	=> date("Y-m-d H:i:s"));
+				
+				if(empty($requestData['event_id']))
+				{
 
-				$eventId = $GLOBALS['con']->insertInto('events',$values)->execute();
+					$to = "coursemadt@gmail.com";
+					$subject = "New Event Added";
+
+					$message = "
+					<html>
+					<head>
+					<title>New Event</title>
+					</head>
+					<body>
+					Hello,  New Event is added. Please review the details. 
+					<table cellspacing='20'>
+					<tr>
+					<th>".$requestData['first_name'].' '.$requestData['last_name']."</th>
+					<th>".$requestData['event_name']."</th>
+					</tr>
+					<tr>
+					<td colspan='2'><a href='http://yakoinc.com/bd/admin/login.php'>Login into admin</a></td>
+					</tr>
+					</table>
+					</body>
+					</html>
+					";
+
+					// Always set content-type when sending HTML email
+					$headers = "MIME-Version: 1.0" . "\r\n";
+					$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+					// More headers
+					$headers .= 'From: <coursemadt@gmail.com>' . "\r\n";
+
+					mail($to,$subject,$message,$headers);			
+
+					$eventId = $GLOBALS['con']->insertInto('events',$values)->execute();
+				}
+				else
+				{
+					unset($values['status']);
+					$query = $GLOBALS['con']->deleteFrom('event_images')->where('event_id', $requestData['event_id'])->execute();
+					$query = $GLOBALS['con']->update('events',$values, $requestData['event_id'])->execute();					
+					$eventId = $requestData['event_id'];
+				}
 
 				if($eventId > 0)
 				{
@@ -58,14 +101,31 @@ class EventRepo
 			return $response;
 	}
 
-	public function checkEvent($name, $id = 0)
+	public function checkEvent($data)
 	{
-		$query = $GLOBALS['con']->from('events')->where('event_name', $name)->count();		
-		if(!empty($id))
-			$query = $query->where('id != ?', $id)->count();
+		$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->count();		
+		if(!empty($data['event_id']))
+			$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('id != ?', $data['event_id'])->count();		
 
 		return $query;
 	}
+
+	public function getEventImages($eventId)
+	{
+		$eventImages = array();
+		if(!empty($eventId))
+		{
+			$images = $GLOBALS['con']->from('event_images')->where('event_id',$eventId);
+
+			foreach($images as $image)
+			{
+				$image['url'] = UtilityRepo::getRootPath(false).'data/event_images/'.$image['path'];
+				$eventImages[] = $image;
+			}
+		}
+		return $eventImages;
+	}
+
 
 	public function addEventImages($eventId, $images)
 	{
@@ -108,6 +168,7 @@ class EventRepo
 
 			foreach($exists as $items)
 	    	{
+	    		$items['images'] = $this->getEventImages($items['id']);
 				$data = $items;
 
 			}
@@ -121,6 +182,7 @@ class EventRepo
 			$data = array();
 			foreach($exists as $items)
 	    	{
+	    		$items['images'] = $this->getEventImages($items['id']);
 				$data[] = $items;
 
 			}

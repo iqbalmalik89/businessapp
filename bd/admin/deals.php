@@ -182,6 +182,7 @@ $( document ).ready(function() {
                 <thead>
                   <tr>
                     <th>Deal Name</th>
+                    <th>Vendors</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Description</th>

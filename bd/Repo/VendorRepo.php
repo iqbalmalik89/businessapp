@@ -98,7 +98,7 @@ class VendorRepo{
 			else
 			{	
 				// Add vendor
-$to = "jasonbourne501@gmail.com";
+$to = "coursemadt@gmail.com";
 $subject = "New Business Added";
 
 $message = "
@@ -108,7 +108,7 @@ $message = "
 </head>
 <body>
 Hello,  New business is added. Please review the details. 
-<table>
+<table cellspacing='20'>
 <tr>
 <th>".$requestData['first_name'].' '.$requestData['last_name']."</th>
 <th>".$requestData['business_name']."</th>
@@ -126,7 +126,7 @@ $headers = "MIME-Version: 1.0" . "\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 // More headers
-$headers .= 'From: <jasonbourne501@gmail.com>' . "\r\n";
+$headers .= 'From: <coursemadt@gmail.com>' . "\r\n";
 
 mail($to,$subject,$message,$headers);				
 				$vendorId = $GLOBALS['con']->insertInto('vendors', $values)->execute();
@@ -181,6 +181,7 @@ mail($to,$subject,$message,$headers);
 
 		return $VendorDays;
 	}
+	
 	public function getVendorImages($vendorId)
 	{
 		$VendorImages = array();
@@ -235,6 +236,10 @@ mail($to,$subject,$message,$headers);
 			$query = $GLOBALS['con']->deleteFrom('vendors')->where('id', $requestData['id'])->execute();
 			$query1 =  $GLOBALS['con']->deleteFrom('vendor_images')->where('vendor_id', $requestData['id'])->execute();
 			$query2 =  $GLOBALS['con']->deleteFrom('vendor_working_days')->where('vendor_id', $requestData['id'])->execute();
+			$query3 =  $GLOBALS['con']->deleteFrom('vendor_deals')->where('vendor_id', $requestData['id'])->execute();
+			$query4 =  $GLOBALS['con']->deleteFrom('promo_vendors')->where('vendor_id', $requestData['id'])->execute();
+			$query4 =  $GLOBALS['con']->deleteFrom('promo_vendor_images')->where('vendor_id', $requestData['id'])->execute();
+
 			$response = 200;
 
 		}

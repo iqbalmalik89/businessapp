@@ -14,17 +14,16 @@
 
 <script>
 $( document ).ready(function() {
-    getAllVendors();
-    getAllPromoVendors();
-
+  getAllVendors();
+getPromoVendors();
     var checkout = $('#start_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout.hide();
         }).data('datepicker');;
 
     var checkout2 = $('#end_date').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function(ev) {
           checkout2.hide();
         }).data('datepicker');;
@@ -63,6 +62,23 @@ $( document ).ready(function() {
         <h4 class="modal-title" id="myModalLabel"><span id="mode">Add </span>Promo Vendor</h4>
       </div>
       <div class="modal-body">
+
+
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-10 column">
+      <form class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="form-group">
+           <label for="inputEmail3" class="col-sm-2 control-label"></label>
+          <div class="col-sm-4">
+          <input type="text" id="search" name="search" value="" placeholder="Search Vendor" onkeyup="searchVendor(this.value);">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="container">
@@ -111,6 +127,9 @@ $( document ).ready(function() {
   </div>
 </div>
 
+  <div class="row clearfix">
+  <div id="existing_images"></div>
+  </div>
   <div class="row clearfix">
     <div class="col-md-10 column">
       <form enctype="multipart/form-data">
@@ -161,13 +180,13 @@ $( document ).ready(function() {
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Business Name</th>
+                    <th>Vendor Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="promobody">
+                <tbody id="dealbody">
 
                 </tbody>
               </table>

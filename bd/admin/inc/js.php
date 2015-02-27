@@ -34,6 +34,9 @@
 
 <link rel="stylesheet" type="text/css" href="plugins/bootstrap-datepicker/css/datepicker.css" />
 <script type="text/javascript" src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script> 
+<link href="css/jquery.datetimepicker.css" media="all" rel="stylesheet" type="text/css" />
+
+<script src="js/jquery.datetimepicker.js"></script>  
 
 <link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
 <script src="../js/fileinput.js" type="text/javascript" /></script>
