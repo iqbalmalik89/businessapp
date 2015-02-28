@@ -38,7 +38,7 @@ $( document ).ready(function() {
         <h4 class="modal-title" id="myModalLabel"><span id="mode">Add </span> Category</h4>
       </div>
       <div class="modal-body">
-
+<int>
 
 <div class="container">
   <div class="row clearfix">
@@ -82,13 +82,18 @@ $( document ).ready(function() {
 
       <!--row start-->
         <div class="row">
+
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
               <h1>Vendors  <!-- <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  --> </h1>
+       
+                 <input type="text" id="search" name="search" value="" placeholder="Search Vendor" onkeyup="searchVendor(this.value);" style="float:right;">
+
             </div>
           </div><!--col-md-12 end-->
 <div class="tab-container">
+       
               <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#active">Active</a></li>
                 <li><a data-toggle="tab" href="#pending">Pending</a></li>

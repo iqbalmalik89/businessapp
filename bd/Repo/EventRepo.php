@@ -41,7 +41,7 @@ class EventRepo
 				{
 					$loginRepo = new LoginRepo();
 					$admindata = $loginRepo->getAdminData(1);
-
+					
 					//"coursemadt@gmail.com"
 					$to = $admindata['username'];
 					$subject = "New Event Added";

@@ -15,6 +15,16 @@
 <script>
 $( document ).ready(function() {
   getAllVendors();
+<?php
+  if(isset($_GET['vendor_id']))
+  {
+    ?>
+    $('#addpromo').modal('show'); 
+    $('#promohtml').val(<?php echo $_GET['vendor_id']; ?>);
+    <?php
+  }
+
+?>  
 getPromoVendors();
     var checkout = $('#start_date').datepicker({
             format: 'yyyy-mm-dd'

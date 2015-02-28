@@ -915,6 +915,7 @@ function getAllVendors(type)
       url: apiUrl + 'vendors',
       dataType : "JSON",
       data: {search:search},
+      async:false,
       beforeSend:function(){
 
       },
@@ -944,6 +945,7 @@ function getAllVendors(type)
           link += ' | <a href="editvendor.php?id='+vendor.id+'">Edit</a>';
           link += ' | <a href= "javascript:void(0);" onclick="deleteVendor('+vendor.id+')">Delete</a>';
           link += ' | <a href= "vendordeals.php?vendor_id='+vendor.id+'">Manage Deals</a>';
+          link += ' | <a href= "promovendors.php?vendor_id='+vendor.id+'">Promo Vendor</a>';
 
           var html = '<tr>\
                       <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
