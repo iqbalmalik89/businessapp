@@ -1869,6 +1869,7 @@ function updateAdminData()
            $('#spinner').hide();      
              if(data.status == 'success')
              {
+                showMsg('#msg', 'Profile updated successfully.', 'green');
                 adminData();
              }
            },
@@ -1882,7 +1883,7 @@ function updateAdminData()
 
 function confirmPassword()
 {
-  var password = $('#password'),val();
+  var password = $('#password').val();
   var confirm_password = $('#confirm_password').val();
   var check = true;
 

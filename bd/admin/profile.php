@@ -55,6 +55,7 @@ $( document ).ready(function() {
                 <div class="container">
                 <div class="row clearfix">
                   <div class="col-md-10 column">
+                    <div class="notification-bar" id="msg" style="display: none;"></div>
                     <form class="form-horizontal" role="form" onsubmit="return false;">
                       <div class="form-group">
                          <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
@@ -92,6 +93,7 @@ $( document ).ready(function() {
                         <div class="container">
           <div class="row clearfix">
                   <div class="col-md-10 column">
+                    <div class="notification-bar" id="msg" style="display: none;"></div>
                     <form class="form-horizontal" role="form" onsubmit="return false;">
                       <div class="form-group">
                          <label for="inputEmail3" class="col-sm-2 control-label">Password</label>
