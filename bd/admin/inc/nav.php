@@ -12,7 +12,7 @@
             <li class="profile-info dropdown"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <img class="img-circle" alt="" src="images/avatar.jpg"><?php echo $_SESSION['user']['name']; ?> </a>
               <ul class="dropdown-menu">
                 <li class="caret"></li>
-                <li> <a href="#"> <i class="fa fa-user"></i> Edit Profile </a> </li>
+                <li> <a href="profile.php"> <i class="fa fa-user"></i> Edit Profile </a> </li>
                 <li> <a href="javascript:void(0);" onclick="logout();"> <i class="fa fa-clipboard"></i> Log Out </a> </li>
               </ul>
             </li>
