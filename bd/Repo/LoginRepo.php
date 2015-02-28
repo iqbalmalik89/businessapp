@@ -34,4 +34,50 @@ class LoginRepo{
 		return $rec;
 	}
 
+	public function editAdminData($request)
+	{
+		$requestData = $request;
+		$id = 1;
+		// Initial response is bad request
+		$response = 400;
+
+		// If there is some data in json form
+		if(!empty($requestData))
+		{
+			// Check if cat_name is not empty
+			if(!empty($requestData['name']) && !empty($requestData['email']))
+			{
+				
+				$values = array('name' => $requestData['name'], 'username' => $requestData['email']);
+				$query = $GLOBALS['con']->update('admin', $values, $id)->execute();
+				$response = 200;
+				
+			}
+		}
+		return $response;
+	}
+
+	public function editadminpassword($request)
+	{
+		$requestData = $request;
+		$id = 1;
+		// Initial response is bad request
+		$response = 400;
+
+		// If there is some data in json form
+		if(!empty($requestData))
+		{
+			// Check if cat_name is not empty
+			if(!empty($requestData['password']))
+			{
+				
+				$values = array('password' => md5($requestData['password']));
+				$query = $GLOBALS['con']->update('admin', $values, $id)->execute();
+				$response = 200;
+				
+			}
+		}
+		return $response;
+	}
+
 }
