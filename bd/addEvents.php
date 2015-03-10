@@ -401,6 +401,7 @@
                      </div>
                      </div>
                      <div class="col-md-12">
+                     <div class="alert alert-warning" id="uploadmsg" role="alert" style="display:none;"></div>                     
                      <button type="button" onclick="addEvent();" class="btn btn-primary pull-left" id="btnContactUs">
                      Add An Events</button>
                      <button type="submit" class="btn btn-default">Cancel</button>
@@ -660,14 +661,46 @@
          	step:5,
          	inline:true
          });
-         $('#start_date').datetimepicker({
-         	mask:'9999/19/39 29:59'
-         });
-         $('#end_date').datetimepicker({
-         	mask:'9999/19/39 29:59',
-            minDate : 0            
-         });
+
+         // $('#start_date').datetimepicker({
+         // 	mask:'9999/19/39 29:59'
+         // });
+         // $('#end_date').datetimepicker({
+         // 	mask:'9999/19/39 29:59',
+         //    minDate : 0            
+         // });
          
+
+
+         jQuery(function(){
+          jQuery('#start_date').datetimepicker({
+           //format:'Y/m/d',
+           mask:'9999/19/39 29:59',  
+           // onShow:function( ct ){
+           //  this.setOptions({
+           //   minDate:jQuery('#end_date').val()?jQuery('#end_date').val():false
+           //  })
+           // },
+           timepicker:true
+          });
+          jQuery('#end_date').datetimepicker({
+         //  format:'Y/m/d',
+           mask:'9999/19/39 29:59',    
+           // onShow:function( ct ){
+           //  this.setOptions({
+           //   minDate:jQuery('#start_date').val()?jQuery('#start_date').val():false
+           //  })
+           // },
+           timepicker:true
+          });
+         });
+
+
+
+
+
+
+
          $('#close').click(function(){
          	$('#datetimepicker4').datetimepicker('hide');
          });

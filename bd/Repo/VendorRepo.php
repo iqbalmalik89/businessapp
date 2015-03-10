@@ -5,13 +5,14 @@ class VendorRepo{
 	public function checkVendor($request)
 	{	// initial response is bad
 		$response = false;
-
+		
 		$requestData = $request;
 		//checks if business_name already exists
 		if(!empty($request['vendor_id']))
-			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData)->where('id != ?', $requestData['vendor_id'])->count();
+			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData['business_name'])->where('address',$requestData['address'])->where('id != ?', $requestData['vendor_id'])->count();
 		else
-			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData)->count();
+			$count = $GLOBALS['con']->from('vendors')->where('business_name',$requestData['business_name'])->where('address',$requestData['address'])->count();
+
 
 		if($count > 0)
 		{
@@ -27,6 +28,19 @@ class VendorRepo{
 
 	public function getVendors($request)
 	{
+		if(!isset($request['status']))
+			$status = 'activated';
+		else
+			$status = $request['status'];
+
+		$limit = 15;
+		$total_pages = 0;
+		if(!isset($request['page']))
+			$page = 0;
+		else
+			$page = $request['page'];
+
+		$offset = $page * $limit;
 
 		$resp = array('code' => 200, 'data' => array());
 
@@ -34,7 +48,6 @@ class VendorRepo{
 		{
 			$key = '%'.$request['search'].'%';
 			$vendors = $GLOBALS['con']->from('vendors')->where("business_name LIKE ?", $key);
-;
 		}
 		else if(isset($request['vendor_id']))
 		{
@@ -42,7 +55,9 @@ class VendorRepo{
 		}
 		else
 		{
-			$vendors = $GLOBALS['con']->from('vendors');
+			$count = $GLOBALS['con']->from('vendors')->where("status", $status)->count();
+			$total_pages = ceil($count / $limit) ;			
+			$vendors = $GLOBALS['con']->from('vendors')->where("status", $status)->limit($limit)->offset($offset);
 		}
 
 		$allVendors = array();
@@ -59,7 +74,7 @@ class VendorRepo{
 			}
 		}
 
-
+		$resp['total_pages'] = $total_pages;
 		return $resp;
 	}
 
@@ -186,8 +201,8 @@ mail($to,$subject,$message,$headers);
 
 			foreach($days as $day)
 			{
-				$day['start_time'] = date("g:i a", strtotime($day['start_time']));
-				$day['end_time'] = date("g:i a", strtotime($day['end_time']));				
+				$day['start_time'] = date("g:i A", strtotime($day['start_time']));
+				$day['end_time'] = date("g:i A", strtotime($day['end_time']));				
 				$VendorDays[] = $day;
 			}
 		}

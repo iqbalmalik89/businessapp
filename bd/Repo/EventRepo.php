@@ -106,9 +106,9 @@ class EventRepo
 
 	public function checkEvent($data)
 	{
-		$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->count();		
+		$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('start_date', $data['start_date'])->where('end_date', $data['end_date'])->where('address', $data['address'])->count();		
 		if(!empty($data['event_id']))
-			$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('id != ?', $data['event_id'])->count();		
+			$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('start_date', $data['start_date'])->where('end_date', $data['end_date'])->where('address', $data['address'])->where('id != ?', $data['event_id'])->count();		
 
 		return $query;
 	}
@@ -159,19 +159,36 @@ class EventRepo
 	// Get All Events. If id given, returns a single event else return all events.
 	public function getEvents($request)
 	{	
-		
 		$requestData = $request;
+		
+		if(!isset($requestData['status']))
+			$status = 'ongoing';
+		else
+			$status = $requestData['status'];
+
+		$limit = 15;
+		$total_pages = 0;
+		if(!isset($requestData['page']))
+			$page = 0;
+		else
+			$page = $requestData['page'];
+
+		$offset = $page * $limit;
+
+
 		// Initial response is bad request
 		$response = 400;
 
 		// If there is some data in json form
-		if(!empty($requestData))
+		if(isset($requestData['id']))
 		{				
 			$exists = $GLOBALS['con']->from('events')->where('id',$requestData['id']);
 
 			foreach($exists as $items)
 	    	{
 	    		$items['images'] = $this->getEventImages($items['id']);
+	    		$items['start_date'] = date('Y/m/d H:i', strtotime($items['start_date']));
+	    		$items['end_date'] = date('Y/m/d H:i', strtotime($items['end_date']));	    		
 				$data = $items;
 
 			}
@@ -181,7 +198,9 @@ class EventRepo
 		
 		else
 		{
-			$exists = $GLOBALS['con']->from('events');
+			$count = $GLOBALS['con']->from('events')->where("status", $status)->count();
+			$total_pages = ceil($count / $limit) ;
+			$exists = $GLOBALS['con']->from('events')->where("status", $status)->limit($limit)->offset($offset);
 			$data = array();
 			foreach($exists as $items)
 	    	{
@@ -194,7 +213,7 @@ class EventRepo
 				
 		}
 		
-		return array('response' => $response,'data' => $data);
+		return array('response' => $response,'data' => $data , 'total_pages' => $total_pages);
 	}
 	
 	public function deleteEvent($request)

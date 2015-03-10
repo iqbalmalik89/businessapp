@@ -83,14 +83,23 @@ class PromoVendorsRepo
 
 	// Get Promo Vendors. 
 	public function getPromoVendors($request)
-	{	
-		
+	{
 		$requestData = $request;
+
+		$limit = 15;
+		$total_pages = 0;
+		if(!isset($requestData['page']))
+			$page = 0;
+		else
+			$page = $requestData['page'];
+
+		$offset = $page * $limit;
+
 		// Initial response is bad request
 		$response = 400;
 
 		// If there is some data in json form
-		if(!empty($requestData))
+		if(isset($requestData['id']))
 		{				
 			$exists = $GLOBALS['con']->from('promo_vendors')->where('id',$requestData['id']);
 
@@ -113,7 +122,10 @@ class PromoVendorsRepo
 		
 		else
 		{
-			$exists = $GLOBALS['con']->from('promo_vendors');
+			$count = $GLOBALS['con']->from('promo_vendors')->count();
+			$total_pages = ceil($count / $limit) ;
+
+			$exists = $GLOBALS['con']->from('promo_vendors')->limit($limit)->offset($offset);
 			$data = array();
 			foreach($exists as $items)
 	    	{
@@ -131,7 +143,7 @@ class PromoVendorsRepo
 				
 		}
 		
-		return array('response' => $response,'data' => $data);
+		return array('response' => $response,'data' => $data,  'total_pages' => $total_pages);
 	}
 
 

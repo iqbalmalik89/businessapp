@@ -171,13 +171,25 @@ class DealRepo
 	// Get All Deals. If id given, returns a single deal else return all deals.
 	public function getDeals($request)
 	{	
+
 		$this->vendorRepo = new VendorRepo();
 		$requestData = $request;
+
+		$limit = 15;
+		$total_pages = 0;
+		if(!isset($requestData['page']))
+			$page = 0;
+		else
+			$page = $requestData['page'];
+
+		$offset = $page * $limit;
+
+
 		// Initial response is bad request
 		$response = 400;
 
 		// If there is some data in json form
-		if(!empty($requestData))
+		if(isset($requestData['id']))
 		{
 			$exists = $GLOBALS['con']->from('deals')->where('id',$requestData['id']);
 
@@ -193,22 +205,21 @@ class DealRepo
 		
 		else
 		{
-					$data = array();
-
-			$exists = $GLOBALS['con']->from('deals');
+			$data = array();
+			$count = $GLOBALS['con']->from('deals')->count();
+			$total_pages = ceil($count / $limit) ;
+			$exists = $GLOBALS['con']->from('deals')->limit($limit)->offset($offset);
 
 			foreach($exists as $items)
 	    	{
 				$items['vendors'] = $this->getDealVendors($items['id']);
 				$data[] = $items;
-
 			}
 
 			$response = 200;
-				
 		}
 		
-		return array('response' => $response,'data' => $data);
+		return array('response' => $response,'data' => $data, 'total_pages' => $total_pages);
 	}
 	
 	public function dealStatus($request)

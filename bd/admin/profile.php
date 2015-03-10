@@ -98,7 +98,7 @@ $( document ).ready(function() {
                       <div class="form-group">
                          <label for="inputEmail3" class="col-sm-2 control-label">Password</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="password" />
+                          <input type="password" class="form-control" id="password" />
                         </div>
                       </div>
                     </form>
@@ -113,7 +113,7 @@ $( document ).ready(function() {
                     <div class="form-group">
                        <label for="inputEmail3" class="col-sm-2 control-label">Confirm Password</label>
                         <div class="col-sm-4">
-                        <input type="text" class="form-control" id="confirm_password" />
+                        <input type="password" class="form-control" id="confirm_password" />
                       </div>
                     </div>
                   </form>

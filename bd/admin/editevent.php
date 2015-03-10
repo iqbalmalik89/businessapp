@@ -13,14 +13,38 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 <script>
+
+
+
+         // jQuery(function(){
+         //  jQuery('#start_date').datetimepicker({
+         //   //format:'Y/m/d',
+         //   mask:'9999/19/39 29:59',  
+         //   onShow:function( ct ){
+         //    this.setOptions({
+         //     minDate:jQuery('#end_date').val()?jQuery('#end_date').val():false
+         //    })
+         //   },
+         //   timepicker:true
+         //  });
+         //  jQuery('#end_date').datetimepicker({
+         // //  format:'Y/m/d',
+         //   mask:'9999/19/39 29:59',    
+         //   onShow:function( ct ){
+         //    this.setOptions({
+         //     minDate:jQuery('#start_date').val()?jQuery('#start_date').val():false
+         //    })
+         //   },
+         //   timepicker:true
+         //  });
+         // });
+
+
 $( document ).ready(function() {
-         $('#start_date').datetimepicker({
-            mask:'9999/19/39 29:59'
-         });
-         $('#end_date').datetimepicker({
-            mask:'9999/19/39 29:59',
-            minDate : 0            
-         });
+
+
+
+
 
       getCountries(true);
   getSingleEvent(<?php echo $_GET['id']; ?>)
@@ -267,6 +291,8 @@ $( document ).ready(function() {
                      </div>
                      </div>
                      <div class="col-md-12">
+                     <div class="alert alert-warning" id="uploadmsg" role="alert" style="display:none;"></div>                     
+                     
                      <button type="button" onclick="addEvent();" class="btn btn-primary pull-left" id="btnContactUs">
                      Update Event</button>
                      <button type="submit" class="btn btn-default">Cancel</button>

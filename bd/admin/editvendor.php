@@ -14,12 +14,26 @@
     <![endif]-->
 <script>
 $( document ).ready(function() {
-              getCategories(true);
-      getCountries(true);
+    getCategories(true);
+    getCountries(true);
+    getSingleVendor(<?php echo $_GET['id']; ?>)
 
+        var daysArr = [1, 2, 3, 4, 5, 6, 7];
+        $.each(daysArr, function( index, value ) {
+               $('#start_time' + value).datetimepicker({
+                  datepicker:false,
+                  value : "09:00 AM",
+                  format:'g:i A',
+                  step:60
+               });
 
-
-  getSingleVendor(<?php echo $_GET['id']; ?>)
+               $('#end_time' + value).datetimepicker({
+                  datepicker:false,
+                  value : "09:00 PM",
+                  format:'g:i A',
+                  step:60
+               });               
+        });  
 });
 </script>
 </head>
@@ -137,9 +151,9 @@ $( document ).ready(function() {
                                           <option value="">Choose One:</option>
                                        </select>
                                     </div>
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-xs-6 col-md-6" style="display:none;" id="sub_cat_div">
                                        <label for="name">Sub-Category</label>
-                                       <select id="sub_cat_id" name="subject" onchange="$(this).parent().removeClass('has-error');" class="form-control" required="required">
+                                       <select id="sub_cat_id"  name="subject" onchange="$(this).parent().removeClass('has-error');" class="form-control" required="required">
                                           <option value="" selected="">Choose One:</option>
                                        </select>
                                     </div>
@@ -373,6 +387,7 @@ $( document ).ready(function() {
                      </div>
                      </div>
                      <div class="col-md-12">
+                     <div class="alert alert-warning" id="uploadmsg" role="alert" style="display:none;"></div>                     
                      <button type="button" onclick="addBusiness();" class="btn btn-primary pull-left" id="btnContactUs">
                      Update Business</button>
                      <a style="margin-left:10px;" class="btn btn-default" href="vendors.php">Cancel</a>

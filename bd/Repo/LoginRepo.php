@@ -31,6 +31,7 @@ class LoginRepo{
 	{
 		$rec = $GLOBALS['con']->from('admin')->where('id',$id);
 		$rec = $rec->fetch();
+		$_SESSION['user'] = $rec;
 		return $rec;
 	}
 
@@ -50,6 +51,7 @@ class LoginRepo{
 				
 				$values = array('name' => $requestData['name'], 'username' => $requestData['email']);
 				$query = $GLOBALS['con']->update('admin', $values, $id)->execute();
+				$this->getAdminData(1);
 				$response = 200;
 				
 			}

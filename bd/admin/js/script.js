@@ -168,7 +168,7 @@ function getSubCategories(edit)
       },
       success:function(data){
         var html = '';
-        var options = '';
+        var options = '<option value="" selected="">Choose One:</option>';
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
@@ -188,8 +188,10 @@ function getSubCategories(edit)
                      </tr>';            
         }
 
+
         $('#categorybody').html(html);
-       $('#sub_cat_id').append(options);
+        $('#sub_cat_div').show();
+       $('#sub_cat_id').html(options);
 
       },
       error:function(jqxhr){
@@ -361,6 +363,7 @@ function businessReset()
   $('#first_name, #last_name, #business_name, #street_address, #post_code, #office_number, #cell_number, #city, #state, #email_address, #website, #facebook, #twitter, #youtube, #instagram').val('');
 
   $('select option:first-child').attr("selected", "selected");
+  $('#sub_cat_id, #state, #city').html('<option value="" selected="">Choose One:</option>');
 
   var daysArr = [1, 2, 3, 4, 5, 6, 7];
   $.each(daysArr, function( index, value ) {
@@ -380,12 +383,15 @@ function businessReset()
 
   });
 
+  $('#sub_cat_div').hide();
   $( ".fileinput-remove" ).trigger( "click" );
 }
 
 function checkBusinessName(name)
 {
   var vendor_id = $('#vendor_id').val();
+  var address = $('#street_address').val();  
+
   if(name!="")
   {
     $('#business_spinner').show();    
@@ -393,7 +399,7 @@ function checkBusinessName(name)
       type: "GET",
       url: apiUrl + 'vendor_name',
       dataType : "JSON",
-      data: {name:name, vendor_id:vendor_id},
+      data: {business_name:name, vendor_id:vendor_id, address: address},
       beforeSend:function(){
 
       },
@@ -421,6 +427,10 @@ function checkBusinessName(name)
 function checkEventName(name)
 {
   var event_id = $('#event_id').val();
+  var start_date = $('#start_date').val();
+  var end_date = $('#end_date').val();
+  var address = $('#street_address').val();
+
   if(name!="")
   {
     $('#business_spinner').show();    
@@ -428,7 +438,7 @@ function checkEventName(name)
       type: "GET",
       url: apiUrl + 'event_name',
       dataType : "JSON",
-      data: {event_id:event_id , event_name:name},
+      data: {event_id:event_id , event_name:name,start_date: start_date, end_date: end_date, address: address},
       beforeSend:function(){
 
       },
@@ -581,8 +591,22 @@ function addBusiness()
     errormsgs += 'Please Select City<br>';
   }
 
+
+
+
   if(check)
   {
+    var image_divs = $('.file-preview-frame').length;
+    var uploaded = $('.glyphicon-ok-sign').length;
+
+    if(image_divs > 0 && (uploaded == 0))
+    {
+      check = false;
+      showMsg('#uploadmsg', 'Please Upload your image before adding the business', 'warning');
+      return false;
+    }
+
+
     $('#submit_spinner').show();    
      $.ajax({
       type: "POST",
@@ -629,6 +653,9 @@ function addBusiness()
 
 function getCountries(edit)
 {
+  $('#states').html('<option value="" selected="">Choose One:</option>');
+  $('#city').html('<option value="" selected="">Choose One:</option>');
+
   if(edit)
     sync = false;
   else
@@ -644,14 +671,15 @@ function getCountries(edit)
 
       },
       success:function(data){
-        var options = '';
+        var options = '<option value="" selected="">Choose One:</option>';
+
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
               options += '<option value="'+value.name+'"> '+value.name+' </option>';
             });
 
-            $('#country').append(options);
+            $('#country').html(options);
         }
       },
       error:function(jqxhr){
@@ -661,6 +689,9 @@ function getCountries(edit)
 
 function getStates(country, edit)
 {
+  $('#state').html('<option value="" selected="">Choose One:</option>');
+  $('#city').html('<option value="" selected="">Choose One:</option>');
+
   if(edit)
     sync = false;
   else
@@ -676,14 +707,15 @@ function getStates(country, edit)
 
       },
       success:function(data){
-        var options = '';
+        var options = '<option value="" selected="">Choose One:</option>';
+
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
               options += '<option value="'+value.name+'"> '+value.name+' </option>';
             });
 
-            $('#state').append(options);
+            $('#state').html(options);
         }
       },
       error:function(jqxhr){
@@ -693,6 +725,9 @@ function getStates(country, edit)
 
 function getCities(state, edit)
 {
+  // $('#states').html('<option value="" selected="">Choose One:</option>');
+  // $('#city').html('<option value="" selected="">Choose One:</option>');
+
   if(edit)
     sync = false;
   else
@@ -707,14 +742,15 @@ function getCities(state, edit)
 
       },
       success:function(data){
-        var options = '';
+        var options = '<option value="" selected="">Choose One:</option>';
+
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
               options += '<option value="'+value.name+'"> '+value.name+' </option>';
             });
 
-            $('#city').append(options);
+            $('#city').html(options);
         }
       },
       error:function(jqxhr){
@@ -736,6 +772,9 @@ function eventReset()
 
 function addEvent()
 {
+  $('#start_date').parent().removeClass('has-error');
+  $('#end_date').parent().removeClass('has-error');
+
   var event_id = $.trim($('#event_id').val());
   var first_name = $.trim($('#first_name').val());
   var last_name = $.trim($('#last_name').val());
@@ -823,6 +862,18 @@ function addEvent()
     errormsgs += 'Please Select Event End Date<br>';    
   }
 
+  if(start_date != "____/__/__ __:__" && end_date != "____/__/__ __:__" )
+  {
+    if (new Date(end_date) < new Date(start_date)) {
+      $('#start_date').parent().addClass('has-error');
+      $('#end_date').parent().addClass('has-error');
+      check = false;
+      errormsgs += 'Please select valid Event Start & End Date<br>';
+    }
+  }
+
+
+
   if(office_number == "")
   {
     if(check)
@@ -861,6 +912,17 @@ function addEvent()
 
  if(check)
   {
+
+    var image_divs = $('.file-preview-frame').length;
+    var uploaded = $('.glyphicon-ok-sign').length;
+
+    if(image_divs > 0 && (uploaded == 0))
+    {
+      check = false;
+      showMsg('#uploadmsg', 'Please Upload your image before adding the event', 'warning');
+      return false;
+    }
+
     $('#submit_spinner').show();    
      $.ajax({
       type: "POST",
@@ -906,15 +968,21 @@ function addEvent()
 }
 
 
-
-function getAllVendors(type)
+function getAllVendors(status, page)
 {
-  var search = $('#search').val();
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+
+    if(status != 'pending' && status != 'deactivated')
+      status = 'activated';
+
+    var search = $('#search').val();
     $.ajax({
       type: 'GET',
       url: apiUrl + 'vendors',
       dataType : "JSON",
-      data: {search:search},
+      data: {search:search, status:status, page:page},
       async:false,
       beforeSend:function(){
 
@@ -924,6 +992,8 @@ function getAllVendors(type)
         var pendinghtml = '';
         var activehtml = '';
         var deactivehtml = '';
+        var html = '';
+
         $.each(data.data, function( index, vendor ) {
           var link = '';
           
@@ -947,31 +1017,31 @@ function getAllVendors(type)
           link += ' | <a href= "vendordeals.php?vendor_id='+vendor.id+'">Manage Deals</a>';
           link += ' | <a href= "promovendors.php?vendor_id='+vendor.id+'">Promo Vendor</a>';
 
-          var html = '<tr>\
-                      <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
+          html += '<tr>\
+                      <td>'+vendor.id +  ' ' + vendor.last_name+'</td>\
                       <td>'+vendor.business_name+'</td>\
                       <td>'+vendor.date_created+'</td>\
                       <td>' +link+ '</td>\
                    </tr>';
 
-          if(vendor.status == 'activated')
-          {
-            activehtml += html;
-          }
-          else if(vendor.status == 'deactivated')
-          {
-            deactivehtml += html;
-          }
-          else if(vendor.status == 'pending')
-          {
-            pendinghtml += html;
-          }
+          // if(vendor.status == 'activated')
+          // {
+          //   activehtml += html;
+          // }
+          // else if(vendor.status == 'deactivated')
+          // {
+          //   deactivehtml += html;
+          // }
+          // else if(vendor.status == 'pending')
+          // {
+          //   pendinghtml += html;
+          // }
 
         });
 
-        $('#pendingbody').html(pendinghtml);        
-        $('#activebody').html(activehtml);        
-        $('#deactivebody').html(deactivehtml);
+        $('#'+status+'body').html(html);        
+        // $('#activebody').html(activehtml);        
+        // $('#deactivebody').html(deactivehtml);
 
         if(search != '')
         {
@@ -987,15 +1057,27 @@ function getAllVendors(type)
                         <td colspan="4" align="center">No vendors found.</td>\
                      </tr>';
 
-      if(pendinghtml == '')
-        $('#pendingbody').html(nohtml);        
-      if(activehtml == '')
-      {
-        $('#activebody').html(nohtml);        
-      }
-      if(deactivehtml == '')
-        $('#deactivebody').html(nohtml);        
+      if(html == '')
+        $('#'+status+'body').html(nohtml);        
 
+      // if(activehtml == '')
+      // {
+      //   $('#activebody').html(nohtml);        
+      // }
+      // if(deactivehtml == '')
+      //   $('#deactivebody').html(nohtml);        
+
+
+
+
+        $('#'+status+'pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+          getAllVendors(status, num);
+        }); 
 
 
       },
@@ -1016,7 +1098,9 @@ function deleteVendor(id)
 
       },
       success:function(data){
-        getAllVendors();
+        getAllVendors('activated');
+        getAllVendors('pending');
+        getAllVendors('deactivated');
       },
       error:function(jqxhr){
       }
@@ -1041,15 +1125,18 @@ function dealReset()
     $('#existing_images').html('');    
 }
 
-function getDeals()
+function getDeals(page)
 {
-  var id = $('#deal_id').val();
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+    var id = $('#deal_id').val();
 
     $.ajax({
       type: 'GET',
       url: apiUrl + 'deals',
       dataType : "JSON",
-      //data: {id: id},
+      data: {page: page},
       beforeSend:function(){
 
       },
@@ -1097,6 +1184,22 @@ function getDeals()
         }
 
         $('#dealbody').html(html);
+
+  
+        $('#pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+
+          getDeals(num);
+
+        }); 
+
+
+
+
        //$('#sub_cat_id').append(options);
 
       },
@@ -1167,13 +1270,17 @@ function getSinglePromoVendor(id)
     });
 }
 
-function getPromoVendors()
+function getPromoVendors(page)
 {
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'promovendors',
       dataType : "JSON",
-      //data: {id: id},
+      data: {page: page},
       beforeSend:function(){
 
       },
@@ -1202,6 +1309,21 @@ function getPromoVendors()
         }
 
         $('#dealbody').html(html);
+
+
+      $('#pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+
+          getPromoVendors(num);
+
+        }); 
+
+
+
        //$('#sub_cat_id').append(options);
 
       },
@@ -1405,6 +1527,17 @@ function addUpdateDeal()
 
      if(check)
      {
+
+        var image_divs = $('.file-preview-frame').length;
+        var uploaded = $('.glyphicon-ok-sign').length;
+
+        if(image_divs > 0 && (uploaded == 0))
+        {
+          check = false;
+          showMsg('#uploadmsg', 'Please Upload your image before adding the deal', 'warning');
+          return false;
+        }
+
          $('#spinner').show();      
          $.ajax({
            type: "POST",
@@ -1447,7 +1580,9 @@ function changeVendorStatus(id, status)
     $('#spinner').hide();      
       if(data.status == 'success')
       {
-          getAllVendors('');
+          getAllVendors('activated');
+          getAllVendors('pending');
+          getAllVendors('deactivated');
           showMsg('#statusmsg', 'Vendor status updated successfully.', 'green');
       }
     },
@@ -1456,13 +1591,21 @@ function changeVendorStatus(id, status)
   });  
 }
 
-function getAllEvents(type)
+function getAllEvents(status, page)
 {
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+
+    if(status != 'expired' && status != 'pending')
+      status = 'ongoing';
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'events',
       dataType : "JSON",
-      data: {},
+      async: false,
+      data: {status:status, page: page},
       beforeSend:function(){
 
       },
@@ -1471,6 +1614,7 @@ function getAllEvents(type)
         var pendinghtml = '';
         var activehtml = '';
         var deactivehtml = '';
+        var html = '';
         $.each(data.data, function( index, events ) {
           var link = '';
           console.log(events.first_name);
@@ -1490,45 +1634,57 @@ function getAllEvents(type)
           link += ' | <a href="editevent.php?id='+events.id+'">Edit</a>';
           link += ' | <a href= "javascript:void(0);" onclick="deleteEvent('+events.id+')">Delete</a>';
 
-          var html = '<tr>\
+          html += '<tr>\
                       <td>'+events.first_name +  ' ' + events.last_name+'</td>\
                       <td>'+events.event_name+'</td>\
                       <td>'+events.venue+'</td>\
                       <td>' +link+ '</td>\
                    </tr>';
 
-          if(events.status == 'ongoing')
-          {
-            activehtml += html;
-          }
-          else if(events.status == 'expired')
-          {
-            deactivehtml += html;
-          }
-          else if(events.status == 'pending')
-          {
-            pendinghtml += html;
-          }
+          // if(events.status == 'ongoing')
+          // {
+          //   activehtml += html;
+          // }
+          // else if(events.status == 'expired')
+          // {
+          //   deactivehtml += html;
+          // }
+          // else if(events.status == 'pending')
+          // {
+          //   pendinghtml += html;
+          // }
 
         });
 
-        $('#pendingbody').html(pendinghtml);        
-        $('#activebody').html(activehtml);        
-        $('#deactivebody').html(deactivehtml);
+        
+        $('#'+status+'body').html(html);
+        // $('#activebody').html(activehtml);
+        // $('#deactivebody').html(deactivehtml);
 
 
         nohtml = '<tr>\
                         <td colspan="4" align="center">No Events found.</td>\
                      </tr>';
 
-      if(pendinghtml == '')
-        $('#pendingbody').html(nohtml);        
-      if(activehtml == '')
-      {
-        $('#activebody').html(nohtml);        
-      }
-      if(deactivehtml == '')
-        $('#deactivebody').html(nohtml);        
+      if(html == '')
+        $('#'+status+'body').html(nohtml);
+
+      // if(activehtml == '')
+      // {
+      //   $('#activebody').html(nohtml);        
+      // }
+      // if(deactivehtml == '')
+      //   $('#deactivebody').html(nohtml);        
+
+
+        $('#'+status+'pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+          getAllEvents(status, num);
+        }); 
 
 
 
@@ -1559,8 +1715,8 @@ function getSingleEvent(id)
         $('#venue_name').val(data.data.venue);
         $('#street_address').val(data.data.address);
         $('#post_code').val(data.data.postcode);
-        $('#start_date').val(data.data.start_date);
-        $('#end_date').val(data.data.end_date);
+        // $('#start_date').val(data.data.start_date);
+        // $('#end_date').val(data.data.end_date);
         $('#office_number').val(data.data.office_number);
         $('#cell_number').val(data.data.cell_number);
         $('#email_address').val(data.data.email);
@@ -1577,6 +1733,35 @@ function getSingleEvent(id)
         $('#twitter').val(data.data.twitter);
         $('#instagram').val(data.data.instagram);
         $('#price').val(data.data.price);
+
+
+
+          jQuery('#start_date').datetimepicker({
+           //format:'Y/m/d',
+           mask:'9999/19/39 29:59',  
+           value:data.data.start_date,           
+           // onShow:function( ct ){
+           //  this.setOptions({
+           //   minDate:jQuery('#end_date').val()?jQuery('#end_date').val():false,
+           //  })
+           // },
+           timepicker:true
+          });
+
+
+          jQuery('#end_date').datetimepicker({
+         //  format:'Y/m/d',
+           mask:'9999/19/39 29:59',    
+           value:data.data.end_date,           
+           // onShow:function( ct ){
+           //  this.setOptions({
+           //   minDate:jQuery('#start_date').val()?jQuery('#start_date').val():false,
+           //  })
+           // },
+           timepicker:true
+          });
+
+
 
 
 
@@ -1694,7 +1879,9 @@ function deleteEvent(id)
 
       },
       success:function(data){
-        getAllEvents();
+        getAllEvents('onging');
+        getAllEvents('pending');
+        getAllEvents('expired');  
       },
       error:function(jqxhr){
       }
@@ -1715,7 +1902,9 @@ function changeEventStatus(id, status)
     $('#spinner').hide();      
       if(data.status == 'success')
       {
-          getAllEvents('');
+          getAllEvents('onging');
+          getAllEvents('pending');
+          getAllEvents('expired');  
           showMsg('#statusmsg', 'Event status updated successfully.', 'green');
       }
     },
@@ -1764,6 +1953,16 @@ function addEditPromoVendors()
      if(check)
      {
 
+        var image_divs = $('.file-preview-frame').length;
+        var uploaded = $('.glyphicon-ok-sign').length;
+
+        if(image_divs > 0 && (uploaded == 0))
+        {
+          check = false;
+          showMsg('#uploadmsg', 'Please Upload your image before adding the deal', 'warning');
+          return false;
+        }
+        
          $('#spinner').show();      
          $.ajax({
            type: "POST",

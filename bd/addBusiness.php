@@ -263,7 +263,7 @@
                                           <option value="" selected="">Choose One:</option>
                                        </select>
                                     </div>
-                                    <div class="col-xs-6 col-md-6">
+                                    <div class="col-xs-6 col-md-6" style="display:none;" id="sub_cat_div">
                                        <label for="name">Sub-Category</label>
                                        <select id="sub_cat_id" name="subject" onchange="$(this).parent().removeClass('has-error');" class="form-control" required="required">
                                           <option value="" selected="">Choose One:</option>
@@ -502,11 +502,17 @@
                      </div>
                      </div>
                      <div class="col-md-12">
+                     <div class="alert alert-warning" id="uploadmsg" role="alert" style="display:none;"></div>
+
                      <button type="button" onclick="addBusiness();" class="btn btn-primary pull-left" id="btnContactUs">
                      Add Your Business</button>
                      <button type="button" style="margin-left:10px;" class="btn btn-default">Cancel</button>
+
                      <img src="images/spinner.gif" id="submit_spinner" style="display:none;">
+
                      </div>
+
+
                      </div>
                      </form>
                      <!-- Form Start Here-->					 

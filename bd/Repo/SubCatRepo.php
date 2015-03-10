@@ -14,7 +14,7 @@ class SubCatRepo{
 		{
 			if(!empty($requestData['sub_cat_name']) && !empty($requestData['cat_id']))
 			{
-				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['cat_id'],$action);
+				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['cat_id'],$action, $requestData['cat_id']);
 				if($exists)
 				{
 					$response = 409;
@@ -45,7 +45,7 @@ class SubCatRepo{
 			// Check if cat_name is not empty
 			if(!empty($requestData['sub_cat_name']) && !empty($requestData['id']))
 			{
-				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['id'],$action);
+				$exists = $this->checkSubCat($requestData['sub_cat_name'],$requestData['id'],$action, $requestData['cat_id']);
 				if($exists)
 				{
 					$response = 409;
@@ -131,15 +131,15 @@ class SubCatRepo{
 	}
 
 		
-	public function checkSubCat($name, $id, $action)
+	public function checkSubCat($name, $id, $action, $cat_id)
 	{
 
 		if($action == 'post'){
-			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name);
+			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where("cat_id", $cat_id);
 		}
 		else if($action == 'put')
 		{
-			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where('id != ?',$id);
+			$query = $GLOBALS['con']->from('sub_category')->where('cat_name', $name)->where('id != ?',$id)->where("cat_id", $cat_id);
 		}
 		return count($query);
 	}

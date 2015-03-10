@@ -156,6 +156,8 @@ getPromoVendors();
 
       </div>
       <div class="modal-footer">
+                     <div class="alert alert-warning" id="uploadmsg" role="alert" style="display:none;"></div>                     
+
         <img src="images/spinner.gif" id="spinner" style="position:absolute; right:150px; display:none;">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" onclick="addEditPromoVendors();" class="btn btn-primary">Save</button>
@@ -200,6 +202,9 @@ getPromoVendors();
 
                 </tbody>
               </table>
+              
+              <div id="pagination" style="text-align:center;"></div>
+
             </div>
           </div>
 

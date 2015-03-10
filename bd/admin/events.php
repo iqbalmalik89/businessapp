@@ -14,8 +14,9 @@
 
 <script>
 $( document ).ready(function() {
-  getAllEvents('');
-
+  getAllEvents('onging');
+  getAllEvents('pending');
+  getAllEvents('expired');  
   });
 </script>
 </head>
@@ -156,7 +157,7 @@ $( document ).ready(function() {
               </ul>
               <div class="tab-content">
           <div class="notification-bar" id="statusmsg" style="display: none;"></div>
-                <div id="active" class="tab-pane active cont">
+                <div id="active" class="tab-pane active cont" style="height:100%;">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -166,12 +167,13 @@ $( document ).ready(function() {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody id="activebody">
+                    <tbody id="ongoingbody">
 
                     </tbody>
                   </table>
+                  <div id="ongoingpagination" style="text-align:center;"></div>                  
                 </div>
-                <div id="pending" class="tab-pane cont">
+                <div id="pending" class="tab-pane cont"  style="height:100%;">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -185,8 +187,9 @@ $( document ).ready(function() {
 
                     </tbody>
                   </table>
+                  <div id="pendingpagination" style="text-align:center;"></div>                                    
                 </div>
-                <div id="deactive" class="tab-pane">
+                <div id="deactive" class="tab-pane" style="height:100%;">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -196,10 +199,11 @@ $( document ).ready(function() {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody id="deactivebody">
+                    <tbody id="expiredbody">
 
                 </tbody>
               </table>
+                  <div id="expiredpagination" style="text-align:center;"></div>
             </div>
           </div>
 

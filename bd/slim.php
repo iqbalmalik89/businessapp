@@ -219,7 +219,7 @@ $app->group('/api', function () use ($app) {
 
         $new = new DealRepo();
         $code = $new->getDeals($app->requestdata);
-        response($code['response'], array('data' => $code['data']));
+        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages']));
     });
 
     // update deal status
@@ -277,7 +277,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/vendors', function() use ($app){
         $new = new VendorRepo();
         $code = $new->getVendors($app->requestdata);
-        response($code['code'], array('data' => $code['data']));
+        response($code['code'], array('data' => $code['data'], 'total_pages' => $code['total_pages'] ));
     });        
 
     // Delete Vendor
@@ -291,7 +291,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/events', function() use ($app){
         $new = new EventRepo();
         $code = $new->getEvents($app->requestdata);
-        response($code['response'], array('data' => $code['data']));
+        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages']));
     }); 
 
     // Delete Event
@@ -321,7 +321,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/promovendors', function() use ($app){
         $new = new PromoVendorsRepo();
         $code = $new->getPromoVendors($app->requestdata);
-        response($code['response'], array('data' => $code['data']));
+        response($code['response'], array('data' => $code['data'], 'total_pages' =>$code['total_pages'] ));
     }); 
 
     // Get Deals of a vendor
