@@ -89,17 +89,16 @@ $( document ).ready(function() {
           <div class="col-md-12">
             <div class="page-heading">
               <h1>Vendors  <!-- <button type="button" data-toggle="modal" data-target="#addcat" onclick="showAddPopup();" class="btn btn-primary">Add Category</button>  --> </h1>
-       
+                 <img src="images/spinner.gif" style="position:absolute; left:81%; display:none;" id="search_spinner">       
                  <input type="text" id="search" name="search" value="" placeholder="Search Vendor" onkeyup="searchVendor(this.value);" style="float:right;">
-
             </div>
           </div><!--col-md-12 end-->
 <div class="tab-container">
        
               <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#active">Active</a></li>
-                <li><a data-toggle="tab" href="#pending">Pending</a></li>
-                <li><a data-toggle="tab" href="#deactive">Deactive</a></li>
+                <li class="active"><a data-toggle="tab" href="#active">Active <span id="activated_count">(0)</span></a></li>
+                <li><a data-toggle="tab" href="#pending">Pending <span id="pending_count">(0)</span></a></li>
+                <li><a data-toggle="tab" href="#deactive">Deactive <span id="deactivated_count">(0)</span></a></li>
               </ul>
               <div class="tab-content">
           <div class="notification-bar" id="statusmsg" style="display: none;"></div>
@@ -107,9 +106,10 @@ $( document ).ready(function() {
                   <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
+                        <th>Id</th>
+                        <th>Name   </th>
+                        <th>Business Name <i class="fa fa-sort business_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'business_name', 'vendors', 'activated');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'business_name', 'vendors', 'activated');" class="fa fa-sort-asc business_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'business_name', 'vendors', 'activated');" class="fa fa-sort-desc business_namedesc"></i></th>
+                        <th>Created on <i class="fa fa-sort date_createdall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'date_created', 'vendors', 'activated');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'date_created', 'vendors', 'activated');" class="fa fa-sort-asc date_createdasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'date_created', 'vendors', 'activated');" class="fa fa-sort-desc date_createddesc"></i></th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -124,9 +124,10 @@ $( document ).ready(function() {
                   <table class="table table-bordered">
                     <thead>
                       <tr>
+                        <th>Id</th>                      
                         <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
+                        <th>Business Name <i class="fa fa-sort business_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'business_name', 'vendors', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'business_name', 'vendors', 'pending');" class="fa fa-sort-asc business_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'business_name', 'vendors', 'pending');" class="fa fa-sort-desc business_namedesc"></i></th>
+                        <th>Created on <i class="fa fa-sort date_createdall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'date_created', 'vendors', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'date_created', 'vendors', 'pending');" class="fa fa-sort-asc date_createdasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'date_created', 'vendors', 'pending');" class="fa fa-sort-desc date_createddesc"></i></th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -141,9 +142,10 @@ $( document ).ready(function() {
                   <table class="table table-bordered">
                     <thead>
                       <tr>
+                        <th>Id</th>                                            
                         <th>Name</th>
-                        <th>Business Name</th>
-                        <th>Created on</th>
+                        <th>Business Name <i class="fa fa-sort business_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'business_name', 'vendors', 'deactivated');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'business_name', 'vendors', 'deactivated');" class="fa fa-sort-asc business_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'business_name', 'vendors', 'deactivated');" class="fa fa-sort-desc business_namedesc"></i></th>
+                        <th>Created on <i class="fa fa-sort date_createdall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'date_created', 'vendors', 'deactivated');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'date_created', 'vendors', 'deactivated');" class="fa fa-sort-asc date_createdasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'date_created', 'vendors', 'deactivated');" class="fa fa-sort-desc date_createddesc"></i></th>
                         <th>Actions</th>
                       </tr>
                     </thead>

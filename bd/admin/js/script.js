@@ -1,9 +1,10 @@
-
+var sortBy = '';
+var sortOrder = '';
 var server = window.location.hostname;
 if(server == 'localhost')
   var apiUrl = location.protocol + "//"+server+"/businessapp/bd/slim.php/api/";
 else
-  var apiUrl = location.protocol + "//"+server+"/bd/slim.php/api/";
+  var apiUrl = location.protocol + "//"+server+"/beta/slim.php/api/";
 
 
 function showMsg(id, msg, type)
@@ -427,9 +428,28 @@ function checkBusinessName(name)
 function checkEventName(name)
 {
   var event_id = $('#event_id').val();
-  var start_date = $('#start_date').val();
-  var end_date = $('#end_date').val();
-  var address = $('#street_address').val();
+  var first_name = $.trim($('#first_name').val());
+  var last_name = $.trim($('#last_name').val());
+  var event_name = $.trim($('#event_name').val());
+  var venue_name = $.trim($('#venue_name').val());
+  var address = $.trim($('#street_address').val());
+  var post_code = $.trim($('#post_code').val());
+  var start_date = $.trim($('#start_date').val());
+  var end_date = $.trim($('#end_date').val());
+  var office_number = $.trim($('#office_number').val());
+  var cell_number = $.trim($('#cell_number').val());
+  var email_address = $.trim($('#email_address').val());
+  var street_address = $.trim($('#street_address').val());
+  var country = $.trim($('#country').val());
+  var city = $.trim($('#city').val());
+  var state = $.trim($('#state').val());
+  var price = $.trim($('#price').val());
+  var website = $.trim($('#website').val());
+  var facebook = $.trim($('#facebook').val());
+  var youtube = $.trim($('#youtube').val());
+  var twitter = $.trim($('#twitter').val());
+  var instagram = $.trim($('#instagram').val());
+
 
   if(name!="")
   {
@@ -438,7 +458,9 @@ function checkEventName(name)
       type: "GET",
       url: apiUrl + 'event_name',
       dataType : "JSON",
-      data: {event_id:event_id , event_name:name,start_date: start_date, end_date: end_date, address: address},
+      data: {event_id:event_id , event_name:name,start_date: start_date, end_date: end_date, address: address, first_name: first_name,
+        last_name: last_name, venue: venue_name, postcode: post_code, email: email_address, city:city, state:state, country:country,
+        price:price},
       beforeSend:function(){
 
       },
@@ -780,7 +802,7 @@ function addEvent()
   var last_name = $.trim($('#last_name').val());
   var event_name = $.trim($('#event_name').val());
   var venue_name = $.trim($('#venue_name').val());
-  var start_address = $.trim($('#start_address').val());
+  var start_address = $.trim($('#street_address').val());
   var post_code = $.trim($('#post_code').val());
   var start_date = $.trim($('#start_date').val());
   var end_date = $.trim($('#end_date').val());
@@ -967,9 +989,54 @@ function addEvent()
 
 }
 
+function sortbyFunc(sort, sortbystr, module, status)
+{
+  sortBy = sortbystr;
+  obj = '.'+sortbystr;
+  if(sort == 'all')
+  {
+    sortOrder = 'asc';
+    $('.fa-sort').show();
+    $('.fa-sort-asc').hide();
+    $('.fa-sort-desc').hide();
+    $(obj+'all').hide();
+    $(obj+'desc').hide();
+    $(obj+'asc').show();
+  }
+  else if(sort == 'asc')
+  {
+    sortOrder = 'desc';
+    $('.fa-sort').show();
+    $(obj+'all').hide();
+    $(obj+'asc').hide();
+    $(obj+'desc').show();
+  }
+  else if(sort == 'desc')
+  {
+    sortOrder = 'asc';
+    $('.fa-sort').show();
+    $(obj+'all').hide();
+    $(obj+'desc').hide();
+    $(obj+'asc').show();
+  }
+
+  if(module == 'vendors')
+    getAllVendors(status)
+  else if(module == 'events')
+    getAllEvents(status)
+  else if(module == 'deals')
+    getDeals();
+  else if(module == 'promo')
+    getPromoVendors();
+}
 
 function getAllVendors(status, page)
 {
+  if(typeof global_promo_vendor != "undefined")
+    var promo = true;
+  else
+    var promo = false;
+
   curpage = page;
   if(page > 0)
     page -= 1;
@@ -978,16 +1045,22 @@ function getAllVendors(status, page)
       status = 'activated';
 
     var search = $('#search').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'vendors',
       dataType : "JSON",
-      data: {search:search, status:status, page:page},
+      data: {search:search, status:status, page:page, promo: promo, sort_by: sortBy, sort_order: sortOrder},
       async:false,
       beforeSend:function(){
 
       },
       success:function(data){
+        $('#search_spinner').hide();
+
         var options = '';
         var pendinghtml = '';
         var activehtml = '';
@@ -1018,7 +1091,8 @@ function getAllVendors(status, page)
           link += ' | <a href= "promovendors.php?vendor_id='+vendor.id+'">Promo Vendor</a>';
 
           html += '<tr>\
-                      <td>'+vendor.id +  ' ' + vendor.last_name+'</td>\
+                      <td>'+vendor.id+'</td>\
+                      <td>'+vendor.first_name +  ' ' + vendor.last_name+'</td>\
                       <td>'+vendor.business_name+'</td>\
                       <td>'+vendor.date_created+'</td>\
                       <td>' +link+ '</td>\
@@ -1067,9 +1141,10 @@ function getAllVendors(status, page)
       // if(deactivehtml == '')
       //   $('#deactivebody').html(nohtml);        
 
+        $('#'+status+'_count').html('('+data.count+')');
 
-
-
+        if(data.total_pages == 0)
+          data.total_pages = 1;
         $('#'+status+'pagination').bootpag({
             total: data.total_pages,          // total pages
             page: curpage,            // default page
@@ -1082,6 +1157,8 @@ function getAllVendors(status, page)
 
       },
       error:function(jqxhr){
+        $('#search_spinner').hide();
+
       }
     });
 
@@ -1125,7 +1202,7 @@ function dealReset()
     $('#existing_images').html('');    
 }
 
-function getDeals(page)
+function getQueries(page)
 {
   curpage = page;
   if(page > 0)
@@ -1134,7 +1211,7 @@ function getDeals(page)
 
     $.ajax({
       type: 'GET',
-      url: apiUrl + 'deals',
+      url: apiUrl + 'queries',
       dataType : "JSON",
       data: {page: page},
       beforeSend:function(){
@@ -1142,36 +1219,18 @@ function getDeals(page)
       },
       success:function(data){
         var html = '';
-        var options = '';
+
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
-                options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
-                var desc = value.desc;
-                if(desc == null)
-                {
-                  desc = '';
-                }
-                else
-                {
-                  desc = value.desc;
-                }
-            var vendor_names = '';
-            if(value.vendors.length > 0)
-            {
-              $.each(value.vendors, function( vendorindex, vendorvalue ) {
-                vendor_names += vendorvalue.vendor_name+'<br>';
-              });              
-            }
-
 
                 html += '<tr>\
-                            <td>'+value.deal_name+'</td>\
-                            <td>'+vendor_names+'</td>\
-                            <td>'+value.start_date+'</td>\
-                            <td>'+value.end_date+'</td>\
-                            <td>'+value.desc+'</td>\
-                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+                            <td>'+value.name+'</td>\
+                            <td>'+value.email+'</td>\
+                            <td>'+value.subject+'</td>\
+                            <td>'+value.phone+'</td>\
+                            <td>'+value.message+'</td>\
+                            <td><a href="javascript:void(0);" onclick="deleteQuery('+value.id+');">Delete</a></td>\
                          </tr>';
 
             });            
@@ -1179,7 +1238,7 @@ function getDeals(page)
         else
         {
             html += '<tr>\
-                        <td colspan="6" align="center">Deals not found</td>\
+                        <td colspan="6" align="center">Queries not found</td>\
                      </tr>';            
         }
 
@@ -1193,7 +1252,7 @@ function getDeals(page)
             leaps: true         // next/prev leaps through maxVisible
         }).on("page", function(event, num){
 
-          getDeals(num);
+          getQueries(num);
 
         }); 
 
@@ -1206,6 +1265,98 @@ function getDeals(page)
       error:function(jqxhr){
       }
     });
+}
+
+function getSubscribers(page)
+{
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'subscribers',
+      dataType : "JSON",
+      data: {page: page},
+      beforeSend:function(){
+      },
+      success:function(data){
+        var html = '';
+
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+
+                html += '<tr>\
+                            <td>'+value.email+'</td>\
+                            <td>'+value.date_created+'</td>\
+                            <td><a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Subscribers not found</td>\
+                     </tr>';            
+        }
+
+        $('#dealbody').html(html);
+  
+        $('#pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+
+          getSubscribers(num);
+
+        }); 
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
+function deleteSubscriber(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletesubscriber',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+          showMsg('#deletemsg', 'Subscriber deleted successfully.', 'red');
+          getSubscribers(1);
+      },
+      error:function(jqxhr){
+      }
+    });  
+}
+
+function deleteQuery(id)
+{
+    $.ajax({
+      type: 'POST',
+      url: apiUrl + 'deletequery',
+      dataType : "JSON",
+      data: {id:id},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+          showMsg('#deletemsg', 'Query deleted successfully.', 'red');
+          getQueries(1);
+      },
+      error:function(jqxhr){
+      }
+    });  
 }
 
 function deletePromoVendor(id)
@@ -1276,15 +1427,23 @@ function getPromoVendors(page)
   if(page > 0)
     page -= 1;
 
+    var search = $('#search_promo').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'promovendors',
       dataType : "JSON",
-      data: {page: page},
+      data: {page: page, search:search, sort_by: sortBy, sort_order: sortOrder},
       beforeSend:function(){
 
       },
       success:function(data){
+        $('#search_spinner').hide();
+
         var html = '';
         var options = '';
         if(data.data.length > 0)
@@ -1309,6 +1468,7 @@ function getPromoVendors(page)
         }
 
         $('#dealbody').html(html);
+        $('#promo_count').html('(' +data.count+ ')');
 
 
       $('#pagination').bootpag({
@@ -1410,9 +1570,127 @@ function deleteDeal(id)
     });
 }
 
+function searchEvent(keyword)
+{
+  getAllEvents('ongoing');
+  getAllEvents('pending');
+  getAllEvents('expired');
+}
+
+function searchPromo(keyword)
+{
+  getPromoVendors();
+}
+
+
+function searchDeal(keyword)
+{
+  getDeals();
+}
+
+function getDeals(page)
+{
+  curpage = page;
+  if(page > 0)
+    page -= 1;
+    var id = $('#deal_id').val();
+
+    var search = $('#search').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
+    $.ajax({
+      type: 'GET',
+      url: apiUrl + 'deals',
+      dataType : "JSON",
+      data: {page: page, search:search, sort_by: sortBy, sort_order: sortOrder},
+      beforeSend:function(){
+
+      },
+      success:function(data){
+        $('#search_spinner').hide();
+        var html = '';
+        var options = '';
+        if(data.data.length > 0)
+        {
+            $.each(data.data, function( index, value ) {
+                options += '<option value="'+value.id+'">'+value.deal_name+' </option>';
+                var desc = value.desc;
+                if(desc == null)
+                {
+                  desc = '';
+                }
+                else
+                {
+                  desc = value.desc;
+                }
+            var vendor_names = '';
+            if(value.vendors.length > 0)
+            {
+              $.each(value.vendors, function( vendorindex, vendorvalue ) {
+                vendor_names += vendorvalue.vendor_name+'<br>';
+              });              
+            }
+
+
+                html += '<tr>\
+                            <td>'+value.deal_name+'</td>\
+                            <td>'+vendor_names+'</td>\
+                            <td>'+value.start_date+'</td>\
+                            <td>'+value.end_date+'</td>\
+                            <td>'+value.desc+'</td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleDeal('+value.id+');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteDeal('+value.id+');">Delete</a></td>\
+                         </tr>';
+
+            });            
+        }
+        else
+        {
+            html += '<tr>\
+                        <td colspan="6" align="center">Deals not found</td>\
+                     </tr>';            
+        }
+
+        $('#dealbody').html(html);
+        $('#deal_count').html('(' +data.count+ ')');
+  
+        $('#pagination').bootpag({
+            total: data.total_pages,          // total pages
+            page: curpage,            // default page
+            maxVisible: 5,     // visible pagination
+            leaps: true         // next/prev leaps through maxVisible
+        }).on("page", function(event, num){
+
+          getDeals(num);
+
+        }); 
+
+
+
+
+       //$('#sub_cat_id').append(options);
+
+      },
+      error:function(jqxhr){
+      }
+    });
+}
+
 function searchVendor(keyword)
 {
   getAllVendors();
+  if(typeof global_promo_vendor != "undefined")
+    var promo = true;
+  else
+    var promo = false;
+
+  if(!promo)
+  {
+    getAllVendors('pending');
+    getAllVendors('deactivated');
+  }
+
 }
 
 function getSingleVendor(id)
@@ -1600,16 +1878,22 @@ function getAllEvents(status, page)
     if(status != 'expired' && status != 'pending')
       status = 'ongoing';
 
+    var search = $('#search').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'events',
       dataType : "JSON",
       async: false,
-      data: {status:status, page: page},
+      data: {status:status, page: page, search:search, sort_by: sortBy, sort_order: sortOrder},
       beforeSend:function(){
 
       },
       success:function(data){
+      $('#search_spinner').hide();
 
         var pendinghtml = '';
         var activehtml = '';
@@ -1637,6 +1921,8 @@ function getAllEvents(status, page)
           html += '<tr>\
                       <td>'+events.first_name +  ' ' + events.last_name+'</td>\
                       <td>'+events.event_name+'</td>\
+                      <td>'+events.start_date+'</td>\
+                      <td>'+events.end_date+'</td>\
                       <td>'+events.venue+'</td>\
                       <td>' +link+ '</td>\
                    </tr>';
@@ -1663,7 +1949,7 @@ function getAllEvents(status, page)
 
 
         nohtml = '<tr>\
-                        <td colspan="4" align="center">No Events found.</td>\
+                        <td colspan="6" align="center">No Events found.</td>\
                      </tr>';
 
       if(html == '')
@@ -1676,6 +1962,7 @@ function getAllEvents(status, page)
       // if(deactivehtml == '')
       //   $('#deactivebody').html(nohtml);        
 
+        $('#'+status+'_count').html('('+data.count+')');
 
         $('#'+status+'pagination').bootpag({
             total: data.total_pages,          // total pages

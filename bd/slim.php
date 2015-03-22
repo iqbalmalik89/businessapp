@@ -219,7 +219,7 @@ $app->group('/api', function () use ($app) {
 
         $new = new DealRepo();
         $code = $new->getDeals($app->requestdata);
-        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages']));
+        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages'], 'count' => $code['count']));
     });
 
     // update deal status
@@ -277,7 +277,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/vendors', function() use ($app){
         $new = new VendorRepo();
         $code = $new->getVendors($app->requestdata);
-        response($code['code'], array('data' => $code['data'], 'total_pages' => $code['total_pages'] ));
+        response($code['code'], array('data' => $code['data'], 'total_pages' => $code['total_pages'] , 'count' => $code['count'] ));
     });        
 
     // Delete Vendor
@@ -291,7 +291,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/events', function() use ($app){
         $new = new EventRepo();
         $code = $new->getEvents($app->requestdata);
-        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages']));
+        response($code['response'], array('data' => $code['data'], 'total_pages' => $code['total_pages'], 'count' => $code['count']));
     }); 
 
     // Delete Event
@@ -321,7 +321,7 @@ $app->group('/api', function () use ($app) {
     $app->get('/promovendors', function() use ($app){
         $new = new PromoVendorsRepo();
         $code = $new->getPromoVendors($app->requestdata);
-        response($code['response'], array('data' => $code['data'], 'total_pages' =>$code['total_pages'] ));
+        response($code['response'], array('data' => $code['data'], 'total_pages' =>$code['total_pages'], 'count' =>$code['count'] ));
     }); 
 
     // Get Deals of a vendor
@@ -364,6 +364,44 @@ $app->group('/api', function () use ($app) {
         response($code, array());
         
     });
+
+    $app->post('/send_contact_query', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->sendAdminQuery($app->requestdata);
+        response($code, array());
+        
+    });
+
+    $app->post('/add_subscriber', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->addSubscriber($app->requestdata);
+        response($code, array());        
+    });
+
+    $app->get('/queries', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->getQueries($app->requestdata);
+        response($code['code'], array('data' => $code['data'], 'total_pages' =>$code['total_pages'] ));
+    });
+
+    $app->get('/subscribers', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->getSubscribers($app->requestdata);
+        response($code['code'], array('data' => $code['data'], 'total_pages' =>$code['total_pages'] ));
+    });    
+
+    $app->post('/deletequery', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->deleteQuery($app->requestdata);
+        response($code, array());        
+    });
+
+    $app->post('/deletesubscriber', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->deleteSubscriber($app->requestdata);
+        response($code, array());        
+    });
+
 
 });
 

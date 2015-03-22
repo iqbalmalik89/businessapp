@@ -147,13 +147,16 @@ $( document ).ready(function() {
           <div class="col-md-12">
             <div class="page-heading">
               <h1>Events  <!-- <button type="button" data-toggle="modal" data-target="#addevent" onclick="showEventAddPopup();" class="btn btn-primary">Add Event</button> -->  </h1>
+                 <img src="images/spinner.gif" style="position:absolute; left:81%; display:none;" id="search_spinner">       
+                 <input type="text" id="search" name="search" value="" placeholder="Search Event" onkeyup="searchEvent(this.value);" style="float:right;">
+
             </div>
           </div><!--col-md-12 end-->
           <div class="tab-container">
               <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#active">Ongoing</a></li>
-                <li><a data-toggle="tab" href="#pending">Pending</a></li>
-                <li><a data-toggle="tab" href="#deactive">Expired</a></li>
+                <li class="active"><a data-toggle="tab" href="#active"> Ongoing<span id="ongoing_count">(0)</span></a></li>
+                <li><a data-toggle="tab" href="#pending">Pending <span id="pending_count">(0)</span></a></li>
+                <li><a data-toggle="tab" href="#deactive">Expired <span id="expired_count">(0)</span></a></li>
               </ul>
               <div class="tab-content">
           <div class="notification-bar" id="statusmsg" style="display: none;"></div>
@@ -162,7 +165,9 @@ $( document ).ready(function() {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Event Name</th>
+                        <th>Event Name <i class="fa fa-sort event_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'event_name', 'events', 'ongoing');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'event_name', 'events', 'ongoing');" class="fa fa-sort-asc event_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'event_name', 'events', 'ongoing');" class="fa fa-sort-desc event_namedesc"></i></th>
+                        <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'events', 'ongoing');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'events', 'ongoing');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'events', 'ongoing');" class="fa fa-sort-desc start_datedesc"></i></th>
+                        <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'events', 'ongoing');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'events', 'ongoing');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'events', 'ongoing');" class="fa fa-sort-desc end_datedesc"></i></th>
                         <th>Venue</th>
                         <th>Actions</th>
                       </tr>
@@ -178,7 +183,9 @@ $( document ).ready(function() {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Event Name</th>
+                        <th>Event Name <i class="fa fa-sort event_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'event_name', 'events', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'event_name', 'events', 'pending');" class="fa fa-sort-asc event_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'event_name', 'events', 'pending');" class="fa fa-sort-desc event_namedesc"></i></th>
+                        <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'events', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'events', 'pending');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'events', 'pending');" class="fa fa-sort-desc start_datedesc"></i></th>
+                        <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'events', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'events', 'pending');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'events', 'pending');" class="fa fa-sort-desc end_datedesc"></i></th>
                         <th>Venue</th>
                         <th>Actions</th>
                       </tr>
@@ -194,7 +201,9 @@ $( document ).ready(function() {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Event Name</th>
+                        <th>Event Name <i class="fa fa-sort event_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'event_name', 'events', 'expired');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'event_name', 'events', 'expired');" class="fa fa-sort-asc event_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'event_name', 'events', 'expired');" class="fa fa-sort-desc event_namedesc"></i></th>
+                        <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'events', 'expired');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'events', 'expired');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'events', 'expired');" class="fa fa-sort-desc start_datedesc"></i></th>
+                        <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'events', 'expired');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'events', 'expired');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'events', 'expired');" class="fa fa-sort-desc end_datedesc"></i></th>
                         <th>Venue</th>
                         <th>Actions</th>
                       </tr>

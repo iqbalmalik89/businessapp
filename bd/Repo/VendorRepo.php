@@ -28,6 +28,16 @@ class VendorRepo{
 
 	public function getVendors($request)
 	{
+		$sortBy = 'id';
+		$orderBy = 'asc';
+
+		if(isset($request['sort_by']) && !empty($request['sort_by']) && isset($request['sort_order']) && !empty($request['sort_order'] )) 
+		{
+			$sortBy = $request['sort_by'];
+			$orderBy = $request['sort_order'];
+		}
+
+		$count = 0;
 		if(!isset($request['status']))
 			$status = 'activated';
 		else
@@ -45,8 +55,10 @@ class VendorRepo{
 		$resp = array('code' => 200, 'data' => array());
 
 		if(isset($request['search']) && !empty($request['search']))
-		{
 			$key = '%'.$request['search'].'%';
+
+		if(isset($request['search']) && !empty($request['search']) && ($request['promo'] == false))
+		{
 			$vendors = $GLOBALS['con']->from('vendors')->where("business_name LIKE ?", $key);
 		}
 		else if(isset($request['vendor_id']))
@@ -55,9 +67,57 @@ class VendorRepo{
 		}
 		else
 		{
-			$count = $GLOBALS['con']->from('vendors')->where("status", $status)->count();
-			$total_pages = ceil($count / $limit) ;			
-			$vendors = $GLOBALS['con']->from('vendors')->where("status", $status)->limit($limit)->offset($offset);
+			if(!isset($key))
+			{
+				$count = $GLOBALS['con']->from('vendors')->where("status", $status)->count();
+			}
+			else
+			{
+				$rawSql = "SELECT COUNT(*) as cid FROM vendors where status = '".$status."' AND ( 
+					first_name like '".$key."' || 
+					last_name like '".$key."' || 
+					business_name like '".$key."' || 
+					address like '".$key."' || 
+					city like '".$key."' || 
+					state like '".$key."' || 
+					country like '".$key."' || 
+					postcode like '".$key."' || 
+					office_number like '".$key."' || 
+					cell_number like '".$key."' || 
+					email like '".$key."' || 
+					website like '".$key."'
+					)";
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$count = $stmt->fetchColumn();
+//				$count = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+			}
+			$total_pages = ceil($count / $limit);
+			if(!isset($key))
+			{
+				$vendors = $GLOBALS['con']->from('vendors')->where("status", $status)->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+			}
+			else
+			{
+				$rawSql = "SELECT * FROM vendors where status = '".$status."' AND ( 
+					first_name like '".$key."' || 
+					last_name like '".$key."' || 
+					business_name like '".$key."' || 
+					address like '".$key."' || 
+					city like '".$key."' || 
+					state like '".$key."' || 
+					country like '".$key."' || 
+					postcode like '".$key."' || 
+					office_number like '".$key."' || 
+					cell_number like '".$key."' || 
+					email like '".$key."' || 
+					website like '".$key."'
+					)";
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$vendors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
+
 		}
 
 		$allVendors = array();
@@ -75,6 +135,8 @@ class VendorRepo{
 		}
 
 		$resp['total_pages'] = $total_pages;
+		$resp['count'] = $count;
+
 		return $resp;
 	}
 

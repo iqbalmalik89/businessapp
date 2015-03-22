@@ -171,6 +171,19 @@ class DealRepo
 	// Get All Deals. If id given, returns a single deal else return all deals.
 	public function getDeals($request)
 	{	
+		$sortBy = 'id';
+		$orderBy = 'asc';
+
+		if(isset($request['sort_by']) && !empty($request['sort_by']) && isset($request['sort_order']) && !empty($request['sort_order'] )) 
+		{
+			$sortBy = $request['sort_by'];
+			$orderBy = $request['sort_order'];
+		}
+		
+		$count = 0;
+
+		if(isset($request['search']) && !empty($request['search']))
+			$key = '%'.$request['search'].'%';
 
 		$this->vendorRepo = new VendorRepo();
 		$requestData = $request;
@@ -206,9 +219,38 @@ class DealRepo
 		else
 		{
 			$data = array();
-			$count = $GLOBALS['con']->from('deals')->count();
+			if(!isset($key))
+			{
+				$count = $GLOBALS['con']->from('deals')->count();
+			}
+			else
+			{
+				$rawSql = "SELECT COUNT(*) as cid FROM deals where ( 
+					deal_name like '".$key."' || 
+					`desc` like '".$key."' || 
+					`status` like '".$key."'
+					)";
+
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$count = $stmt->fetchColumn();				
+			}
+
 			$total_pages = ceil($count / $limit) ;
-			$exists = $GLOBALS['con']->from('deals')->limit($limit)->offset($offset);
+			if(!isset($key))
+			{
+				$exists = $GLOBALS['con']->from('deals')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+			}
+			else
+			{
+				$rawSql = "SELECT * FROM deals where ( 
+					deal_name like '".$key."' || 
+					`desc` like '".$key."' || 
+					`status` like '".$key."'
+					)";
+
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$exists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
 
 			foreach($exists as $items)
 	    	{
@@ -219,7 +261,7 @@ class DealRepo
 			$response = 200;
 		}
 		
-		return array('response' => $response,'data' => $data, 'total_pages' => $total_pages);
+		return array('response' => $response,'data' => $data, 'total_pages' => $total_pages, 'count' => $count);
 	}
 	
 	public function dealStatus($request)

@@ -14,7 +14,7 @@
 
 <script>
 $( document ).ready(function() {
-  getDeals();
+  getSubscribers();
 
     var checkout = $('#start_date').datepicker({
             format: 'yyyy-mm-dd'
@@ -168,30 +168,29 @@ $( document ).ready(function() {
   ?>
     <!--margin-container start-->
     <div class="margin-container">
+
     <!--scrollable wrapper start-->
       <div class="scrollable wrapper">
       <!--row start-->
+
         <div class="row">
+
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Deals <span id="deal_count">(0)</span>  <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button>  </h1>
-
-                 <img src="images/spinner.gif" style="position:absolute; left:81%; display:none;" id="search_spinner">       
-                 <input type="text" id="search" name="search" value="" placeholder="Search Deal" onkeyup="searchDeal(this.value);" style="float:right; margin-bottom:10px;">
-
+              <h1>Queries<!--   <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button> -->  </h1>
             </div>
+
+          <div class="notification-bar" id="deletemsg" style="display: none;"></div>
+
           </div><!--col-md-12 end-->
           <div class="col-sm-6 col-md-12">
             <div class="box-info">
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Deal Name</th>
-                    <th>Vendors</th>
-                    <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'deals', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'deals', 'pending');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'deals', 'pending');" class="fa fa-sort-desc start_datedesc"></i></th>
-                    <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'deals', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'deals', 'pending');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'deals', 'pending');" class="fa fa-sort-desc end_datedesc"></i></th>
-                    <th>Description</th>
+                    <th>Email</th>
+                    <th>Date Created</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

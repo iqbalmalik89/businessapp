@@ -27,34 +27,13 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif]-->
+      <script src="js/script.js"></script>
+
    </head>
    <body>
       <div class="wrap">
-         <nav class="navbar navbar-inverse" role="navigation">
-            <div class="container">
-            
-            <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-                  <a class="navbar-brand" href="index.html"><i class="fa fa-home"></i> Home Here .com</a>
-            </div>
-            
-            
-             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                  <ul class="nav navbar-nav navbar-right">
-                     <li><a href="addBusiness.php">Add Business</a></li>
-                     <li><a href="addEvents.php">Add Local Events </a></li>
-                     <li><a href="contactUs.php">Promote Your Business</a></li>
-                     <li><a href="contactUs.php">Contact Us</a></li>
-			
-                  </ul>
-               </div>
-            </div>
-            </nav>
+      <?php include('inc/header.php'); ?>
+
          <!--<nav class="navbar navbar-default" role="navigation">
             <div class="container">
             
@@ -233,7 +212,7 @@
                                  <div class="form-group">
                                     <label for="name">
                                     Name:</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Enter name" required="required" />
+                                    <input type="text" class="form-control" onfocus="$(this).parent().removeClass('has-error');" id="name" placeholder="Enter name" required="required" />
                                  </div>
 								 <div class="form-group">
                                     <label for="phone">
@@ -241,7 +220,7 @@
                                     <div class="input-group">
                                        <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
                                        </span>
-                                       <input type="phone" class="form-control" id="phone" placeholder="Enter Your Phone #" required="required" />
+                                       <input type="phone" class="form-control" onfocus="$(this).parent().removeClass('has-error');" id="phone" placeholder="Enter Your Phone #" required="required" />
                                     </div>
                                  </div>
                                  <div class="form-group">
@@ -250,14 +229,14 @@
                                     <div class="input-group">
                                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
                                        </span>
-                                       <input type="email" class="form-control" id="email" placeholder="Enter email" required="required" />
+                                       <input type="email" onfocus="$(this).parent().removeClass('has-error');" class="form-control" id="email" placeholder="Enter email" required="required" />
                                     </div>
                                  </div>
                                  <div class="form-group">
                                     <label for="subject">
                                     Subject:</label>
-                                    <select id="subject" name="subject" class="form-control" required="required">
-                                       <option value="na" selected="">Choose One:</option>
+                                    <select id="subject" name="subject" class="form-control" required="required"  onchange="$(this).parent().removeClass('has-error');">
+                                       <option value="" selected="">Choose One:</option>
                                        <option value="service">General Customer Service</option>
                                        <option value="suggestions">Suggestions</option>
                                        <option value="product">Product Support</option>
@@ -268,12 +247,16 @@
                                  <div class="form-group">
                                     <label for="name">
                                     Message</label>
-                                    <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required"
+                                    <textarea name="message" id="message" class="form-control"  onfocus="$(this).parent().removeClass('has-error');" rows="9" cols="25" required="required"
                                        placeholder="Message"></textarea>
                                  </div>
                               </div>
                               <div class="col-md-12">
-                                 <button type="submit" class="btn btn-primary pull-right" id="btnContactUs">
+
+                     <div class="alert alert-success" id="contactmsg" role="alert" style="display:none;width: 67%;padding: 6px;float: left;"></div>
+
+                              <img id="spinner" src="images/spinner.gif" style="display:none;  position: absolute; left: 580px;">
+                                 <button type="button" onclick="sendContactQuery();" class="btn btn-primary pull-right" id="btnContactUs">
                                  Send Message</button>
                               </div>
                            </div>
@@ -300,38 +283,8 @@
                </div>
             </div>
          </div>
-         <section class="support-section">
-            <div class="container">
-               <div class="row">
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 motion text-center">
-                     <h2 class="page-header text-center"><strong>Subscribe Your Email</strong></h2>
-                     <p class="lead">Enter Your Email For Updates Regarding Our Upcoming App.</p>
-                  </div>
-                  <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offest-3 motion-left">
-                     <div class="input-group">
-                        <input type="email" placeholder="SUBSCRIBE FOR UPDATES" class="form-control input-lg"> <span class="input-group-btn"><button class="btn btn-danger btn-lg" type="button">SUBSCRIBE!</button></span>
-                     </div>
-                  </div>
-               </div>
-               <!-- /.row-->
-            </div>
-         </section>
-         <footer class="">
-            <div class="container">
-          
-               <div class="row text-center">
-                  <ul class="list-inline">
-                     <li><a href="#" title=""><i class="fa fa-twitter fa-2x"></i></a></li>
-                     <li><a href="#" title=""><i class="fa fa-facebook fa-2x"></i></a></li>
-                     <li><a href="#" title=""><i class="fa fa-google-plus fa-2x"></i></a></li>
-                     <li><a href="#" title=""><i class="fa fa-youtube fa-2x"></i></a></li>
-                     <li><a href="#" title=""><i class="fa fa-dribbble fa-2x"></i></a></li>
-                  </ul>
-               </div>
-            </div>
-            <!-- CONTAINER -->
-         </footer>
-         <!-- /FOOTER-->
+         <?php include('inc/footer.php'); ?>
+
          </nav>
       </div>
       <!-- Bootstrap core JavaScript

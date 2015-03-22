@@ -84,6 +84,20 @@ class PromoVendorsRepo
 	// Get Promo Vendors. 
 	public function getPromoVendors($request)
 	{
+		$sortBy = 'id';
+		$orderBy = 'asc';
+
+		if(isset($request['sort_by']) && !empty($request['sort_by']) && isset($request['sort_order']) && !empty($request['sort_order'] )) 
+		{
+			$sortBy = $request['sort_by'];
+			$orderBy = $request['sort_order'];
+		}
+				
+		$count = 0;
+
+		if(isset($request['search']) && !empty($request['search']))
+			$key = '%'.$request['search'].'%';
+
 		$requestData = $request;
 
 		$limit = 15;
@@ -122,10 +136,40 @@ class PromoVendorsRepo
 		
 		else
 		{
-			$count = $GLOBALS['con']->from('promo_vendors')->count();
+			if(!isset($key))
+			{
+				$count = $GLOBALS['con']->from('promo_vendors')->count();
+			}
+			else
+			{
+				$rawSql = "SELECT COUNT(*) as cid FROM promo_vendors as pv, vendors as v where pv.vendor_id = v.id AND ( 
+					v.first_name like '".$key."' || 
+					v.last_name like '".$key."' || 
+					v.business_name like '".$key."'
+					)";
+	
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$count = $stmt->fetchColumn();
+			}
+
 			$total_pages = ceil($count / $limit) ;
 
-			$exists = $GLOBALS['con']->from('promo_vendors')->limit($limit)->offset($offset);
+			if(isset($key))
+			{
+				$rawSql = "SELECT * FROM promo_vendors as pv, vendors as v where pv.vendor_id = v.id AND ( 
+					v.first_name like '".$key."' || 
+					v.last_name like '".$key."' || 
+					v.business_name like '".$key."'
+					)";
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$exists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
+			else
+			{
+
+				$exists = $GLOBALS['con']->from('promo_vendors')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+			}
+
 			$data = array();
 			foreach($exists as $items)
 	    	{
@@ -142,8 +186,8 @@ class PromoVendorsRepo
 			$response = 200;
 				
 		}
-		
-		return array('response' => $response,'data' => $data,  'total_pages' => $total_pages);
+
+		return array('response' => $response,'data' => $data,  'total_pages' => $total_pages,  'count' => $count);
 	}
 
 

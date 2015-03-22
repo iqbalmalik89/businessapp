@@ -14,6 +14,7 @@
 
 <script>
 $( document ).ready(function() {
+  global_promo_vendor = true;
   getAllVendors();
 <?php
   if(isset($_GET['vendor_id']))
@@ -184,7 +185,10 @@ getPromoVendors();
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Promo Vendors  <button type="button" data-toggle="modal" data-target="#addpromo" onclick="showPromoAddPopup();" class="btn btn-primary">Add Promo Vendors</button>  </h1>
+              <h1>Promo Vendors  <span id="promo_count">(0)</span>  <button type="button" data-toggle="modal" data-target="#addpromo" onclick="showPromoAddPopup();" class="btn btn-primary">Add Promo Vendors</button>  </h1>
+                 <img src="images/spinner.gif" style="position:absolute; left:81%; display:none;" id="search_spinner">       
+                 <input type="text" id="search_promo" name="search_promo" value="" placeholder="Search Promo" onkeyup="searchPromo(this.value);" style="float:right; margin-bottom:10px;">
+
             </div>
           </div><!--col-md-12 end-->
           <div class="col-sm-6 col-md-12">
@@ -193,8 +197,8 @@ getPromoVendors();
                 <thead>
                   <tr>
                     <th>Vendor Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
+                    <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'promo', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'promo', 'pending');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'promo', 'pending');" class="fa fa-sort-desc start_datedesc"></i></th>
+                    <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'promo', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'promo', 'pending');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'promo', 'pending');" class="fa fa-sort-desc end_datedesc"></i></th>
                     <th>Actions</th>
                   </tr>
                 </thead>

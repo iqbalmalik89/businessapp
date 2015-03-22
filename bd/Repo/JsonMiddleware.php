@@ -55,8 +55,8 @@ class JsonMiddleware extends \Slim\Middleware
             $password = 'bdApp2015';
         }
 
-        $pdo = new PDO("mysql:dbname=". $database, $user, $password);
-        $GLOBALS['con'] = new FluentPDO($pdo);
+        $GLOBALS['pdo'] = new PDO("mysql:dbname=". $database, $user, $password);
+        $GLOBALS['con'] = new FluentPDO($GLOBALS['pdo']);
         //$GLOBALS['con']->debug = true;
     }
 

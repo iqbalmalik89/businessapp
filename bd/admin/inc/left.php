@@ -18,7 +18,8 @@
 <li class="sub"> <a <?php if($currFile == 'events.php' || $currFile == 'editevent.php') echo 'class="active"'; ?> href="events.php"><i class="fa fa-calendar-o"></i><span>Events</span></a>
 <li class="sub"> <a <?php if($currFile == 'deals.php') echo 'class="active"'; ?> href="deals.php"><i class="fa fa-trophy"></i><span>Deals</span></a>
 <li class="sub"> <a <?php if($currFile == 'promovendors.php') echo 'class="active"'; ?> href="promovendors.php"><i class="fa fa-bullhorn"></i><span>Promo Vendors</span></a>
-
+<li class="sub"> <a <?php if($currFile == 'subscribers.php') echo 'class="active"'; ?> href="subscribers.php"><i class="fa fa-bullhorn"></i><span>Subscribers</span></a>
+<li class="sub"> <a <?php if($currFile == 'queries.php') echo 'class="active"'; ?> href="queries.php"><i class="fa fa-bullhorn"></i><span>Queries</span></a>
 <!--         <ul class="navigation-sub">
           <li><a href="buttons.html"><i class="fa fa-power-off"></i><span>Button</span></a></li>
           <li><a href="grids.html"><i class="fa fa-columns"></i><span>Grid</span></a></li>

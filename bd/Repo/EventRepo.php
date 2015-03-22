@@ -106,9 +106,41 @@ class EventRepo
 
 	public function checkEvent($data)
 	{
-		$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('start_date', $data['start_date'])->where('end_date', $data['end_date'])->where('address', $data['address'])->count();		
+		$query = $GLOBALS['con']->from('events')
+			->where('first_name', $data['first_name'])
+			->where('last_name', $data['last_name'])
+			->where('venue', $data['venue'])
+			->where('city', $data['city'])
+			->where('state', $data['state'])
+			->where('country', $data['country'])
+			->where('postcode', $data['postcode'])
+			->where('email', $data['email'])
+			->where('price', $data['price'])
+			->where('event_name', $data['event_name'])
+			->where('start_date', $data['start_date'])
+			->where('end_date', $data['end_date'])
+			->where('address', $data['address'])
+			->count();		
 		if(!empty($data['event_id']))
-			$query = $GLOBALS['con']->from('events')->where('event_name', $data['event_name'])->where('start_date', $data['start_date'])->where('end_date', $data['end_date'])->where('address', $data['address'])->where('id != ?', $data['event_id'])->count();		
+		{
+			$query = $GLOBALS['con']->from('events')
+			->where('first_name', $data['first_name'])
+			->where('last_name', $data['last_name'])
+			->where('venue', $data['venue'])
+			->where('city', $data['city'])
+			->where('state', $data['state'])
+			->where('country', $data['country'])
+			->where('postcode', $data['postcode'])
+			->where('email', $data['email'])
+			->where('price', $data['price'])
+			->where('event_name', $data['event_name'])
+			->where('start_date', $data['start_date'])
+			->where('end_date', $data['end_date'])
+			->where('address', $data['address'])
+			->where('id != ?', $data['event_id'])
+			->count();	
+		}
+
 
 		return $query;
 	}
@@ -158,7 +190,21 @@ class EventRepo
 
 	// Get All Events. If id given, returns a single event else return all events.
 	public function getEvents($request)
-	{	
+	{
+		$sortBy = 'id';
+		$orderBy = 'asc';
+
+		if(isset($request['sort_by']) && !empty($request['sort_by']) && isset($request['sort_order']) && !empty($request['sort_order'] )) 
+		{
+			$sortBy = $request['sort_by'];
+			$orderBy = $request['sort_order'];
+		}
+
+		$count = 0;
+
+		if(isset($request['search']) && !empty($request['search']))
+			$key = '%'.$request['search'].'%';
+
 		$requestData = $request;
 		
 		if(!isset($requestData['status']))
@@ -194,13 +240,66 @@ class EventRepo
 			}
 
 			$response = 200;
-		}
-		
+		}		
 		else
 		{
-			$count = $GLOBALS['con']->from('events')->where("status", $status)->count();
-			$total_pages = ceil($count / $limit) ;
-			$exists = $GLOBALS['con']->from('events')->where("status", $status)->limit($limit)->offset($offset);
+			if(!isset($key))
+			{
+				$count = $GLOBALS['con']->from('events')->where("status", $status)->count();
+			}
+			else
+			{
+				$rawSql = "SELECT COUNT(*) as cid FROM events where status = '".$status."' AND ( 
+					first_name like '".$key."' || 
+					last_name like '".$key."' || 
+					event_name like '".$key."' || 
+					venue like '".$key."' || 
+					address like '".$key."' || 
+					city like '".$key."' || 
+					state like '".$key."' || 
+					country like '".$key."' || 
+					postcode like '".$key."' || 
+					office_number like '".$key."' || 
+					cell_number like '".$key."' || 
+					email like '".$key."' || 
+					price like '".$key."'
+					)";
+
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$count = $stmt->fetchColumn();
+
+			}
+
+			$total_pages = ceil($count / $limit);
+
+			if(isset($key))
+			{
+				$rawSql = "SELECT * FROM events where status = '".$status."' AND ( 
+					first_name like '".$key."' || 
+					last_name like '".$key."' || 
+					event_name like '".$key."' || 
+					venue like '".$key."' || 
+					address like '".$key."' || 
+					city like '".$key."' || 
+					state like '".$key."' || 
+					country like '".$key."' || 
+					postcode like '".$key."' || 
+					office_number like '".$key."' || 
+					cell_number like '".$key."' || 
+					email like '".$key."' || 
+					price like '".$key."'
+					)";
+
+				$stmt = $GLOBALS['pdo']->query($rawSql);
+				$exists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+			}
+			else
+			{
+				$exists = $GLOBALS['con']->from('events')->where("status", $status)->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+			}
+
 			$data = array();
 			foreach($exists as $items)
 	    	{
@@ -212,8 +311,8 @@ class EventRepo
 			$response = 200;
 				
 		}
-		
-		return array('response' => $response,'data' => $data , 'total_pages' => $total_pages);
+
+		return array('response' => $response,'data' => $data , 'total_pages' => $total_pages, "count" => $count);
 	}
 	
 	public function deleteEvent($request)
