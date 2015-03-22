@@ -122,5 +122,25 @@ class LoginRepo{
 		return $response;
 	}
 
+	public function resetPassword($request)
+	{
+		$requestData = $request;
+		$response = 400;
+
+		$rec = $GLOBALS['con']->from('admin')->where('username',$requestData['email'])->where('code',$requestData['code']);
+		$exists = count($rec);
+
+		if($exists)
+		{
+			$values = array('password' => $requestData['password']);
+			$query = $GLOBALS['con']->update('admin', $values)->where('username',$requestData['email'])->execute();
+			$response = 200;
+		}
+		else
+		{
+			$response = 400;
+		}
+		return $response;
+	}
 
 }

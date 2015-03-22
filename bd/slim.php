@@ -408,6 +408,11 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });
 
+    $app->get('/resetpassword', function() use ($app){
+        $new = new LoginRepo();
+        $code = $new->resetPassword($app->requestdata);
+        response($code, array());
+    });
 
 });
 
