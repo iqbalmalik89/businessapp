@@ -402,6 +402,12 @@ $app->group('/api', function () use ($app) {
         response($code, array());        
     });
 
+    $app->get('/forgotpassword', function() use ($app){
+        $new = new LoginRepo();
+        $code = $new->forgotPassword($app->requestdata);
+        response($code, array());
+    });
+
 
 });
 

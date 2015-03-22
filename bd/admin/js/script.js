@@ -2425,3 +2425,29 @@ function confirmPassword()
 
 }
 
+function forgotPassword()
+{
+    var email = $('#email').val();
+    $.ajax({
+           type: "GET",
+           url: apiUrl + 'forgotpassword',
+           dataType : "JSON",
+           data:{email:email},
+           beforeSend:function(){
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+              showMsg('#msg', 'Email have been sent.', 'green');
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+
+}
+
