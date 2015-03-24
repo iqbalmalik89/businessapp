@@ -59,7 +59,7 @@ $( document ).ready(function() {
       <div class="modal-header">
           <div class="notification-bar" id="msg" style="display: none;"></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span id="mode">Add </span> Deal</h4>
+        <h4 class="modal-title" id="myModalLabel"><span id="mode">Edit </span> Subscriber</h4>
       </div>
       <div class="modal-body">
 
@@ -69,9 +69,9 @@ $( document ).ready(function() {
     <div class="col-md-10 column">
       <form class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Deal Name</label>
+           <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="deal_name" />
+            <input type="text" class="form-control" id="email" />
           </div>
         </div>
       </form>
@@ -79,68 +79,7 @@ $( document ).ready(function() {
   </div>
 </div>
 
-<div class="container">
-  <div class="row clearfix">
-    <div class="col-md-10 column">
-      <form class="form-horizontal" role="form" onsubmit="return false;">
-        <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="start_date" />
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
-<div class="container">
-  <div class="row clearfix">
-    <div class="col-md-10 column">
-      <form class="form-horizontal" role="form" onsubmit="return false;">
-        <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="end_date" />
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row clearfix">
-    <div class="col-md-10 column">
-      <form class="form-horizontal" role="form" onsubmit="return false;">
-        <div class="form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
-          <div class="col-sm-4">
-          <textarea class="form-control" rows="2" id="desc"></textarea>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-  <div class="row clearfix">
-    <div class="col-md-10 column" id="existing_images">
-
-    </div>
-  </div>
-
-
-  <div class="row clearfix">
-    <div class="col-md-10 column">
-      <form enctype="multipart/form-data">
-           <div class="form-group">
-                  <input id="deals_images" class="file" type="file" multiple="true" data-upload-url="../slim.php/api/upload_images?path=deals_images">
-          </div>
-
-      </form>
-    </div>
-  </div>
 
 
 
@@ -151,7 +90,7 @@ $( document ).ready(function() {
 
         <img src="images/spinner.gif" id="spinner" style="position:absolute; right:150px; display:none;">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addUpdateDeal();" class="btn btn-primary">Save</button>
+        <button type="button" onclick="editSubscriber();" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -178,7 +117,7 @@ $( document ).ready(function() {
          <!--col-md-12 start-->
           <div class="col-md-12">
             <div class="page-heading">
-              <h1>Queries<!--   <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button> -->  </h1>
+              <h1>Subscribers<!--   <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button> -->  </h1>
             </div>
 
           <div class="notification-bar" id="deletemsg" style="display: none;"></div>

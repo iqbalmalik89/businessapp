@@ -414,6 +414,19 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });
 
+    //Edit Subscriber
+     $app->post('/editsubscriber', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->editSubscriber($app->requestdata);
+        response($code, array());
+    });
+
+     //Deactive Subscriber
+     $app->post('/deactivesubscriber', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->deactiveSubscriber($app->requestdata);
+        response($code, array());
+    });
 });
 
 
