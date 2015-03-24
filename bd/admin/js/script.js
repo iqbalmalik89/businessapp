@@ -2425,3 +2425,90 @@ function confirmPassword()
 
 }
 
+function forgotPassword()
+{
+    var email = $('#email').val();
+
+    if(email == '')
+    {
+      $('#email').focus();
+      $('#email').addClass('error-class');
+      check = false;
+    }
+
+    $.ajax({
+           type: "GET",
+           url: apiUrl + 'forgotpassword',
+           dataType : "JSON",
+           data:{email:email},
+           beforeSend:function(){
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+              showMsg('#msg', 'Email have been sent.', 'green');
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+
+}
+
+function resetPassword()
+{
+  var password = $('#password').val();
+  var confirmPassword = $('#confirmpassword').val();
+  var email = $('#email').val();
+  var code = $('#code').val();
+  var check = true;
+
+  if(password == '')
+  {
+    $('#password').focus();
+    $('#password').addClass('error-class');
+    check = false;
+  }
+  if(confirmPassword == '')
+  {
+    $('#confirmpassword').focus();
+    $('#confirmpassword').addClass('error-class');
+    check = false;
+  }
+  else if(password != confirmPassword)
+  {
+    $('#password').focus();
+    $('#password').addClass('error-class');
+    $('#confirmpassword').focus();
+    $('#confirmpassword').addClass('error-class');
+    check = false;
+  }
+  else
+  {
+    $.ajax({
+           type: "GET",
+           url: apiUrl + 'resetpassword',
+           dataType : "JSON",
+           data:{email:email,code:code,password:password},
+           beforeSend:function(){
+
+           },
+           success:function(data){
+           $('#spinner').hide();      
+             if(data.status == 'success')
+             {
+              showMsg('#msg', 'Password updated successfully.', 'green');
+             }
+           },
+           error:function(jqxhr){
+             $('#spinner').hide();      
+             showMsg('#msg', 'error.', 'red');
+           }
+         });
+  }
+}
+
