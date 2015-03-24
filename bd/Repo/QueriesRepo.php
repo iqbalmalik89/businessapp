@@ -134,4 +134,54 @@ class QueriesRepo
 		$resp['total_pages'] = $total_pages;
 		return $resp;
 	}	
+
+	public function editSubscriber($request)
+	{
+		$response = 400;
+
+		if(!empty($request['email']))
+		{
+			$count = $GLOBALS['con']->from('subscribers')->where('email',$request['email'])->count();
+			if($count > 0)
+			{
+				$response = 400;
+			}
+			else
+			{
+				$date_created = date("Y-m-d H:i:s");
+				$values = array('email' => $request['email'],'date_created' => $date_created );
+				$query = $GLOBALS['con']->update('subscribers', $values, $request['id'])->execute();
+				$response = 200;
+			}
+		}
+		return $response;
+	}
+
+	public function getSingleSubscriber($request)
+	{
+		$query = $GLOBALS['con']->from('subscribers')->where('id',$reuqeust['id']);
+		$subscriber = array();
+
+			foreach($query as $items)
+	    	{
+				$subscriber[] = $items;
+
+			}
+
+			return array('code' => '200','data' => $subscriber);
+	}
+
+	public function deactiveSubscriber($request)
+	{
+		$response = 400;
+		$values = array('status' => 'deactive');
+		$query = $GLOBALS['con']->update('subscribers', $values, $request['id'])->execute();
+		
+		if($query)
+		{
+			$response = 200;
+		}
+
+			return $response;
+	}
 }

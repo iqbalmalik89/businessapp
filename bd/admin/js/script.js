@@ -1290,7 +1290,7 @@ function getSubscribers(page)
                 html += '<tr>\
                             <td>'+value.email+'</td>\
                             <td>'+value.date_created+'</td>\
-                            <td><a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a></td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubscriber('+value.id+', \''+value.email+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a> | <a href="javascript:void(0);" onclick="deactiveSubscriber('+value.id+');">Deactive</a></td>\
                          </tr>';
 
             });            
@@ -1298,7 +1298,7 @@ function getSubscribers(page)
         else
         {
             html += '<tr>\
-                        <td colspan="6" align="center">Subscribers not found</td>\
+                        <td colspan="3" align="center">Subscribers not found</td>\
                      </tr>';            
         }
 
@@ -2511,4 +2511,81 @@ function resetPassword()
          });
   }
 }
+
+function subscriberReset()
+{
+    $('#email').val('');
+}
+
+function getSingleSubscriber(id , email)
+{
+    $('#deal_id').val(id);
+    $('#email').val(email);
+
+}
+
+function editSubscriber()
+{
+
+    var id      = $('#deal_id').val();
+    var email   = $('#email').val();
+    var check   = true;
+
+    if(email == '')
+    {
+        $('#email').focus();
+        $('#email').addClass('error-class');
+        check = false;
+    }
+
+    if(check)
+    {
+        $('#spinner').show();
+        $.ajax({
+          type: "POST",
+          url: apiUrl + 'editsubscriber',
+          dataType : "JSON",
+          data: {id:id, email:email},
+          beforeSend:function(){
+
+          },
+          success:function(data){
+          $('#spinner').hide();
+            if(data.status == 'success')
+            {
+                getSubscribers();                
+                $('#adddeal').modal('hide');
+            }
+          },
+          error:function(jqxhr){
+            $('#spinner').hide();
+            showMsg('#msg', 'Subscriber already exists with this name.', 'red');
+          }
+        });
+      }
+    }
+
+    function deactiveSubscriber(id)
+    {
+        $.ajax({
+          type: "POST",
+          url: apiUrl + 'deactivesubscriber',
+          dataType : "JSON",
+          data: {id:id},
+          beforeSend:function(){
+
+          },
+          success:function(data){
+          $('#spinner').hide();
+            if(data.status == 'success')
+            {
+              showMsg('#deletemsg', 'Status changed.', 'green');
+            }
+          },
+          error:function(jqxhr){
+            $('#spinner').hide();
+            showMsg('#deletemsg', 'Error.', 'red');
+          }
+        });
+    }
 
