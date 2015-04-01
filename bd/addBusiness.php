@@ -39,10 +39,9 @@
         <link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="js/fileinput.js" type="text/javascript"></script>
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="admin/js/script.js" type="text/javascript"></script>
-      <script src="js/script.js"></script>
-
+         <script src="js/script.js"></script>
     </head>
 	
 	
@@ -511,8 +510,9 @@
       <!-- Bootstrap core JavaScript
          ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-      <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <!--     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+       <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+       -->
       <script src="assets/js/jquery.inview.js"></script>
       <script>
          // $("#file-3").fileinput({

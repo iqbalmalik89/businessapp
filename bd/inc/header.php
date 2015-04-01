@@ -1,3 +1,9 @@
+<style>
+.modal-backdrop
+{
+   z-index: 0;
+}
+</style>
          <nav class="navbar navbar-inverse" role="navigation">
             <div class="container">
                <div class="navbar-header">
@@ -19,3 +25,4 @@
                </div>
             </div>
          </nav>
+

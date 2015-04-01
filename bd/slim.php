@@ -237,6 +237,14 @@ $app->group('/api', function () use ($app) {
         response($code, array());
     });
 
+    // event cron
+    $app->get('/eventcron' , function () use ($app){
+        $new = new EventRepo();
+        $code = $new->eventCron($app->requestdata);
+        //response($code, array());
+    });
+
+
     // update event status
     $app->post('/event_status', function() use ($app){
 

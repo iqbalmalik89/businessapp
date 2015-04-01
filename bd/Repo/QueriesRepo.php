@@ -51,15 +51,18 @@ class QueriesRepo
 
 	public function addSubscriber($data)
 	{
+
 		$count = $GLOBALS['con']->from('subscribers')->where('email',$data['email'])->count();
 		if($count > 0)
 		{
-			return 400;
+			$values = array("status" => $data['status']);
+			$query = $GLOBALS['con']->update('subscribers')->set($values)->where('email', $data['email'])->execute();
+
 		}
 		else
 		{
 			$date_created = date("Y-m-d H:i:s");
-			$values = array('email' => $data['email'],'date_created' => $date_created);
+			$values = array('email' => $data['email'],'date_created' => $date_created, "status" => $data['status']);
 			$query = $GLOBALS['con']->insertInto('subscribers', $values)->execute();
 			return 200;
 		}
@@ -79,6 +82,9 @@ class QueriesRepo
 
 	public function getQueries($request)
 	{
+		if(isset($request['search']) && !empty($request['search']))
+			$key = '%'.$request['search'].'%';
+
 		$limit = 15;
 		$total_pages = 0;
 		if(!isset($request['page']))
@@ -90,9 +96,31 @@ class QueriesRepo
 
 		$resp = array('code' => 200, 'data' => array());
 
-		$count = $GLOBALS['con']->from('queries')->count();
-		$total_pages = ceil($count / $limit) ;			
-		$queries = $GLOBALS['con']->from('queries')->limit($limit)->offset($offset);
+		if(!isset($key))
+		{
+			$count = $GLOBALS['con']->from('queries')->count();
+		}
+		else
+		{
+			$rawSql = "SELECT COUNT(*) as cid FROM queries where  (name like '".$key."') || (phone like '".$key."')
+ || (email like '".$key."') || (subject like '".$key."') || (message like '".$key."')";
+			$stmt = $GLOBALS['pdo']->query($rawSql);
+			$count = $stmt->fetchColumn();
+		}
+
+
+		$total_pages = ceil($count / $limit) ;	
+		if(isset($key))
+		{
+			$rawSql = "SELECT * FROM queries where  (name like '".$key."') || (phone like '".$key."')
+ || (email like '".$key."') || (subject like '".$key."') || (message like '".$key."')";
+			$stmt = $GLOBALS['pdo']->query($rawSql);
+			$queries = $stmt->fetchAll(PDO::FETCH_ASSOC); 			
+		}	
+		else
+		{
+			$queries = $GLOBALS['con']->from('queries')->limit($limit)->offset($offset);
+		}	
 
 		$allVendors = array();
 		if(!empty($queries))
@@ -108,6 +136,18 @@ class QueriesRepo
 
 	public function getSubscribers($request)
 	{
+		$sortBy = 'id';
+		$orderBy = 'asc';
+
+		if(isset($request['sort_by']) && !empty($request['sort_by']) && isset($request['sort_order']) && !empty($request['sort_order'] )) 
+		{
+			$sortBy = $request['sort_by'];
+			$orderBy = $request['sort_order'];
+		}
+
+		if(isset($request['search']) && !empty($request['search']))
+			$key = '%'.$request['search'].'%';
+
 		$limit = 15;
 		$total_pages = 0;
 		if(!isset($request['page']))
@@ -119,9 +159,31 @@ class QueriesRepo
 
 		$resp = array('code' => 200, 'data' => array());
 
-		$count = $GLOBALS['con']->from('subscribers')->count();
+		if(!isset($key))
+		{
+			$count = $GLOBALS['con']->from('subscribers')->count();
+
+		}
+		else
+		{
+			$rawSql = "SELECT COUNT(*) as cid FROM subscribers where  (email like '".$key."')";
+			$stmt = $GLOBALS['pdo']->query($rawSql);
+			$count = $stmt->fetchColumn();
+		}
+
+
 		$total_pages = ceil($count / $limit) ;			
-		$queries = $GLOBALS['con']->from('subscribers')->limit($limit)->offset($offset);
+		if(isset($key))
+		{
+			$rawSql = "SELECT * FROM subscribers where  (email like '".$key."')";
+			$stmt = $GLOBALS['pdo']->query($rawSql);
+			$queries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		else
+		{
+			$queries = $GLOBALS['con']->from('subscribers')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+		}
+
 
 		$allVendors = array();
 		if(!empty($queries))
@@ -141,7 +203,7 @@ class QueriesRepo
 
 		if(!empty($request['email']))
 		{
-			$count = $GLOBALS['con']->from('subscribers')->where('email',$request['email'])->count();
+			$count = $GLOBALS['con']->from('subscribers')->where('email',$request['email'])->where('id != ?',$request['id'])->count();
 			if($count > 0)
 			{
 				$response = 400;
@@ -174,7 +236,7 @@ class QueriesRepo
 	public function deactiveSubscriber($request)
 	{
 		$response = 400;
-		$values = array('status' => 'deactive');
+		$values = array('status' => $request['status']);
 		$query = $GLOBALS['con']->update('subscribers', $values, $request['id'])->execute();
 		
 		if($query)

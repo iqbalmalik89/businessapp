@@ -79,6 +79,21 @@ class EventRepo
 				}
 				else
 				{
+
+					$eventDetail = $this->getEvents(array('id' => $requestData['event_id']));
+					if(isset($eventDetail['data']))
+					{
+						if($eventDetail['data']['status'] == 'expired')
+						{
+							$curDate = date("Y-m-d H:i:s");
+							if(strtotime($values['end_date']) > $curDate)
+							{
+								$this->eventStatus(array('status' => 'ongoing', 'id' => $requestData['event_id']));
+							}
+						}
+					}
+
+
 					unset($values['status']);
 					$query = $GLOBALS['con']->deleteFrom('event_images')->where('event_id', $requestData['event_id'])->execute();
 					$query = $GLOBALS['con']->update('events',$values, $requestData['event_id'])->execute();					
@@ -102,6 +117,22 @@ class EventRepo
 			}
 		}
 			return $response;
+	}
+
+	public function eventCron()
+	{
+		$curDate = date("Y-m-d H:i:s");
+		$events = $GLOBALS['con']->from('events');
+
+		if(!empty($events))
+		{
+			foreach ($events as $key => $event) {
+				if(strtotime($event['end_date']) < strtotime($curDate))
+				{
+					$this->eventStatus(array('id' => $event['id'], 'status' => 'expired'));
+				}
+			}
+		}
 	}
 
 	public function checkEvent($data)
@@ -191,6 +222,8 @@ class EventRepo
 	// Get All Events. If id given, returns a single event else return all events.
 	public function getEvents($request)
 	{
+		$this->eventCron();
+
 		$sortBy = 'id';
 		$orderBy = 'asc';
 

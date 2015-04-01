@@ -29,7 +29,7 @@ function validateEmail(email){
     }
 }
 
-function addSubscriber()
+function addSubscriber(status)
 {
     var email = $.trim($('#subscriber_email').val());
     $('#subscriber_email').parent().removeClass('has-error');
@@ -49,26 +49,30 @@ function addSubscriber()
               type: 'POST',
               url: apiUrl + 'add_subscriber',
               dataType : "JSON",
-              data: {email:email},
+              data: {email:email, status: status},
               beforeSend:function(){
 
               },
               success:function(data){
-                if(data.status == 'success')
-                {
-                    $('#subscriberspinner').hide();
-                    showMsg('#subscribermsg', 'You are added to subscriber list', '');
-                    $('#subscriber_email').val('');                
-                }
-                else
-                {
-                    showMsg('#subscribeerrorrmsg', 'You are already subscriber', '');
-                }
+                $('#subscriberspinner').hide();
+                 $("#coscentpopup, .modal-backdrop").fadeOut();
+                 $('#subscriber_email').val('');
+                // if(data.status == 'success')
+                // {
+                //     showMsg('#subscribermsg', 'You are added to subscriber list', '');
+                //     $('#subscriber_email').val('');                
+                // }
+                // else
+                // {
+                //     showMsg('#subscribeerrorrmsg', 'You are already subscriber', '');
+                // }
 
               },
               error:function(jqxhr){
+                $('#subscriber_email').val('');
                 $('#subscriberspinner').hide();
-                showMsg('#subscribeerrorrmsg', 'You are already subscriber', '');
+                $("#coscentpopup, .modal-backdrop").fadeOut();
+                // showMsg('#subscribeerrorrmsg', 'You are already subscriber', '');
 
               }
             });            
@@ -165,3 +169,32 @@ function sendContactQuery()
     }
 
 }
+
+ function showSubscribeModal()
+ {
+    var email = $.trim($('#subscriber_email').val());
+    $('#subscriber_email').parent().removeClass('has-error');
+
+    if(email == '')
+    {
+        $('#subscriber_email').focus();
+        $('#subscriber_email').parent().addClass('has-error');
+        check = false;
+    }
+    else
+    {
+        if(validateEmail(email))
+        {
+             $("#coscentpopup, .modal-backdrop").show();
+        }
+        else
+        {
+            $('#subscriber_email').focus();
+            $('#subscriber_email').parent().addClass('has-error');
+            check = false;
+        }
+
+    }    
+
+ }
+

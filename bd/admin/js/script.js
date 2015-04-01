@@ -1028,6 +1028,8 @@ function sortbyFunc(sort, sortbystr, module, status)
     getDeals();
   else if(module == 'promo')
     getPromoVendors();
+  else if(module == 'subscriber')
+    getSubscribers();  
 }
 
 function getAllVendors(status, page)
@@ -1209,11 +1211,16 @@ function getQueries(page)
     page -= 1;
     var id = $('#deal_id').val();
 
+    var search = $('#search').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'queries',
       dataType : "JSON",
-      data: {page: page},
+      data: {page: page, search:search},
       beforeSend:function(){
 
       },
@@ -1273,11 +1280,17 @@ function getSubscribers(page)
   if(page > 0)
     page -= 1;
 
+
+    var search = $('#search').val();
+
+    if(search != '')
+      $('#search_spinner').show();
+
     $.ajax({
       type: 'GET',
       url: apiUrl + 'subscribers',
       dataType : "JSON",
-      data: {page: page},
+      data: {page: page, search:search, sort_by: sortBy, sort_order: sortOrder},
       beforeSend:function(){
       },
       success:function(data){
@@ -1286,11 +1299,24 @@ function getSubscribers(page)
         if(data.data.length > 0)
         {
             $.each(data.data, function( index, value ) {
+              var status = '';
+              var showstatus = '';              
+              if(value.status == 'active')
+              {
+                status = 'Deactivate';                
+                showstatus = 'Active';
+              }
+              else 
+              {
+                showstatus = 'Deactive';
+                status = 'Activate';
+              }
 
                 html += '<tr>\
                             <td>'+value.email+'</td>\
+                            <td>'+showstatus+'</td>\
                             <td>'+value.date_created+'</td>\
-                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubscriber('+value.id+', \''+value.email+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a> | <a href="javascript:void(0);" onclick="deactiveSubscriber('+value.id+');">Deactive</a></td>\
+                            <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubscriber('+value.id+', \''+value.email+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a> | <a href="javascript:void(0);" onclick="deactiveSubscriber('+value.id+', \'deactive\');">'+status+'</a></td>\
                          </tr>';
 
             });            
@@ -1576,6 +1602,17 @@ function searchEvent(keyword)
   getAllEvents('pending');
   getAllEvents('expired');
 }
+
+function searchQuery(keyword)
+{
+  getQueries();
+}
+
+function searchSubscriber(keyword)
+{
+  getSubscribers();
+}
+
 
 function searchPromo(keyword)
 {
@@ -2565,18 +2602,21 @@ function editSubscriber()
       }
     }
 
-    function deactiveSubscriber(id)
+    function deactiveSubscriber(id, status)
     {
         $.ajax({
           type: "POST",
           url: apiUrl + 'deactivesubscriber',
           dataType : "JSON",
-          data: {id:id},
+          data: {id:id, status:status},
           beforeSend:function(){
 
           },
           success:function(data){
           $('#spinner').hide();
+
+            getSubscribers();
+
             if(data.status == 'success')
             {
               showMsg('#deletemsg', 'Status changed.', 'green');

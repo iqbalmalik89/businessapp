@@ -167,8 +167,14 @@ class PromoVendorsRepo
 			else
 			{
 
-				$exists = $GLOBALS['con']->from('promo_vendors')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+//				$exists = $GLOBALS['con']->from('promo_vendors')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
+
+				if($sortBy == 'vendor_name')
+					$sortBy  = 'business_name';
+
+				$exists = $GLOBALS['con']->from('promo_vendors')->innerJoin('vendors ON vendors.id = promo_vendors.vendor_id')->orderBy($sortBy." ".$orderBy)->limit($limit)->offset($offset);
 			}
+
 
 			$data = array();
 			foreach($exists as $items)

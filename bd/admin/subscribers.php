@@ -118,6 +118,9 @@ $( document ).ready(function() {
           <div class="col-md-12">
             <div class="page-heading">
               <h1>Subscribers<!--   <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button> -->  </h1>
+
+                 <input type="text" id="search" name="search" value="" placeholder="Search Subscriber" onkeyup="searchSubscriber(this.value);" style="float:right; margin-bottom:10px;">
+
             </div>
 
           <div class="notification-bar" id="deletemsg" style="display: none;"></div>
@@ -129,7 +132,8 @@ $( document ).ready(function() {
                 <thead>
                   <tr>
                     <th>Email</th>
-                    <th>Date Created</th>
+                    <th>Status <i class="fa fa-sort statusall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'status', 'subscriber', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'status', 'subscriber', 'pending');" class="fa fa-sort-asc statusasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'status', 'subscriber', 'pending');" class="fa fa-sort-desc statusdesc"></i></th>
+                    <th>Date Created <i class="fa fa-sort date_createdall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'date_created', 'subscriber', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'date_created', 'subscriber', 'pending');" class="fa fa-sort-asc date_createdasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'date_created', 'subscriber', 'pending');" class="fa fa-sort-desc date_createddesc"></i></th>
                     <th>Actions</th>
                   </tr>
                 </thead>

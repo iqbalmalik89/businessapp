@@ -196,7 +196,7 @@ getPromoVendors();
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Vendor Name</th>
+                    <th>Vendor Name <i class="fa fa-sort vendor_nameall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'vendor_name', 'promo', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'vendor_name', 'promo', 'pending');" class="fa fa-sort-asc vendor_nameasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'vendor_name', 'promo', 'pending');" class="fa fa-sort-desc vendor_namedesc"></i></th>
                     <th>Start Date <i class="fa fa-sort start_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'start_date', 'promo', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'start_date', 'promo', 'pending');" class="fa fa-sort-asc start_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'start_date', 'promo', 'pending');" class="fa fa-sort-desc start_datedesc"></i></th>
                     <th>End Date <i class="fa fa-sort end_dateall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'end_date', 'promo', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'end_date', 'promo', 'pending');" class="fa fa-sort-asc end_dateasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'end_date', 'promo', 'pending');" class="fa fa-sort-desc end_datedesc"></i></th>
                     <th>Actions</th>

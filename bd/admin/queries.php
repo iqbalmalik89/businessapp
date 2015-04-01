@@ -179,6 +179,8 @@ $( document ).ready(function() {
           <div class="col-md-12">
             <div class="page-heading">
               <h1>Queries<!--   <button type="button" data-toggle="modal" data-target="#adddeal" onclick="showDealAddPopup();" class="btn btn-primary">Add Deal</button> -->  </h1>
+                 <input type="text" id="search" name="search" value="" placeholder="Search Query" onkeyup="searchQuery(this.value);" style="float:right; margin-bottom:10px;">
+
             </div>
 
           <div class="notification-bar" id="deletemsg" style="display: none;"></div>
