@@ -64,6 +64,29 @@ class QueriesRepo
 			$date_created = date("Y-m-d H:i:s");
 			$values = array('email' => $data['email'],'date_created' => $date_created, "status" => $data['status']);
 			$query = $GLOBALS['con']->insertInto('subscribers', $values)->execute();
+
+			$msg = "<html>
+					<head>
+					  <title>Confirmation Email</title>
+					</head>
+					<body>
+						<p>Please click on the link below to confirm your subscription.</p>
+						
+					    
+					</body>
+					</html>";
+			$to = $data['email'];
+			$subject = "Confirmation";
+
+			// Always set content-type when sending HTML email
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+			// More headers
+			//$headers .= 'From: <'. .'>' . "\r\n";
+
+			$email = mail($to,$subject,$msg,$headers);	
+			echo $email;
 			return 200;
 		}
 	}
@@ -245,5 +268,28 @@ class QueriesRepo
 		}
 
 			return $response;
+	}
+
+	public function verifyEmail($request)
+	{
+		$count = $GLOBALS['con']->from('subscribers')->where('email',$request['email'])->count();
+		if($count > 0)
+		{
+			$values = array('verified' => '1');
+			$sql = $GLOBALS['con']->update('subscribers', $values, $request['email'])->execute();			
+			if($sql)
+			{
+				$response = 200;
+			}
+			else
+			{
+				$response = 400;
+			}
+		}
+		else
+		{
+			$response = 400;
+		}
+		return $response;
 	}
 }

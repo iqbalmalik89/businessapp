@@ -134,6 +134,7 @@ $( document ).ready(function() {
                     <th>Email</th>
                     <th>Status <i class="fa fa-sort statusall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'status', 'subscriber', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'status', 'subscriber', 'pending');" class="fa fa-sort-asc statusasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'status', 'subscriber', 'pending');" class="fa fa-sort-desc statusdesc"></i></th>
                     <th>Date Created <i class="fa fa-sort date_createdall" style="float:right;cursor:pointer;" onclick="sortbyFunc('all', 'date_created', 'subscriber', 'pending');"></i> <i style="cursor:pointer;float:right;display:none;"  onclick="sortbyFunc('asc', 'date_created', 'subscriber', 'pending');" class="fa fa-sort-asc date_createdasc"></i>  <i style="cursor:pointer;display:none; float:right;" onclick="sortbyFunc('desc', 'date_created', 'subscriber', 'pending');" class="fa fa-sort-desc date_createddesc"></i></th>
+                    <th>Verified</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

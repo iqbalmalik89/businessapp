@@ -1311,11 +1311,19 @@ function getSubscribers(page)
                 showstatus = 'Deactive';
                 status = 'Activate';
               }
-
+              if(value.verified == '0')
+              {
+                verified = 'Not Verified';                
+              }
+              else if(value.verified == '1')
+              {
+                verified = 'Verified';
+              }
                 html += '<tr>\
                             <td>'+value.email+'</td>\
                             <td>'+showstatus+'</td>\
                             <td>'+value.date_created+'</td>\
+                            <td>'+verified+'</td>\
                             <td><a href="javascript:void(0);" data-toggle="modal" onclick="getSingleSubscriber('+value.id+', \''+value.email+'\');" data-target="#adddeal">Edit</a> | <a href="javascript:void(0);" onclick="deleteSubscriber('+value.id+');">Delete</a> | <a href="javascript:void(0);" onclick="deactiveSubscriber('+value.id+', \'deactive\');">'+status+'</a></td>\
                          </tr>';
 
