@@ -61,8 +61,16 @@ class QueriesRepo
 		}
 		else
 		{
+			if($data['status'] == 'active')
+			{
+				$consent = '1';
+			}
+			else if($data['status'] == 'deactive'])
+			{
+				$consent = '0';
+			}
 			$date_created = date("Y-m-d H:i:s");
-			$values = array('email' => $data['email'],'date_created' => $date_created, "status" => $data['status']);
+			$values = array('email' => $data['email'],'date_created' => $date_created, "status" => $data['status'],'consent' => $consent);
 			$query = $GLOBALS['con']->insertInto('subscribers', $values)->execute();
 
 			$msg = "<html>
