@@ -435,6 +435,13 @@ $app->group('/api', function () use ($app) {
         $code = $new->deactiveSubscriber($app->requestdata);
         response($code, array());
     });
+
+     $app->post('/verify_email', function() use ($app){
+        $new = new QueriesRepo();
+        $code = $new->verifyEmail($app->requestdata);
+        response($code, array());
+    });
+
 });
 
 
